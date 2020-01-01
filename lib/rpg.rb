@@ -1,6 +1,7 @@
-require "rpg/version"
+# frozen_string_literal: true
+
+require 'version'
+require 'characters/player'
 
 module Rpg
-  class Error < StandardError; end
-  # Your code goes here...
 end
