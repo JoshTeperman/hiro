@@ -1,4 +1,4 @@
-module Rpg
+module Hiro
   module Characters
     RSpec.describe Player do
       subject do

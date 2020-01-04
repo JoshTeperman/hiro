@@ -6,8 +6,8 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'rpg'
-  spec.version       = Rpg::VERSION
+  spec.name          = 'hiro'
+  spec.version       = Hiro::VERSION
   spec.authors       = ['Josh Teperman']
   spec.email         = ['joshteperman@gmail.com']
   spec.summary       = 'RPG Game'
@@ -18,9 +18,9 @@ Gem::Specification.new do |spec|
   if spec.respond_to?(:metadata)
     spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
 
-    spec.metadata['homepage_uri'] = 'https://github.com/JoshTeperman/rpg'
-    spec.metadata['source_code_uri'] = 'https://github.com/JoshTeperman/rpg'
-    spec.metadata['changelog_uri'] = 'https://github.com/JoshTeperman/rpg'
+    spec.metadata['homepage_uri'] = 'https://github.com/JoshTeperman/hiro'
+    spec.metadata['source_code_uri'] = 'https://github.com/JoshTeperman/hiro'
+    spec.metadata['changelog_uri'] = 'https://github.com/JoshTeperman/hiro'
   else
     raise 'RubyGems 2.0 or newer is required to protect against ' \
       'public gem pushes.'

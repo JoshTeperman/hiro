@@ -1,4 +1,4 @@
-module Rpg
+module Hiro
   module Characters
     class Player
       attr_reader :name, :life

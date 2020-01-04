@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in rpg.gemspec
+# Specify your gem's dependencies in hiro.gemspec
 gemspec
 

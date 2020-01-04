@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.describe Rpg do
+RSpec.describe Hiro do
   it 'has a version number' do
-    expect(Rpg::VERSION).not_to be nil
+    expect(Hiro::VERSION).not_to be nil
   end
 end

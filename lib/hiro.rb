@@ -3,5 +3,5 @@
 require 'version'
 require 'characters/player'
 
-module Rpg
+module Hiro
 end
