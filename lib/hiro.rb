@@ -1,5 +1,2 @@
 require 'hiro/version'
-require 'hiro/player'
-
-module Hiro
-end
+require 'hiro/characters/player'
