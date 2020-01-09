@@ -1,39 +1,86 @@
-# Hiro
+## To consider
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/hiro`. To experiment with that code, run `bin/console` for an interactive prompt.
+game state
+- `Game` class
+- global variables
+- current map
+- player stats
+- settings
 
-TODO: Delete this and the text above, and describe your gem
+some kind of `draw()` function
+- calculate collisions
+- move objects around
+- (x, y) coordinates
 
-## Installation
+drawing the window
+- `Game::Window` class
+- window size
+- fullscreen
+- show / hide panels
+- captions / text
+- redraw check "https://www.rubydoc.info/github/gosu/gosu/master/Gosu/Window#needs_redraw%3F-instance_method"
 
-Add this line to your application's Gemfile:
+movement
+- starting position
+- keypress, button_down, button_up
+- `moveX`, `moveY`
+- turn left, right
+- turn around
+- speed
+- handle collisions
+- handle edge of map
 
-```ruby
-gem 'hiro'
-```
+interacting with other objects
+- interactable objects and not
+- interact if same coordinates / within radius
+- random generation of other objects
 
-And then execute:
+persisting data
+- character customisation
+- saved games
+- load previous games
 
-    $ bundle
+items
+- composition vs inheritance
+- base stats
+- modifiers
+- selling items / buying items
+- magic find & item drops
+- when can items be used?
 
-Or install it yourself as:
+npcs
+- composition vs inheritance
+- enemies vs friends
+- normal enemies & special enemies
+- base attributes & modifiers
 
-    $ gem install hiro
+hero character
+- base stats & attributes
+- skill points, progression, experience
 
-## Usage
+battle
+- same square as enemy = battle
+- battle opens battle screen (pokemon style)
+- any enemies within range will enter same battle
 
-TODO: Write usage instructions here
+# Resources
 
-## Development
+### Gosu
+https://github.com/gosu/gosu/wiki/Ruby-Tutorial
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+### TTY gem
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+https://ttytoolkit.org/
 
-## Contributing
+### Developing Games With Ruby
+https://leanpub.com/developing-games-with-ruby/read
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/hiro.
+### Game Programming Patterns
+http://gameprogrammingpatterns.com/
 
-## License
+### ruby-prof gem
+https://github.com/ruby-prof/ruby-prof
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+### RPG Maker 'Tsukuru'
+
+https://en.wikipedia.org/wiki/RPG_Maker
