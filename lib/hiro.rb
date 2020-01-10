@@ -1,4 +1,4 @@
 require 'hiro/version'
 require 'hiro/characters/player'
-require 'hiro/items/weapons/weapon'
-require 'hiro/items/weapons/sword'
+require 'hiro/items/weapon'
+require 'hiro/items/sword'
