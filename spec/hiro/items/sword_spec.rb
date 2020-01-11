@@ -15,8 +15,12 @@ module Hiro
       let(:min_level) { 1 }
       let(:base_damage) { 2 }
 
-      it 'has a range of 1' do
-        expect(subject.range).to eq range
+      it 'has a min_level' do
+        expect(subject.min_level).to eq min_level
+      end
+
+      it 'has base damage' do
+        expect(subject.base_damage).to eq base_damage
       end
     end
   end

@@ -8,6 +8,7 @@ module Hiro
           name: name,
           min_level: min_level,
           base_damage: base_damage,
+          range: range
         }
       end
 
@@ -30,7 +31,7 @@ module Hiro
           expect(subject.base_damage).to eq base_damage
         end
 
-        it 'has a range of 1' do
+        it 'has a range' do
           expect(subject.range).to eq range
         end
       end
