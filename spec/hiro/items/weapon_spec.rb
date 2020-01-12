@@ -12,10 +12,10 @@ module Hiro
         }
       end
 
-      let(:name) { 'Weapon' }
-      let(:min_level) { 1 }
-      let(:base_damage) { 2 }
-      let(:range) { 1 }
+      let(:name) { 'Godfather' }
+      let(:min_level) { 25 }
+      let(:base_damage) { 85 }
+      let(:range) { 2 }
 
 
       describe '#initialize' do

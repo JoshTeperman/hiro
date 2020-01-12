@@ -40,6 +40,13 @@ persisting data
 - saved games
 - load previous games
 
+```ruby
+username = ENV['USER']
+data = YAML.load_file("/home/#{username}/game.yml")
+saved_game = data.fetch('saved_game')
+```
+
+
 items
 - composition vs inheritance
 - base stats
