@@ -1,17 +1,15 @@
 module Hiro
   module Items
     class Sword < Weapon
-      attr_reader :name, :min_level, :base_damage, :range, :type, :min_damage, :max_damage, :max_base_damage
+      attr_reader :weapon_class, :name, :min_character_level, :range
 
-      def initialize(type:, name:, min_level:, base_damage:, range: 1, min_damage:, max_damage:)
-        super(
+      def initialize(weapon_class:, name:, min_character_level:, range: 1)
+      super(
+          weapon_class: weapon_class,
           name: name,
-          min_level: min_level,
-          base_damage: base_damage,
+          min_character_level: min_character_level,
           range: range
         )
-        @type = OpenStruct.new()
-
       end
     end
   end
