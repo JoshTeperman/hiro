@@ -9,8 +9,7 @@ module Hiro
         min_character_level:,
         range:
       )
-
-        @weapon_class = weapon_class
+        @weapon_class = OpenStruct.new(weapon_class)
         @name = name
         @min_character_level = min_character_level
         @base_damage = roll_base_damage
