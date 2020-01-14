@@ -3,13 +3,8 @@ module Hiro
     class Sword < Weapon
       attr_reader :weapon_class, :name, :min_character_level, :range
 
-      def initialize(name:, min_character_level:, range: 1, weapon_class:)
-      super(
-          weapon_class: weapon_class,
-          name: name,
-          min_character_level: min_character_level,
-          range: range
-        )
+      def initialize(weapon_class_attributes:, name:, min_character_level:, range: 1)
+        super
       end
     end
   end
