@@ -40,27 +40,15 @@ module Hiro
             expect(subject.attributes).to eq(default_attributes)
             expect(subject.life).to eq(life)
             expect(subject.mana).to eq(mana)
-            expect(subject.level).to eq(level)
+            expect(subject.character_level).to eq(character_level)
             expect(subject.location).to eq(location)
             expect(subject.name).to eq(name)
           end
         end
       end
 
-      describe '#gear' do
-        let(:gear) { { weapon: weapon} }
-        let(:weapon) { instance_double(Items::Sword) }
-
-        before { subject.gear = gear }
-
-        it 'returns all the player\'s equipped gear' do
-          expect(subject.gear).to eq(gear)
-        end
-      end
-
       describe '#equip' do
-        let(:weapon) { instance_double(Items::Sword) }
-
+        before { subject.gear = gear }
         # TODO create classes:
         # let(:chest) { instance_double(Items::Chest) }
         # let(:head) { instance_double(Items::Head) }
