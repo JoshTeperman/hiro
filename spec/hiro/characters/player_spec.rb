@@ -8,7 +8,7 @@ module Hiro
           level: level,
           life: life,
           mana: mana,
-          location: location
+          location: location,
         )
       end
 
@@ -47,23 +47,14 @@ module Hiro
         end
       end
 
-      describe '#equipped_weapon' do
-        context 'when the player has a weapon equipped' do
-          let(:equipped_weapon) { instance_double(Items::Sword) }
+      describe '#gear' do
+        let(:gear) { { weapon: weapon} }
+        let(:weapon) { instance_double(Items::Sword) }
 
-          before { subject.equipped_weapon = equipped_weapon }
+        before { subject.gear = gear }
 
-          it 'returns the equipped weapon' do
-            expect(subject.equipped_weapon).to eq(equipped_weapon)
-          end
-        end
-
-        context 'when the player has no weapon equipped' do
-          let(:equipped_weapon) { nil }
-
-          it 'returns nil' do
-            expect(subject.equipped_weapon).to be_nil
-          end
+        it 'returns all the player\'s equipped gear' do
+          expect(subject.gear).to eq(gear)
         end
       end
 

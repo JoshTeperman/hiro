@@ -2,16 +2,16 @@ module Hiro
   module Characters
     class Player
       attr_reader :attributes, :name, :life, :mana, :level, :location
-      attr_accessor :equipped_weapon
+      attr_accessor :gear
 
       def initialize(player_hash)
-        @name = player_hash[:name]
-        @attributes = player_hash[:attributes]
-        @equipped_weapon = nil
-        @life = player_hash[:life]
-        @mana = player_hash[:mana]
-        @level = player_hash[:level]
-        @location = player_hash[:location]
+        @name = player_hash.fetch(:name)
+        @attributes = player_hash.fetch(:attributes)
+        @life = player_hash.fetch(:life)
+        @mana = player_hash.fetch(:mana)
+        @level = player_hash.fetch(:level)
+        @location = player_hash.fetch(:location)
+        @gear = {}
       end
     end
   end
