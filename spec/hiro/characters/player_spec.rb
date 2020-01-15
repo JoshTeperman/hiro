@@ -3,15 +3,16 @@ module Hiro
     RSpec.describe Player do
       subject do
         described_class.new(
-          name: 'Hiro',
-          attributes: attributes,
-          life: 100,
-          mana: 10,
-          location: 'location'
+          name: name,
+          attributes: default_attributes,
+          level: level,
+          life: life,
+          mana: mana,
+          location: location
         )
       end
 
-      let(:attributes) do
+      let(:default_attributes) do
         {
           max_life: 100,
           max_mana: 10,
@@ -23,17 +24,26 @@ module Hiro
         }
       end
 
+      let(:life) { 100 }
+      let(:mana) { 5 }
+      let(:name) { 'Hiro' }
+      let(:level) { 1 }
+      let(:location) { 'location' }
+
       describe '#initialize' do
         it 'initializes a new Player without error' do
           expect { subject }.not_to raise_error
         end
 
-        it 'has a name' do
-          expect(subject.name).to eq('Hiro')
-        end
-
         it 'has default attributes' do
-          expect(subject.attributes).to eq(attributes)
+          aggregate_failures do
+            expect(subject.attributes).to eq(default_attributes)
+            expect(subject.life).to eq(life)
+            expect(subject.mana).to eq(mana)
+            expect(subject.level).to eq(level)
+            expect(subject.location).to eq(location)
+            expect(subject.name).to eq(name)
+          end
         end
       end
 
