@@ -1,7 +1,7 @@
 module Hiro
   module Characters
     class Player
-      attr_reader :attributes, :name, :life, :mana, :level, :location
+      attr_reader :attributes, :name, :life, :mana, :character_level, :location
       attr_accessor :gear
 
       def initialize(player_hash)

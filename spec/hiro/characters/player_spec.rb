@@ -5,7 +5,7 @@ module Hiro
         described_class.new(
           name: name,
           attributes: default_attributes,
-          level: level,
+          character_level: character_level,
           life: life,
           mana: mana,
           location: location,
@@ -27,7 +27,7 @@ module Hiro
       let(:life) { 100 }
       let(:mana) { 5 }
       let(:name) { 'Hiro' }
-      let(:level) { 1 }
+      let(:character_level) { 1 }
       let(:location) { 'location' }
 
       describe '#initialize' do
@@ -72,28 +72,48 @@ module Hiro
         # let(:orb) { instance_double(Items::Orb) }
 
         context 'when there are no equipped items' do
-          let(:equipped_gear) { {} }
-          let(:params) { { weapon: weapon } }
+          let(:gear) { {} }
 
           context 'and all of the items level requirements are equal to or below the character level' do
-            it 'equips all items' do
+            let(:character_level) { 1 }
+            let(:weapon) { instance_double(Items::Sword, min_character_level: 1) }
+            let(:params) { { weapon: weapon } }
+
+            it 'is successful' do
+              expect(subject.equip(params).success?).to eq true
+            end
+
+            it 'equips the items' do
+              expect(subject.equip(params)).to change { subject.gear.weapon }.from(nil).to(weapon)
+            end
+
+            it 'records which items were equipped' do
+              expect(subject.equip(params).equipped).to eq weapon
             end
           end
 
           context 'and some of the items level requirements are equal to or below the character level' do
-            it 'equips all equippable items' do
-            end
+            it 'equips all equippable items'
           end
 
           context 'and none of the items level requirements are equal to or below the character level' do
-            it 'equips none of the items' do
-            end
+            it 'equips none of the items'
           end
 
           context 'when equipping an item to an equipped slot' do
-            it 'updates equipped items' do
-            end
+            it 'updates equipped items'
           end
+        end
+      end
+
+      describe '#gear' do
+        let(:gear) { { weapon: weapon} }
+        let(:weapon) { instance_double(Items::Sword) }
+
+        before { subject.gear = gear }
+
+        it 'returns all the player\'s equipped gear' do
+          expect(subject.gear).to eq(gear)
         end
       end
     end
