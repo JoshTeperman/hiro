@@ -48,19 +48,13 @@ module Hiro
       end
 
       describe '#equip' do
-        before { subject.gear = gear }
-        # TODO create classes:
-        # let(:chest) { instance_double(Items::Chest) }
-        # let(:head) { instance_double(Items::Head) }
-        # let(:gloves) { instance_double(Items::Gloves) }
-        # let(:boots) { instance_double(Items::Boots) }
-        # let(:belt) { instance_double(Items::Belt)}
-        # let(:ring) { instance_double(Items::Ring) }
-        # let(:necklace) { instance_double(Items::Necklace) }
-        # let(:orb) { instance_double(Items::Orb) }
+        before do
+          subject.equipped_gear = equipped_gear
+          subject.switch_gear = switch_gear
+        end
 
-        context 'when there are no equipped items' do
-          let(:gear) { {} }
+        context 'when equipped_items is empty' do
+          let(:equipped_gear) { {} }
 
           context 'and all of the items level requirements are equal to or below the character level' do
             let(:character_level) { 1 }
@@ -72,7 +66,7 @@ module Hiro
             end
 
             it 'equips the items' do
-              expect(subject.equip(params)).to change { subject.gear.weapon }.from(nil).to(weapon)
+              expect(subject.equip(params)).to change { subject.equipped_gear.weapon }.from(nil).to(weapon)
             end
 
             it 'records which items were equipped' do
@@ -92,17 +86,27 @@ module Hiro
             it 'updates equipped items'
           end
         end
-      end
 
-      describe '#gear' do
-        let(:gear) { { weapon: weapon} }
-        let(:weapon) { instance_double(Items::Sword) }
-
-        before { subject.gear = gear }
-
-        it 'returns all the player\'s equipped gear' do
-          expect(subject.gear).to eq(gear)
+        context 'when equipped_items is not empty' do
         end
+
+        context 'when switch_gear is empty' do
+          let(:switch_gear) { {} }
+        end
+
+        context 'when switch_gear is not empty' do
+        end
+      end
+    end
+
+    describe '#equipped_gear' do
+      let(:equipped_gear) { { weapon: weapon} }
+      let(:weapon) { instance_double(Items::Sword) }
+
+      before { subject.equipped_gear = equipped_gear }
+
+      it 'returns all the player\'s equipped equipped_gear' do
+        expect(subject.equipped_gear).to eq(equipped_gear)
       end
     end
   end
