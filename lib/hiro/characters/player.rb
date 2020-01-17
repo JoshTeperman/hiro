@@ -2,7 +2,7 @@ module Hiro
   module Characters
     class Player
       attr_reader :attributes, :name, :life, :mana, :character_level, :location
-      attr_accessor :equipped_gear
+      attr_accessor :equipped_gear, :switch_gear
 
       def initialize(player_hash)
         @name = player_hash.fetch(:name)
@@ -15,14 +15,15 @@ module Hiro
         @switch_gear = {}
       end
 
+      # player.equip_gear(gear)
+      # check if item.equippable?
+      # if not errors.add_errors to item and return item
+      # equipped_gear.update with item
+      # return Result object
+
       def equip(params)
-        # player.equip_gear(gear)
-        # return if game.can_equip? is false
-        # for gear.map item.equippable?
-        # if item.equippable? gear.equip_item
-        # else errors.add_errors to item
-        # player.update_equipped_gear(gear)
-        # player.update_gear (replace player.switch_gear if player.gear != gear)
+        equipped_gear[:weapon] = params[:weapon]
+        equipped_gear
       end
     end
   end

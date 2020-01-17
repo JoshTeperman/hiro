@@ -48,65 +48,67 @@ module Hiro
       end
 
       describe '#equip' do
+        let(:character_level) { character_level }
+        let(:params) { { weapon: weapon } }
+        let(:weapon) { instance_double(Items::Sword, min_character_level: 1) }
+
         before do
           subject.equipped_gear = equipped_gear
-          subject.switch_gear = switch_gear
         end
 
-        context 'when equipped_items is empty' do
-          let(:equipped_gear) { {} }
+        describe 'success' do
+          context 'when equipped_items is empty' do
+            let(:equipped_gear) { {} }
 
-          context 'and all of the items level requirements are equal to or below the character level' do
-            let(:character_level) { 1 }
-            let(:weapon) { instance_double(Items::Sword, min_character_level: 1) }
-            let(:params) { { weapon: weapon } }
+              xit 'is successful' do
+                expect(subject.equip(params).success?).to eq true
+              end
 
-            it 'is successful' do
-              expect(subject.equip(params).success?).to eq true
+              it 'equips the item' do
+                expect { subject.equip(params) }.to change { subject.equipped_gear[:weapon] }.from(nil).to(weapon)
+              end
+
+              it 'returns the changed items'
             end
 
-            it 'equips the items' do
-              expect(subject.equip(params)).to change { subject.equipped_gear.weapon }.from(nil).to(weapon)
-            end
-
-            it 'records which items were equipped' do
-              expect(subject.equip(params).equipped).to eq weapon
+            context 'and some of the items level requirements are equal to or below the character level' do
+              it 'equips all equippable items'
+              it 'adds errors for the other items'
             end
           end
 
-          context 'and some of the items level requirements are equal to or below the character level' do
-            it 'equips all equippable items'
-          end
+          context 'when equipped_items is not empty' do
+            context 'and switch_gear is empty' do
+              let(:switch_gear) { {} }
+            end
 
-          context 'and none of the items level requirements are equal to or below the character level' do
-            it 'equips none of the items'
-          end
-
-          context 'when equipping an item to an equipped slot' do
-            it 'updates equipped items'
+            context 'and switch_gear is not empty' do
+            end
           end
         end
 
-        context 'when equipped_items is not empty' do
-        end
+        describe 'failure' do
+          context 'when an item is already equipped' do
+            it 'adds an error'
+            it 'fails to the item'
+          end
 
-        context 'when switch_gear is empty' do
-          let(:switch_gear) { {} }
-        end
-
-        context 'when switch_gear is not empty' do
+          context 'when the the item level requirements are equal to or below the character level' do
+            it 'adds an error'
+            it 'fails to equip the item'
+          end
         end
       end
-    end
 
-    describe '#equipped_gear' do
-      let(:equipped_gear) { { weapon: weapon} }
-      let(:weapon) { instance_double(Items::Sword) }
+      describe '#equipped_gear' do
+        let(:equipped_gear) { { weapon: weapon} }
+        let(:weapon) { instance_double(Items::Sword) }
 
-      before { subject.equipped_gear = equipped_gear }
+        before { subject.equipped_gear = equipped_gear }
 
-      it 'returns all the player\'s equipped equipped_gear' do
-        expect(subject.equipped_gear).to eq(equipped_gear)
+        it 'returns all the player\'s equipped equipped_gear' do
+          expect(subject.equipped_gear).to eq(equipped_gear)
+        end
       end
     end
   end
