@@ -23,8 +23,8 @@ module Hiro
       # equipped_gear.update with item
       # return Result (Success / Failure) object
 
-      def equip(params)
-        equipped_gear[:weapon] = params[:weapon]
+      def equip(item)
+        equipped_gear[item.keys.last] = item.values.last
         Dry::Monads::Success(equipped_gear)
       end
     end

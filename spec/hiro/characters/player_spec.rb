@@ -50,7 +50,6 @@ module Hiro
 
       describe '#equip' do
         let(:character_level) { 1 }
-        let(:params) { { weapon: weapon } }
         let(:weapon) { instance_double(Items::Sword, min_character_level: 1) }
 
         before do
@@ -58,39 +57,38 @@ module Hiro
         end
 
         describe 'success' do
-          context 'when equipped_items is empty' do
+          context 'when equipped_gear is empty' do
             let(:equipped_gear) { {} }
+            let(:item) { { weapon: weapon } }
 
             it 'is successful' do
-              expect(subject.equip(params).success?).to eq true
+              expect(subject.equip(item).success?).to eq true
             end
 
-              it 'equips the item' do
-                expect { subject.equip(params) }.to change { subject.equipped_gear[:weapon] }.from(nil).to(weapon)
-              end
+            it 'equips the item' do
+              expect { subject.equip(item) }.to change { subject.equipped_gear[:weapon] }.from(nil).to(weapon)
+            end
 
-              it 'returns the changed items'
-
-            context 'and some of the items level requirements are equal to or below the character level' do
-              it 'equips all equippable items'
-              it 'adds errors for the other items'
+            it 'returns the updated equipped_gear object' do
+              expect(subject.equip(item).value!).to eq(weapon: weapon)
             end
           end
 
-          context 'when equipped_items is not empty' do
-            context 'and switch_gear is empty' do
-              let(:switch_gear) { {} }
+          context 'when equipped_gear is not empty' do
+            let(:equipped_gear) { { weapon: weapon } }
+
+            context 'when there is an item already equipped of the same type' do
             end
 
-            context 'and switch_gear is not empty' do
+            context 'when there is an item already equipped of a different type' do
             end
           end
         end
 
         describe 'failure' do
-          context 'when an item is already equipped' do
+          context 'when the item is already equipped' do
             it 'adds an error'
-            it 'fails to the item'
+            it 'fails to equip the item'
           end
 
           context 'when the the item level requirements are equal to or below the character level' do
