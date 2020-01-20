@@ -1,5 +1,6 @@
 module Hiro
   module Characters
+
     RSpec.describe Player do
       subject do
         described_class.new(
@@ -48,7 +49,7 @@ module Hiro
       end
 
       describe '#equip' do
-        let(:character_level) { character_level }
+        let(:character_level) { 1 }
         let(:params) { { weapon: weapon } }
         let(:weapon) { instance_double(Items::Sword, min_character_level: 1) }
 
@@ -60,16 +61,15 @@ module Hiro
           context 'when equipped_items is empty' do
             let(:equipped_gear) { {} }
 
-              xit 'is successful' do
-                expect(subject.equip(params).success?).to eq true
-              end
+            it 'is successful' do
+              expect(subject.equip(params).success?).to eq true
+            end
 
               it 'equips the item' do
                 expect { subject.equip(params) }.to change { subject.equipped_gear[:weapon] }.from(nil).to(weapon)
               end
 
               it 'returns the changed items'
-            end
 
             context 'and some of the items level requirements are equal to or below the character level' do
               it 'equips all equippable items'

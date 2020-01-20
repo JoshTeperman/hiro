@@ -1,6 +1,8 @@
 module Hiro
   module Characters
     class Player
+      include Dry::Monads[:result]
+
       attr_reader :attributes, :name, :life, :mana, :character_level, :location
       attr_accessor :equipped_gear, :switch_gear
 
@@ -19,11 +21,11 @@ module Hiro
       # check if item.equippable?
       # if not errors.add_errors to item and return item
       # equipped_gear.update with item
-      # return Result object
+      # return Result (Success / Failure) object
 
       def equip(params)
         equipped_gear[:weapon] = params[:weapon]
-        equipped_gear
+        Dry::Monads::Success(equipped_gear)
       end
     end
   end
