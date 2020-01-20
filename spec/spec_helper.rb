@@ -1,5 +1,5 @@
 require 'bundler/setup'
-require 'ostruct'
+require 'dry/monads'
 
 $LOAD_PATH.unshift(File.expand_path('../../lib/', __FILE__))
 
