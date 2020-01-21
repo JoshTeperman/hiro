@@ -24,12 +24,11 @@ module Hiro
       # return Result (Success / Failure) object
 
       def equip(item)
+        if item[:weapon] == equipped_gear[:weapon]
+          item[:errors] = ["#{item.keys.last.capitalize}: Item is already equipped"]
+          return Dry::Monads::Failure(item)
+        end
 
-        # if item is already equipped
-        item[:errors] = ["#{item.keys.last.capitalize}: Item is already equipped"]
-        return Dry::Monads::Failure(item)
-
-        # else
         equipped_gear[item.keys.last] = item.values.last
         Dry::Monads::Success(equipped_gear)
       end
