@@ -24,7 +24,10 @@ module Hiro
       # return Result (Success / Failure) object
 
       def equip(item)
-        if item[:weapon] == equipped_gear[:weapon]
+        if item[:weapon].min_character_level > character_level
+          item[:errors] = ["#{item.keys.last.capitalize}: You do not meet the level requirements for this item"]
+          return Dry::Monads::Failure(item)
+        elsif item[:weapon] == equipped_gear[:weapon]
           item[:errors] = ["#{item.keys.last.capitalize}: Item is already equipped"]
           return Dry::Monads::Failure(item)
         end

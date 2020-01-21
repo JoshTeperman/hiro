@@ -104,9 +104,18 @@ module Hiro
             end
           end
 
-          context 'when the the item level requirements are equal to or below the character level' do
-            it 'adds an error'
-            it 'fails to equip the item'
+          context 'when the the item level requirements are above the character level' do
+            let(:weapon) { instance_double(Items::Sword, min_character_level: 100 ) }
+            let(:equipped_gear) { { weapon: weapon } }
+            let(:result) { subject.equip(weapon: weapon) }
+
+            it 'adds an error' do
+              expect(result.failure[:errors]).to include('Weapon: You do not meet the level requirements for this item')
+            end
+
+            it 'fails to equip the item' do
+              expect { result }.not_to(change { subject.equipped_gear })
+            end
           end
         end
       end
@@ -117,7 +126,7 @@ module Hiro
 
         before { subject.equipped_gear = equipped_gear }
 
-        it 'returns all the player\'s equipped equipped_gear' do
+        it 'returns all the player\'s equipped_gear' do
           expect(subject.equipped_gear).to eq(equipped_gear)
         end
       end
