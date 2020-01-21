@@ -59,18 +59,17 @@ module Hiro
         describe 'success' do
           context 'when equipped_gear is empty' do
             let(:equipped_gear) { {} }
-            let(:item) { { weapon: weapon } }
 
             it 'is successful' do
-              expect(subject.equip(item).success?).to eq true
+              expect(subject.equip(weapon: weapon).success?).to eq true
             end
 
             it 'equips the item' do
-              expect { subject.equip(item) }.to change { subject.equipped_gear[:weapon] }.from(nil).to(weapon)
+              expect { subject.equip(weapon: weapon) }.to change { subject.equipped_gear[:weapon] }.from(nil).to(weapon)
             end
 
             it 'returns the updated equipped_gear object' do
-              expect(subject.equip(item).value!).to eq(weapon: weapon)
+              expect(subject.equip(weapon: weapon).value!).to eq(weapon: weapon)
             end
           end
 
@@ -78,17 +77,31 @@ module Hiro
             let(:equipped_gear) { { weapon: weapon } }
 
             context 'when there is an item already equipped of the same type' do
+              let(:weapon_2) { instance_double(Items::Sword, min_character_level: 1) }
+
+              it 'replaces the item' do
+                expect { subject.equip(weapon: weapon_2) }.to change { subject.equipped_gear[:weapon] }.from(weapon).to(weapon_2)
+              end
             end
 
             context 'when there is an item already equipped of a different type' do
+              # TODO: 'equips the new item'
             end
           end
         end
 
         describe 'failure' do
           context 'when the item is already equipped' do
-            it 'adds an error'
-            it 'fails to equip the item'
+            let(:equipped_gear) { { weapon: weapon } }
+            let(:result) { subject.equip(weapon: weapon) }
+
+            it 'adds an error' do
+              expect(result.failure[:errors]).to include('Weapon: Item is already equipped')
+            end
+
+            it 'fails to equip the item' do
+              expect { result }.not_to(change { subject.equipped_gear })
+            end
           end
 
           context 'when the the item level requirements are equal to or below the character level' do
