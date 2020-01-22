@@ -49,8 +49,11 @@ module Hiro
         describe 'weapon_class' do
           let(:weapon_class) { subject.weapon_class }
 
-          it 'creates an instance of Struct::WeaponClass with the expected attributes' do
+          it 'creates an instance of Struct::WeaponClass' do
             expect(weapon_class).to be_instance_of(Struct::WeaponClass)
+          end
+
+          it 'has the the expected attributes' do
             expect(weapon_class.type).to eq type
             expect(weapon_class.min_damage).to eq min_damage
             expect(weapon_class.max_damage).to eq max_damage
