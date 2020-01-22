@@ -14,7 +14,6 @@ module Hiro
           type: type,
           min_defense: min_defense,
           max_defense: max_defense,
-          max_base_defense: max_base_defense,
         }
       end
 
@@ -22,14 +21,16 @@ module Hiro
         let(:type) { 'Cloak' }
         let(:min_defense) { 2 }
         let(:max_defense) { 6 }
-        let(:max_base_defense) { 3 }
 
         let(:name) { "Prince's Jacket" }
         let(:min_character_level) { 1 }
 
         it 'has expected_attributes' do
-          expect(subject.name).to eq name
-          expect(subject.min_character_level).to eq min_character_level
+          aggregate_failures do
+            expect(subject.name).to eq name
+            expect(subject.min_character_level).to eq min_character_level
+            expect(subject.base_defense).to be_between(min_defense, max_defense)
+          end
         end
 
         context 'when it has no name' do
@@ -44,6 +45,15 @@ module Hiro
           let(:armour_class) { subject.armour_class }
 
           it 'creates an instance of Struct::ArmourClass with the expected attributes' do
+            expect(armour_class).to be_instance_of(Struct::ArmourClass)
+          end
+
+          it 'with the expected attributes' do
+            aggregate_failures do
+              expect(armour_class.type).to eq type
+              expect(armour_class.min_defense).to eq min_defense
+              expect(armour_class.max_defense).to eq max_defense
+            end
           end
         end
       end

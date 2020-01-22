@@ -16,8 +16,6 @@ module Hiro
         @range = range
       end
 
-      private
-
       Struct.new('WeaponClass', :type, :min_damage, :max_damage, :max_base_damage, keyword_init: true) do
         def roll_base_damage
           rand(min_damage..max_base_damage)
