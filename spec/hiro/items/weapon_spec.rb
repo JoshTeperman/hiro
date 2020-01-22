@@ -49,7 +49,6 @@ module Hiro
               expect(weapon_class.min_damage).to eq min_damage
               expect(weapon_class.max_damage).to eq max_damage
               expect(weapon_class.max_base_damage).to eq max_base_damage
-
             end
           end
         end
