@@ -22,6 +22,10 @@ module Hiro
         let(:min_character_level) { 25 }
         let(:range) { 2 }
 
+        it 'initializes without error' do
+          expect { subject }.not_to raise_error
+        end
+
         it 'has expected attributes' do
           aggregate_failures do
             expect(subject.name).to eq name

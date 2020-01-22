@@ -17,13 +17,17 @@ module Hiro
         }
       end
 
-      describe `#initialize` do
+      describe '#initialize' do
         let(:type) { 'Cloak' }
         let(:min_defense) { 2 }
         let(:max_defense) { 6 }
 
         let(:name) { "Prince's Purple Jacket" }
         let(:min_character_level) { 1 }
+
+        it 'initializes without error' do
+          expect { subject }.not_to raise_error
+        end
 
         it 'has expected_attributes' do
           aggregate_failures do
