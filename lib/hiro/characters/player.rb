@@ -17,14 +17,8 @@ module Hiro
         @switch_gear = {}
       end
 
-      # player.equip_gear(gear)
-      # check if item.equippable?
-      # if not errors.add_errors to item and return item
-      # equipped_gear.update with item
-      # return Result (Success / Failure) object
-
       def equip(item)
-        if item[:weapon].min_character_level > character_level
+        if item.values.last.min_character_level > character_level
           item[:errors] = ["#{item.keys.last.capitalize}: You do not meet the level requirements for this item"]
           return Dry::Monads::Failure(item)
         elsif item[:weapon] == equipped_gear[:weapon]
@@ -33,6 +27,7 @@ module Hiro
         end
 
         equipped_gear[item.keys.last] = item.values.last
+
         Dry::Monads::Success(equipped_gear)
       end
     end

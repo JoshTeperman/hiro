@@ -85,7 +85,15 @@ module Hiro
             end
 
             context 'when there is an item already equipped of a different type' do
-              # TODO: 'equips the new item'
+              let(:chest) { instance_double(Items::Chest, min_character_level: 1) }
+
+              it 'equips the new item' do
+                expect { subject.equip(chest: chest) }.to change { subject.equipped_gear.count }.by(1)
+              end
+
+              it 'returns the updated equipped_gear object' do
+                expect(subject.equip(chest: chest).value!).to eq(chest: chest, weapon: weapon)
+              end
             end
           end
         end
