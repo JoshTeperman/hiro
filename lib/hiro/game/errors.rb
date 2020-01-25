@@ -1,8 +1,9 @@
 module Hiro
   module Game
     module Errors
-      def greeting
-        'hello world'
+      def initialize(base)
+        @base = base
+        @errors = []
       end
     end
   end

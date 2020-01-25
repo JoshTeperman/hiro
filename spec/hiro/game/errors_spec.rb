@@ -1,8 +1,7 @@
+RSpec.shared_examples_for 'Errors' do
+  subject { describe_class }
 
-RSpec.describe 'test module' do
-  let(:dummy_class) { Class.new { include Hiro::Game::Errors } }
-
-  it 'returns hello world' do
-    expect(dummy_class.greeting).to eq 'hello world'
+  it 'has an error object' do
+    expect(subject.errors).to be_instance_of(Hiro::Game::Errors)
   end
 end

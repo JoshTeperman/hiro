@@ -1,6 +1,5 @@
 module Hiro
   module Characters
-
     RSpec.describe Player do
       subject do
         described_class.new(
