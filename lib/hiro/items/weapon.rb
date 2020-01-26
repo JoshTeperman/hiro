@@ -16,7 +16,6 @@ module Hiro
         @min_character_level = min_character_level
         @base_damage = weapon_class.roll_base_damage
         @range = range
-
         super
       end
 
@@ -25,7 +24,6 @@ module Hiro
           rand(min_damage..max_base_damage)
         end
       end
-
     end
   end
 end

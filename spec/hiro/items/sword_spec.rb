@@ -15,6 +15,8 @@ module Hiro
       end
 
       describe '#initialize' do
+        it_behaves_like 'Errors'
+
         let(:weapon_class_attributes) { { type: type, min_damage: min_damage, max_damage: max_damage, max_base_damage: max_base_damage } }
         let(:type) { 'Long Sword' }
         let(:min_damage) { 2 }
@@ -24,8 +26,6 @@ module Hiro
         let(:name) { 'Grandfather' }
         let(:min_character_level) { 1 }
         let(:range) { 2 }
-
-        it_behaves_like 'Errors'
 
         it 'initializes without error' do
           expect { subject }.not_to raise_error

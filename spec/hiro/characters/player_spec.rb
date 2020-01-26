@@ -3,6 +3,8 @@ require 'hiro/game/errors_spec'
 module Hiro
   module Characters
     RSpec.describe Player do
+      it_behaves_like 'Errors'
+
       subject do
         described_class.new(
           name: name,
@@ -37,7 +39,6 @@ module Hiro
           expect { subject }.not_to raise_error
         end
 
-        it_behaves_like 'Errors'
 
         it 'has default attributes' do
           aggregate_failures do
