@@ -19,6 +19,10 @@ module Hiro
         errors.empty?
       end
 
+      def error_messages
+        errors.map{ |error| "#{error.attribute}: #{error.message}" }
+      end
+
       Struct.new('Error', :klass, :attribute, :message)
     end
   end

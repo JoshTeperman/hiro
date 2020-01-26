@@ -54,9 +54,22 @@ module Hiro
       end
 
       describe "#error_messages" do
-      end
+        before do
+          2.times {|e| subject.add_error("#{e} Error") }
+          subject.add_error('Invalid', :name)
+        end
 
-      describe "clear_errors" do
+        it 'returns an array of messages' do
+          expect(subject.error_messages).to eq ['base: 0 Error', 'base: 1 Error', 'name: Invalid']
+        end
+
+        context 'when there are no errors' do
+          before { subject.errors = [] }
+
+          it 'returns an empty array' do
+            expect(subject.error_messages).to eq []
+          end
+        end
       end
     end
   end
