@@ -1,7 +1,7 @@
 require 'hiro/version'
+require 'hiro/game/errors'
 require 'hiro/characters/player'
 require 'hiro/items/weapon'
 require 'hiro/items/sword'
 require 'hiro/items/armour'
 require 'hiro/items/chest'
-require 'hiro/game/errors'

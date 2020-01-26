@@ -1,3 +1,5 @@
+require 'hiro/game/errors_spec'
+
 module Hiro
   module Items
     RSpec.describe Weapon do
@@ -21,6 +23,8 @@ module Hiro
         let(:name) { 'Godfather' }
         let(:min_character_level) { 25 }
         let(:range) { 2 }
+
+        it_behaves_like 'Errors'
 
         it 'initializes without error' do
           expect { subject }.not_to raise_error
