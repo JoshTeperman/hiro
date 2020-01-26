@@ -1,3 +1,5 @@
+require 'hiro/game/errors_spec'
+
 module Hiro
   module Items
     RSpec.describe Armour do
@@ -24,6 +26,8 @@ module Hiro
 
         let(:name) { "Prince's Purple Jacket" }
         let(:min_character_level) { 1 }
+
+        it_behaves_like 'Errors'
 
         it 'initializes without error' do
           expect { subject }.not_to raise_error
