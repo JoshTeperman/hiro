@@ -4,7 +4,7 @@ module Hiro
       include Dry::Monads[:result]
       include Game::Errors
 
-      attr_reader :attributes, :name, :life, :mana, :character_level, :location, :errors
+      attr_reader :attributes, :name, :life, :mana, :character_level, :location
       attr_accessor :equipped_gear, :switch_gear
 
       def initialize(player_hash)
@@ -17,7 +17,7 @@ module Hiro
         @equipped_gear = {}
         @switch_gear = {}
 
-        super
+        super(self)
       end
 
       def equip(item)
