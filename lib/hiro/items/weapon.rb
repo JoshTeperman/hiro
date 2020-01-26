@@ -5,17 +5,13 @@ module Hiro
 
       attr_reader :weapon_class, :name, :min_character_level, :base_damage, :range
 
-      def initialize(
-        weapon_class_attributes:,
-        name:,
-        min_character_level:,
-        range:
-      )
+      def initialize(weapon_class_attributes:, name:, min_character_level:, range:)
         @weapon_class = Struct::WeaponClass.new(weapon_class_attributes)
         @name = name
         @min_character_level = min_character_level
         @base_damage = weapon_class.roll_base_damage
         @range = range
+
         super(self)
       end
 
