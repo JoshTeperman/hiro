@@ -1,9 +1,4 @@
-require 'bundler/setup'
-require 'dry/monads'
-
-$LOAD_PATH.unshift(File.expand_path('../../lib/', __FILE__))
-
-require 'hiro' # lib/hiro.rb
+require_relative '../hiro' # hiro.rb entry file
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
