@@ -1,3 +1,5 @@
+require 'dry-monads'
+
 module Hiro
   module Characters
     class Player

@@ -1,8 +1,8 @@
-lib = (File.expand_path('../lib', __dir__))
+# the lib/hiro.rb file is for setting up environment, loading dependencies and is the entry point for the application.
+
+lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-require 'pry';binding.pry
-require 'hiro/version'
 require 'hiro/game/engine'
 require 'hiro/game/errors'
 require 'hiro/characters/player'
