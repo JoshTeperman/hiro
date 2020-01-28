@@ -7,7 +7,12 @@ module Hiro
         it 'initializes without error' do
           expect { subject }.not_to raise_error
         end
+
+        it 'initializes a global variable window' do
+          expect(subject.window).to be_instance_of Game::Window
+        end
       end
+
 
       describe '#input' do
       end

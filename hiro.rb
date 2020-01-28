@@ -7,6 +7,7 @@ require 'rubygems'
 require 'bundler/setup'
 
 require 'hiro/game/engine'
+require 'hiro/game/window'
 require 'hiro/game/errors'
 require 'hiro/characters/player'
 require 'hiro/items/weapon'
