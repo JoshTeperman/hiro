@@ -1,6 +1,6 @@
 # the lib/hiro.rb file is for setting up environment, loading dependencies and is the entry point for the application.
 
-lib = File.expand_path('lib', __dir__)
+lib = File.expand_path('../lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'hiro/game/engine'
@@ -10,6 +10,11 @@ require 'hiro/items/weapon'
 require 'hiro/items/sword'
 require 'hiro/items/armour'
 require 'hiro/items/chest'
+
+if ARGV.any?
+  p 'Command line arguments are not supported yet'
+  exit(0)
+end
 
 begin
   p 'Starting Hiro ...'
