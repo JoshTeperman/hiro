@@ -24,9 +24,11 @@ if __FILE__ == $PROGRAM_NAME
     exit(0)
   end
 
+  options = {}
+
   begin
     p 'Starting Hiro ...'
-    Hiro::Game::Engine.new
+    Hiro::Game::Engine.new(options)
   rescue => e
     p "Oops, something went wrong: #{e}"
   end

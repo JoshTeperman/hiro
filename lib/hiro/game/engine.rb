@@ -1,9 +1,11 @@
 module Hiro
   module Game
     class Engine
-      def initialize
+      attr_reader :window, :player
+
+      def initialize(options)
         @window = Game::Window.new
-        @player = Characters::Player.new
+        @player = Characters::Player.new(options[:saved_player])
       end
     end
   end

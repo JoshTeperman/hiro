@@ -1,7 +1,9 @@
 module Hiro
   module Game
     RSpec.describe Engine do
-      subject { described_class.new }
+      subject { described_class.new(options) }
+
+      let(:options) {{}}
 
       describe '#initialize' do
         it 'initializes without error' do
