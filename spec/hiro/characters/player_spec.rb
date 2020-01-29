@@ -3,59 +3,89 @@ require 'hiro/game/errors_spec'
 module Hiro
   module Characters
     RSpec.describe Player do
-      it_behaves_like 'Errors'
+      it_behaves_like 'Errors' do
+        let(:player_params) { nil }
+      end
 
       subject do
-        described_class.new(
-          name: name,
-          attributes: default_attributes,
-          character_level: character_level,
-          life: life,
-          mana: mana,
-          location: location,
-        )
+        described_class.new(player_params)
       end
-
-      let(:default_attributes) do
-        {
-          max_life: 100,
-          max_mana: 10,
-          strength: 5,
-          dexterity: 5,
-          vitality: 5,
-          intelligence: 5,
-          inventory_space: 5,
-        }
-      end
-
-      let(:life) { 100 }
-      let(:mana) { 5 }
-      let(:name) { 'Hiro' }
-      let(:character_level) { 1 }
-      let(:location) { 'location' }
 
       describe '#initialize' do
-        it 'initializes a new Player without error' do
-          expect { subject }.not_to raise_error
+        context 'when given player_params' do
+          let(:player_params) do
+            {
+              name: 'Hiro',
+              life: 921,
+              mana: 1043,
+              character_level: 88,
+              location: Game::Locations::HOME,
+              attributes: {
+                max_life: 1000,
+                max_mana: 1100,
+                strength: 64,
+                dexterity: 50,
+                vitality: 91,
+                intelligence: 45,
+              },
+            }
+          end
+
+          it 'initializes a new player without error' do
+            expect { subject }.not_to raise_error
+          end
+
+          it 'initializes a player with the given params' do
+            aggregate_failures do
+              expect(subject.name).to eq(player_params[:name])
+              expect(subject.life).to eq(player_params[:life])
+              expect(subject.mana).to eq(player_params[:mana])
+              expect(subject.character_level).to eq(player_params[:character_level])
+              expect(subject.location).to eq(player_params[:location])
+              expect(subject.attributes).to eq(player_params[:attributes])
+            end
+          end
         end
 
+        context 'when no player_params are given' do
+          let(:player_params) { nil }
 
-        it 'has default attributes' do
-          aggregate_failures do
-            expect(subject.attributes).to eq(default_attributes)
-            expect(subject.life).to eq(life)
-            expect(subject.mana).to eq(mana)
-            expect(subject.character_level).to eq(character_level)
-            expect(subject.location).to eq(location)
-            expect(subject.name).to eq(name)
+          it 'initializes a new Player without error' do
+            expect { subject }.not_to raise_error
+          end
+
+          it 'initializes a new player with default attributes' do
+            defaults = {
+              name: 'Hiro',
+              life: 10,
+              mana: 10,
+              character_level: 1,
+              location: Game::Locations::HOME,
+              attributes: {
+                max_life: 5,
+                max_mana: 5,
+                strength: 5,
+                dexterity: 5,
+                vitality: 5,
+                intelligence: 5,
+              },
+            }
+
+            aggregate_failures do
+              expect(subject.name).to eq(defaults[:name])
+              expect(subject.life).to eq(defaults[:life])
+              expect(subject.mana).to eq(defaults[:mana])
+              expect(subject.character_level).to eq(defaults[:character_level])
+              expect(subject.location).to eq(defaults[:location])
+              expect(subject.attributes).to eq(defaults[:attributes])
+            end
           end
         end
       end
 
       describe '#equip' do
-        let(:character_level) { 1 }
+        let(:player_params) { nil }
         let(:weapon) { instance_double(Items::Sword, min_character_level: 1) }
-
         before do
           subject.equipped_gear = equipped_gear
         end
@@ -133,6 +163,7 @@ module Hiro
       end
 
       describe '#equipped_gear' do
+        let(:player_params) { nil }
         let(:equipped_gear) { { weapon: weapon} }
         let(:weapon) { instance_double(Items::Sword) }
 

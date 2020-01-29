@@ -1,6 +1,7 @@
 module Hiro
   module Game
-    class Window
+    module Locations
+      HOME = 'home'
     end
   end
 end

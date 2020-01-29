@@ -7,17 +7,18 @@ module Hiro
       include Game::Errors
 
       attr_reader :attributes, :name, :life, :mana, :character_level, :location
-      attr_accessor :equipped_gear, :switch_gear
+      attr_accessor :equipped_gear
 
-      def initialize(player_hash)
-        @name = player_hash.fetch(:name)
-        @attributes = player_hash.fetch(:attributes)
-        @life = player_hash.fetch(:life)
-        @mana = player_hash.fetch(:mana)
-        @character_level = player_hash.fetch(:character_level)
-        @location = player_hash.fetch(:location)
+      def initialize(player_params)
+        player_params ||= new_player_params
+
+        @name = player_params.fetch(:name)
+        @life = player_params.fetch(:life)
+        @mana = player_params.fetch(:mana)
+        @character_level = player_params.fetch(:character_level)
+        @location = player_params.fetch(:location)
+        @attributes = player_params.fetch(:attributes)
         @equipped_gear = {}
-        @switch_gear = {}
 
         super(self)
       end
@@ -34,6 +35,26 @@ module Hiro
         equipped_gear[item.keys.last] = item.values.last
 
         Dry::Monads::Success(equipped_gear)
+      end
+
+      private
+
+      def new_player_params
+        {
+          name: 'Hiro',
+          life: 10,
+          mana: 10,
+          character_level: 1,
+          location: Game::Locations::HOME,
+          attributes: {
+            max_life: 5,
+            max_mana: 5,
+            strength: 5,
+            dexterity: 5,
+            vitality: 5,
+            intelligence: 5,
+          },
+        }
       end
     end
   end
