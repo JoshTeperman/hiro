@@ -46,12 +46,6 @@ module Hiro
         end
       end
 
-      describe '#input' do
-      end
-
-      describe '#update' do
-      end
-
       describe '#draw' do
       end
     end

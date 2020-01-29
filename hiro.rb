@@ -6,9 +6,9 @@ require 'bundler/setup'
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
+require 'hiro/game/errors'
 require 'hiro/game/engine'
 require 'hiro/game/window'
-require 'hiro/game/errors'
 require 'hiro/game/locations'
 require 'hiro/characters/player'
 require 'hiro/items/weapon'
