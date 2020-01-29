@@ -15,6 +15,8 @@ require 'hiro/items/sword'
 require 'hiro/items/armour'
 require 'hiro/items/chest'
 
+return unless __FILE__ == $PROGRAM_NAME
+
 if ARGV.any?
   p 'Command line arguments are not supported yet'
   exit(0)
