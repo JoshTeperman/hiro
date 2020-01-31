@@ -6,7 +6,7 @@ module Hiro
       include Game::Errors
 
       attr_reader :map, :entities
-      def initialize
+      def initialize(map:)
         @map = map
         @entities = []
         super(self)
