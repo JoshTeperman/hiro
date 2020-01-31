@@ -15,13 +15,24 @@ module Hiro
         super(self)
       end
 
-      def add_entity(entity)
-        if entities << entity
-          Dry::Monads::Success(entities)
-        else
-          add_error('Failed to add entity', :entities)
-          Dry::Monads::Failure(self)
+      def add_entity(entities)
+        entities.each do |entity|
+          entity.add_error('Failed to add entity', :entity) unless can_add_entity?(entity)
+          entities << entity
         end
+
+        Dry::Monads::Success(entities)
+      end
+
+      private
+
+      def can_add_entity?(entity)
+        [
+          Characters::Player,
+          Characters::Npc,
+          Items::Weapon,
+          Items::Armour
+        ].include?(entity.class)
       end
     end
   end

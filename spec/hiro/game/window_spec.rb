@@ -27,15 +27,46 @@ module Hiro
         end
       end
 
-      describe '#add_entity' do
-        let(:entity) { instance_double(Characters::Player) }
+      describe '#add_entities' do
+        let(:result) { subject.add_entities(entities_array)}
 
-        it 'adds an entity to the entities array' do
-          expect { subject.add_entity(entity) }.to change(subject.entities, :length).by(1)
+        let(:player_entity) { instance_double(Characters::Player) }
+        let(:weapon_entity) { instance_double(Items::Sword) }
+        let(:armour_entity) { instance_double(Items::Chest) }
+        # let(:npc_entity) { instance_double(Character::Npc) }
+
+        context 'when all entities are characters, NPCs or items' do
+          let(:entities_array) { [] }
+
+          it 'is successful' do
+            expect(result.success?).to eq true
+          end
+
+          it 'adds all entities to the entities array' do
+            expect(result.value!).to eq entities_array
+          end
         end
 
-        it 'returns the entity array' do
-          expect(subject.add_entity(entity).value!).to eq([entity])
+        context 'when not all entities are characters, NPCs, or items' do
+          let(:entities_array) { [] }
+
+          it 'is unsuccessful' do
+            expect(result.failure?).to eq true
+          end
+
+          it 'returns an Failure monad with Error message' do
+          end
+        end
+
+        context 'when none of the entities are characterse, NPCs, or items' do
+          let(:entities_array) { [] }
+
+          it 'is unsuccessful' do
+            expect(result.failure?).to eq true
+          end
+
+          it 'returns an Failure monad with Error message' do
+          end
         end
       end
     end
