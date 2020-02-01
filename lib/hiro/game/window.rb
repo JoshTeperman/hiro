@@ -15,10 +15,15 @@ module Hiro
         super(self)
       end
 
-      def add_entity(entities)
+      def add_entities(new_entities)
         entities.each do |entity|
-          entity.add_error('Failed to add entity', :entity) unless can_add_entity?(entity)
-          entities << entity
+          if can_add_entity?(entity)
+            entities << entity
+          else
+            entity.add_error('Failed to add entity', :entity)
+            return Failure(entity)
+          end
+          return Success(entities)
         end
 
         Dry::Monads::Success(entities)
