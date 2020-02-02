@@ -35,7 +35,7 @@ module Hiro
           Characters::Npc,
           Items::Weapon,
           Items::Armour
-        ].include?(entity.class)
+        ].include?(entity.class || entity.superclass)
       end
     end
   end

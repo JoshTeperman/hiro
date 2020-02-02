@@ -8,4 +8,5 @@ group :development do
   gem 'rspec', '~> 3.0'
   gem 'pry'
   gem 'rubocop'
+  gem 'factory_bot'
 end

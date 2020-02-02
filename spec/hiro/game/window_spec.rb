@@ -31,10 +31,10 @@ module Hiro
       describe '#add_entities' do
         let(:result) { subject.add_entities(new_entities_array)}
 
-        let(:player) { double('Player', class: Characters::Player) }
-        let(:npc) { double('Npc', class: Characters::Npc) }
-        let(:weapon) { double('Sword', class: Items::Sword) }
-        let(:armour) { double('Chest', class: Items::Chest) }
+        let(:player) { build(:player) }
+        # let(:npc) { Characters::Npc.new }
+        # let(:weapon) { Items::Sword.new }
+        # let(:armour) { Items::Chest.new }
 
         context 'when all entities are characters, NPCs or items' do
           let(:new_entities_array) { [player, npc, weapon, armour] }
