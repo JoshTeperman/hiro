@@ -1,4 +1,5 @@
 require 'ostruct'
+require 'hiro/game/errors_spec'
 
 module Hiro
   module Game
@@ -30,15 +31,16 @@ module Hiro
       describe '#add_entities' do
         let(:result) { subject.add_entities(new_entities_array)}
 
-        let(:player_entity) { instance_double(Characters::Player) }
-        let(:weapon_entity) { instance_double(Items::Sword) }
-        let(:armour_entity) { instance_double(Items::Chest) }
-        # let(:npc_entity) { instance_double(Character::Npc) }
+        let(:player) { double('Player', class: Characters::Player) }
+        let(:npc) { double('Npc', class: Characters::Npc) }
+        let(:weapon) { double('Sword', class: Items::Sword) }
+        let(:armour) { double('Chest', class: Items::Chest) }
 
         context 'when all entities are characters, NPCs or items' do
-          let(:new_entities_array) { [] }
+          let(:new_entities_array) { [player, npc, weapon, armour] }
 
           it 'is successful' do
+            require 'pry';binding.pry
             expect(result.success?).to eq true
           end
 

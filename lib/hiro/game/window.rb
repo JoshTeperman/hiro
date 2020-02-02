@@ -16,12 +16,15 @@ module Hiro
 
       def add_entities(new_entities)
         new_entities.each do |entity|
-          return entities << entity if can_add_entity?(entity)
+          if !can_add_entity?(entity)
+            entity.add_error("Could not add #{entity} to Window entities")
 
-          entities.add_error("Entity #{entity} could not be added to Window", :entity)
+            return Dry::Monads::Failure(entity)
+          end
+          entities << entity
         end
 
-        entities.valid? ? Dry::Monads::Success(entities) : Dry::Monads::Failure(entities)
+        Dry::Monads::Success(entities)
       end
 
       private
