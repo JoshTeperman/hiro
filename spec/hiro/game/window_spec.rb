@@ -28,7 +28,7 @@ module Hiro
       end
 
       describe '#add_entities' do
-        let(:result) { subject.add_entities(entities_array)}
+        let(:result) { subject.add_entities(new_entities_array)}
 
         let(:player_entity) { instance_double(Characters::Player) }
         let(:weapon_entity) { instance_double(Items::Sword) }
@@ -36,19 +36,25 @@ module Hiro
         # let(:npc_entity) { instance_double(Character::Npc) }
 
         context 'when all entities are characters, NPCs or items' do
-          let(:entities_array) { [] }
+          let(:new_entities_array) { [] }
 
           it 'is successful' do
             expect(result.success?).to eq true
           end
 
           it 'adds all entities to the entities array' do
-            expect(result.value!).to eq entities_array
+            expect(result.value!).to eq new_entities_array
+          end
+
+          context 'and there are already entities' do
+            before { subject.entities << instance_double(Characters::Npc) }
+
+            it 'adds the new entities'
           end
         end
 
         context 'when not all entities are characters, NPCs, or items' do
-          let(:entities_array) { [] }
+          let(:new_entities_array) { [] }
 
           it 'is unsuccessful' do
             expect(result.failure?).to eq true
@@ -59,7 +65,7 @@ module Hiro
         end
 
         context 'when none of the entities are characterse, NPCs, or items' do
-          let(:entities_array) { [] }
+          let(:new_entities_array) { [] }
 
           it 'is unsuccessful' do
             expect(result.failure?).to eq true

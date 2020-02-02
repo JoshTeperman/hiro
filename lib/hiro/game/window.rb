@@ -1,5 +1,4 @@
 require 'dry-monads'
-require 'hiro/game/errors_spec'
 
 module Hiro
   module Game
@@ -16,17 +15,13 @@ module Hiro
       end
 
       def add_entities(new_entities)
-        entities.each do |entity|
-          if can_add_entity?(entity)
-            entities << entity
-          else
-            entity.add_error('Failed to add entity', :entity)
-            return Failure(entity)
-          end
-          return Success(entities)
+        new_entities.each do |entity|
+          return entities << entity if can_add_entity?(entity)
+
+          entities.add_error("Entity #{entity} could not be added to Window", :entity)
         end
 
-        Dry::Monads::Success(entities)
+        entities.valid? ? Dry::Monads::Success(entities) : Dry::Monads::Failure(entities)
       end
 
       private
