@@ -2,7 +2,7 @@ require 'hiro/game/errors_spec'
 
 module Hiro
   module Characters
-    RSpec.describe Npc do
+    RSpec.describe Enemy do
       subject { described_class.new }
 
       describe '#initialize' do

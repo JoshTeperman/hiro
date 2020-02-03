@@ -17,8 +17,6 @@ FactoryBot.define do
 
   factory :player, class: Hiro::Characters::Player do
     skip_create
-    initialize_with do
-      new(player_params)
-    end
+    initialize_with { new(player_params) }
   end
 end
