@@ -33,11 +33,12 @@ module Hiro
 
         let(:player) { build(:player) }
         let(:npc) { Characters::Npc.new }
+        let(:enemy) { Characters::Enemy.new }
         let(:sword) { build(:sword) }
-        # let(:armour) { Items::Chest.new }
+        let(:chest) { build(:chest) }
 
         context 'when all entities are characters or items' do
-          let(:new_entities_array) { [sword, player, npc] }
+          let(:new_entities_array) { [sword, player, npc, chest, enemy] }
 
           it 'is successful' do
             expect(result.success?).to eq true
@@ -48,9 +49,25 @@ module Hiro
           end
 
           context 'and there are already entities' do
-            before { subject.entities << instance_double(Characters::Npc) }
+            let(:player) { build(:player) }
+            let(:npc) { Characters::Npc.new }
+            let(:enemy) { Characters::Enemy.new }
+            let(:enemy2) { Characters::Enemy.new }
+            let(:sword) { build(:sword) }
+            let(:chest) { build(:chest) }
 
-            it 'adds the new entities'
+            let(:new_entities_array) { [player, npc, enemy, sword, chest] }
+
+            before { subject.entities << enemy2 }
+
+            it 'is successful' do
+              expect(result.success?).to eq true
+            end
+
+            it 'adds the new entities' do
+              expected_result = new_entities_array + [enemy2]
+              expect(result.value!).to match_array(expected_result)
+            end
           end
         end
 
