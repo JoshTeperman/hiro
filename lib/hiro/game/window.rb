@@ -33,9 +33,10 @@ module Hiro
         [
           Characters::Player,
           Characters::Npc,
+          Characters::Enemy,
           Items::Weapon,
           Items::Armour
-        ].include?(entity.class || entity.superclass)
+        ].any? { |klass| [entity.class, entity.class.superclass].include?(klass) }
       end
     end
   end

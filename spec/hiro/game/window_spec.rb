@@ -32,12 +32,12 @@ module Hiro
         let(:result) { subject.add_entities(new_entities_array)}
 
         let(:player) { build(:player) }
-        # let(:npc) { Characters::Npc.new }
-        # let(:weapon) { Items::Sword.new }
+        let(:npc) { Characters::Npc.new }
+        let(:sword) { build(:sword) }
         # let(:armour) { Items::Chest.new }
 
-        context 'when all entities are characters, NPCs or items' do
-          let(:new_entities_array) { [player] }
+        context 'when all entities are characters or items' do
+          let(:new_entities_array) { [sword, player, npc] }
 
           it 'is successful' do
             expect(result.success?).to eq true
@@ -54,7 +54,7 @@ module Hiro
           end
         end
 
-        context 'when not all entities are characters, NPCs, or items' do
+        context 'when not all entities are characters or items' do
           let(:new_entities_array) { [] }
 
           it 'is unsuccessful' do
@@ -65,7 +65,7 @@ module Hiro
           end
         end
 
-        context 'when none of the entities are characterse, NPCs, or items' do
+        context 'when none of the entities are characters or items' do
           let(:new_entities_array) { [] }
 
           it 'is unsuccessful' do
