@@ -37,10 +37,9 @@ module Hiro
         # let(:armour) { Items::Chest.new }
 
         context 'when all entities are characters, NPCs or items' do
-          let(:new_entities_array) { [player, npc, weapon, armour] }
+          let(:new_entities_array) { [player] }
 
           it 'is successful' do
-            require 'pry';binding.pry
             expect(result.success?).to eq true
           end
 
