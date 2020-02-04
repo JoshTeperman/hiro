@@ -29,11 +29,12 @@ module Hiro
       end
 
       describe '#add_entities' do
-        let(:result) { subject.add_entities(new_entities_array)}
+        let(:result) { subject.add_entities(new_entities_array) }
 
         let(:player) { build(:player) }
         let(:npc) { Characters::Npc.new }
         let(:enemy) { Characters::Enemy.new }
+        let(:enemy2) { Characters::Enemy.new }
         let(:sword) { build(:sword) }
         let(:chest) { build(:chest) }
 
@@ -49,16 +50,8 @@ module Hiro
           end
 
           context 'and there are already entities' do
-            let(:player) { build(:player) }
-            let(:npc) { Characters::Npc.new }
-            let(:enemy) { Characters::Enemy.new }
-            let(:enemy2) { Characters::Enemy.new }
-            let(:sword) { build(:sword) }
-            let(:chest) { build(:chest) }
-
-            let(:new_entities_array) { [player, npc, enemy, sword, chest] }
-
             before { subject.entities << enemy2 }
+            let(:new_entities_array) { [player, npc, enemy, sword, chest] }
 
             it 'is successful' do
               expect(result.success?).to eq true
@@ -71,25 +64,43 @@ module Hiro
           end
         end
 
-        context 'when not all entities are characters or items' do
+        context 'when new_entities is empty' do
           let(:new_entities_array) { [] }
 
-          it 'is unsuccessful' do
-            expect(result.failure?).to eq true
+          it 'is successful' do
+            expect(result.success?).to eq true
           end
 
-          it 'returns an Failure monad with Error message' do
+          it 'window entities should not change' do
+            expect { result }.not_to change(subject.entities, :length)
           end
         end
 
-        context 'when none of the entities are characters or items' do
-          let(:new_entities_array) { [] }
+        context 'when there is an invalid object' do
+          let(:invalid_entity) { Struct.new('InvalidObject') { include Game::Errors; def initialize; super(self); end }.new }
 
-          it 'is unsuccessful' do
-            expect(result.failure?).to eq true
+          context 'when not all entities are characters or items' do
+            let(:new_entities_array) { [invalid_entity, sword, chest, player, npc] }
+
+            it 'is unsuccessful' do
+              expect(result.failure?).to eq true
+            end
+
+            it 'should have an error message' do
+              expect(result.failure.error_messages).to include('InvalidObject base: Could not add entity to Window')
+            end
           end
 
-          it 'returns an Failure monad with Error message' do
+          context 'when none of the entities are characters or items' do
+            let(:new_entities_array) { [invalid_entity] }
+
+            it 'is unsuccessful' do
+              expect(result.failure?).to eq true
+            end
+
+            it 'should have an error message' do
+              expect(result.failure.error_messages).to include('InvalidObject base: Could not add entity to Window')
+            end
           end
         end
       end

@@ -17,7 +17,7 @@ module Hiro
       def add_entities(new_entities)
         new_entities.each do |entity|
           if !can_add_entity?(entity)
-            entity.add_error("Could not add #{entity} to Window entities")
+            entity.add_error('Could not add entity to Window')
 
             return Dry::Monads::Failure(entity)
           end
