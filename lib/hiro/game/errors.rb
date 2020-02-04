@@ -20,10 +20,14 @@ module Hiro
       end
 
       def error_messages
-        errors.map{ |error| "#{error.attribute}: #{error.message}" }
+        errors.map { |error| "#{error.base_class_name} #{error.attribute}: #{error.message}" }
       end
 
-      Struct.new('Error', :klass, :attribute, :message)
+      Struct.new('Error', :klass, :attribute, :message) do
+        def base_class_name
+          klass.name.split('::').last
+        end
+      end
     end
   end
 end
