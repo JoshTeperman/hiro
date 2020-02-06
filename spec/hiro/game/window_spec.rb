@@ -8,9 +8,9 @@ module Hiro
 
       subject { described_class.new(map: map) }
 
-      let(:map) { OpenStruct.new(shape: shape, entry_points: entry_points, exit_points: exit_points) }
-      let(:entry_points) { [[0, 0]] }
-      let(:exit_points) { [[0, 0]] }
+      let(:map) { OpenStruct.new(shape: shape, entry_coordinates: entry_coordinates, exit_coordinates: exit_coordinates) }
+      let(:entry_coordinates) { [[0, 0]] }
+      let(:exit_coordinates) { [[0, 0]] }
       let(:shape) { [[' ', ' '], [' ', ' ']] }
 
       describe '#initialize' do
@@ -20,10 +20,11 @@ module Hiro
 
         it 'has expected attributes' do
           aggregate_failures do
+            expect(subject.map).to be_instance_of Game::Map
             expect(subject.map.shape).to eq shape
             expect(subject.entities).to eq []
-            expect(subject.map.entry_points).to eq entry_points
-            expect(subject.map.exit_points).to eq exit_points
+            expect(subject.map.entry_coordinates).to eq entry_coordinates
+            expect(subject.map.exit_coordinates).to eq exit_coordinates
           end
         end
       end
