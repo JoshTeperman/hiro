@@ -1,6 +1,7 @@
 # Gem dependencies
 require 'rubygems'
 require 'bundler/setup'
+require 'yaml'
 
 # App files
 lib = File.expand_path('lib', __dir__)

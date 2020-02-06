@@ -7,11 +7,23 @@ module Hiro
       it_behaves_like 'Errors'
 
       subject { described_class.new(map: map) }
+      # data = YAML.load_file('lib/hiro/game/data/maps.yml')
 
-      let(:map) { OpenStruct.new(shape: shape, entry_coordinates: entry_coordinates, exit_coordinates: exit_coordinates) }
+      let(:map) { Game::Map.new() }
       let(:entry_coordinates) { [[0, 0]] }
       let(:exit_coordinates) { [[0, 0]] }
-      let(:shape) { [[' ', ' '], [' ', ' ']] }
+      let(:shape) do
+        [
+          [nil, nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil, nil],
+          [nil, nil, nil, nil, nil, nil, nil, nil]
+        ]
+      end
 
       describe '#initialize' do
         it 'initializes without error' do

@@ -5,16 +5,9 @@ module Hiro
     RSpec.describe Map do
       it_behaves_like 'Errors'
 
-      subject { described_class.new(map_params) }
+      subject { described_class.new(map_name: map_name) }
 
-      let(:map_params) do
-        {
-          shape: shape,
-          entry_coordinates: entry_coordinates,
-          exit_coordinates: exit_coordinates,
-        }
-      end
-
+      let(:map_name) { valid_map_name }
       let(:entry_coordinates) { [0, 0] }
       let(:exit_coordinates) { [0, 0] }
       let(:shape) do
@@ -29,6 +22,9 @@ module Hiro
           [nil, nil, nil, nil, nil, nil, nil, nil]
         ]
       end
+
+      let(:valid_map_name) { 'home' }
+      let(:invalid_map_name) { 'invalid_map_name' }
 
       describe '#initialize', aggregate_failures: true do
         it 'initializes without error' do
