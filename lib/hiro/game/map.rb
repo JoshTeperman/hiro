@@ -9,11 +9,11 @@ module Hiro
       attr_reader :shape, :entry_coordinates, :exit_coordinates
 
       def initialize(map_name:)
+        super(self)
         @data = load_map_data(map_name)
         @shape = data.dig('shape')
-        @entry_coordinates = data.dig('entry_coordinates')
-        @exit_coordinates = data.dig('exit_coordinates')
-        super(self)
+        @entry_coordinates = data.dig('entry_coordinates').symbolize_keys
+        @exit_coordinates = data.dig('exit_coordinates').symbolize_keys
       end
 
       private

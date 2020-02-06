@@ -4,7 +4,7 @@ module Hiro
       attr_reader :window, :player
 
       def initialize(options)
-        @window = Game::Window.new(map: OpenStruct.new(shape: [[' ', ' '], [' ', ' ']], entry_points: [[0, 0]], exit_points: [[0, 0]]))
+        @window = Game::Window.new(map: [])
         @player = Characters::Player.new(options[:saved_player])
       end
     end
