@@ -43,7 +43,6 @@ module Hiro
           let(:map_name) { map_name_that_doesnt_exist }
 
           it 'is invalid' do
-            require 'pry';binding.pry
             expect(subject.valid?).to eq false
           end
 

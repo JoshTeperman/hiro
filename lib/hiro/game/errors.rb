@@ -28,6 +28,12 @@ module Hiro
           klass.name.split('::').last
         end
       end
+
+      class FileNotFoundError < StandardError
+        def initialize
+          super
+        end
+      end
     end
   end
 end

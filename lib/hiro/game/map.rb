@@ -10,18 +10,33 @@ module Hiro
 
       def initialize(map_name:)
         super(self)
-        @data = load_map_data(map_name)
-        @shape = data.dig('shape')
-        @entry_coordinates = data.dig('entry_coordinates').symbolize_keys
-        @exit_coordinates = data.dig('exit_coordinates').symbolize_keys
+        @data = fetch_map_data(map_name)
+        @shape = data.fetch(:shape) { [] }
+        @entry_coordinates = data.fetch(:entry_coordinates)
+        @exit_coordinates = data.fetch(:exit_coordinates)
       end
 
       private
 
       attr_reader :data
 
-      def load_map_data(map_name)
-        YAML.load_file('lib/hiro/game/data/maps.yml').fetch(map_name.to_s) { add_error('Map not found', :data) }
+      def fetch_map_data(map_name)
+        map_data = load_from_yaml(map_name)
+
+        return {} unless valid?
+
+        map_data
+      end
+
+      def load_from_yaml(map_name)
+        path = File.join('lib/hiro/game/data/', map_name)
+
+        YAML.load_file("#{path}.yml").fetch(map_name.to_s).symbolize_keys if File.exist?("#{path}.yml")
+
+        raise FileNotFoundError "Error loading map data: File '#{file_name}' not found at path #{path}"
+      rescue => e
+        p e.message
+        add_error('Error loading map data', :data)
       end
     end
   end
