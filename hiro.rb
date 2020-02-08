@@ -8,6 +8,7 @@ lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'hiro/game/errors'
+require 'hiro/game/errors/file_not_found'
 require 'hiro/game/engine'
 require 'hiro/game/window'
 require 'hiro/game/map'

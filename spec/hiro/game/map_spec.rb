@@ -8,8 +8,8 @@ module Hiro
       subject { described_class.new(map_name: map_name) }
 
       let(:map_name) { valid_map_name }
-      let(:entry_coordinates) { {x: 0, y: 0} }
-      let(:exit_coordinates) { {x: 0, y: 0} }
+      let(:entry_coordinates) { { x: 0, y: 0 } }
+      let(:exit_coordinates) { { x: 0, y: 0 } }
       let(:shape) do
         [
           [nil, nil, nil, nil, nil, nil, nil, nil],
@@ -42,12 +42,23 @@ module Hiro
         context 'when the map name does not exist' do
           let(:map_name) { map_name_that_doesnt_exist }
 
-          it 'is invalid' do
-            expect(subject.valid?).to eq false
+          it 'is invalid but does not raise error' do
+            aggregate_failures do
+              expect(subject.valid?).to eq false
+              expect { subject }.not_to raise_error
+            end
           end
 
           it 'adds an error' do
-            expect(subject.errors).to include ''
+            expect(subject.error_messages).to include "Map data: Error loading map data: File 'map_name_that_doesnt_exist.yml' not found at path lib/hiro/game/data/maps/map_name_that_doesnt_exist"
+          end
+
+          it 'should initialize a map with nil attributes' do
+            aggregate_failures do
+              expect(subject.entry_coordinates).to be_nil
+              expect(subject.exit_coordinates).to be_nil
+              expect(subject.shape).to be_nil
+            end
           end
         end
       end
