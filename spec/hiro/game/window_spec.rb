@@ -7,23 +7,8 @@ module Hiro
       it_behaves_like 'Errors'
 
       subject { described_class.new(map: map) }
-      # data = YAML.load_file('lib/hiro/game/data/maps.yml')
 
-      let(:map) { Game::Map.new() }
-      let(:entry_coordinates) { [[0, 0]] }
-      let(:exit_coordinates) { [[0, 0]] }
-      let(:shape) do
-        [
-          [nil, nil, nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil, nil, nil],
-          [nil, nil, nil, nil, nil, nil, nil, nil]
-        ]
-      end
+      let(:map) { instance_double(Game::Map) }
 
       describe '#initialize' do
         it 'initializes without error' do
@@ -32,11 +17,8 @@ module Hiro
 
         it 'has expected attributes' do
           aggregate_failures do
-            expect(subject.map).to be_instance_of Game::Map
-            expect(subject.map.shape).to eq shape
+            expect(subject.map).to eq map
             expect(subject.entities).to eq []
-            expect(subject.map.entry_coordinates).to eq entry_coordinates
-            expect(subject.map.exit_coordinates).to eq exit_coordinates
           end
         end
       end
