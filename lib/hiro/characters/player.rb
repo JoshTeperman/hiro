@@ -38,6 +38,10 @@ module Hiro
         Dry::Monads::Success(equipped_gear)
       end
 
+      def move_up
+        @x += 1
+      end
+
       private
 
       def new_player_params

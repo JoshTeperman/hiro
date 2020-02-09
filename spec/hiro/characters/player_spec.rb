@@ -177,6 +177,15 @@ module Hiro
           expect(subject.equipped_gear).to eq(equipped_gear)
         end
       end
+
+      describe '#move_up' do
+        let(:player_params) { nil }
+        let(:move_up_one) { subject.move_up }
+
+        it 'moves up by one' do
+          expect { move_up_one }.to change(subject, :x).by(1)
+        end
+      end
     end
   end
 end
