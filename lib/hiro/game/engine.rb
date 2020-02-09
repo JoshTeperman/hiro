@@ -10,4 +10,3 @@ module Hiro
     end
   end
 end
-
