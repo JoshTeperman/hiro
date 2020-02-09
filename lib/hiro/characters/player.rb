@@ -6,7 +6,7 @@ module Hiro
       include Dry::Monads[:result]
       include Game::Errors
 
-      attr_reader :attributes, :name, :life, :mana, :character_level, :location
+      attr_reader :attributes, :name, :life, :mana, :character_level, :x, :y
       attr_accessor :equipped_gear
 
       def initialize(player_params)
@@ -16,7 +16,8 @@ module Hiro
         @life = player_params.fetch(:life)
         @mana = player_params.fetch(:mana)
         @character_level = player_params.fetch(:character_level)
-        @location = player_params.fetch(:location)
+        @x = player_params.fetch(:x)
+        @y = player_params.fetch(:y)
         @attributes = player_params.fetch(:attributes)
         @equipped_gear = {}
 
@@ -45,7 +46,8 @@ module Hiro
           life: 10,
           mana: 10,
           character_level: 1,
-          location: Game::Locations::HOME,
+          x: 0,
+          y: 0,
           attributes: {
             max_life: 5,
             max_mana: 5,

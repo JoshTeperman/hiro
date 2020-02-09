@@ -19,7 +19,8 @@ module Hiro
               life: 921,
               mana: 1043,
               character_level: 88,
-              location: Game::Locations::HOME,
+              x: 0,
+              y: 0,
               attributes: {
                 max_life: 1000,
                 max_mana: 1100,
@@ -41,7 +42,8 @@ module Hiro
               expect(subject.life).to eq(player_params[:life])
               expect(subject.mana).to eq(player_params[:mana])
               expect(subject.character_level).to eq(player_params[:character_level])
-              expect(subject.location).to eq(player_params[:location])
+              expect(subject.x).to eq(player_params[:x])
+              expect(subject.y).to eq(player_params[:y])
               expect(subject.attributes).to eq(player_params[:attributes])
             end
           end
@@ -60,7 +62,8 @@ module Hiro
               life: 10,
               mana: 10,
               character_level: 1,
-              location: Game::Locations::HOME,
+              x: 0,
+              y: 0,
               attributes: {
                 max_life: 5,
                 max_mana: 5,
@@ -76,7 +79,8 @@ module Hiro
               expect(subject.life).to eq(defaults[:life])
               expect(subject.mana).to eq(defaults[:mana])
               expect(subject.character_level).to eq(defaults[:character_level])
-              expect(subject.location).to eq(defaults[:location])
+              expect(subject.x).to eq(defaults[:x])
+              expect(subject.y).to eq(defaults[:y])
               expect(subject.attributes).to eq(defaults[:attributes])
             end
           end
