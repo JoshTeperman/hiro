@@ -28,7 +28,7 @@ module Hiro
       end
 
       def load_from_yaml(map_name)
-        path = File.join('lib/hiro/game/data/maps', map_name)
+        path = File.join(Hiro::Constants::MAPS_PATH, map_name)
 
         unless File.exist?("#{path}.yml")
           raise FileNotFoundError.new "Error loading map data: File '#{map_name}.yml' not found at path #{path}"

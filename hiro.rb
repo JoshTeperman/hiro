@@ -7,6 +7,7 @@ require 'yaml'
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
+require 'hiro/constants'
 require 'hiro/game/errors'
 require 'hiro/game/errors/file_not_found'
 require 'hiro/game/engine'
@@ -25,7 +26,7 @@ require 'hiro/items/chest'
 
 if __FILE__ == $PROGRAM_NAME
   if ARGV.any?
-    p 'Command line arguments are not supported yet'
+    p 'Command line arguments are not supported... yet'
     exit(0)
   end
 
@@ -33,6 +34,7 @@ if __FILE__ == $PROGRAM_NAME
 
   begin
     p 'Starting Hiro ...'
+    File.exist?(SAVED_GAME_PATH)
     Hiro::Game::Engine.new(options)
   rescue => e
     p "Oops, something went wrong: #{e}"
