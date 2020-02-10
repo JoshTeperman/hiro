@@ -169,20 +169,32 @@ module Hiro
         end
       end
 
-      describe '#move_up' do
-        it 'moves up by one' do
-          expect { subject.move_up }.to change(subject, :x).by(1)
+      describe 'movement' do
+        describe '#move_up' do
+          it 'increments @y coordinate by 1' do
+            expect { subject.move_up }.to change(subject, :y).by(1)
+          end
+        end
+
+        describe '#move_down' do
+          it 'increments @y coordinate by negative 1' do
+            expect { subject.move_down }.to change(subject, :y).by(-1)
+          end
+        end
+
+        describe 'move_right' do
+          it 'increments @x coordinate by 1' do
+            expect { subject.move_right }.to change(subject, :x).by(1)
+          end
+        end
+
+        describe 'move_left' do
+          it 'increments @x coordinate by negative 1' do
+            expect { subject.move_left }.to change(subject, :x).by(-1)
+          end
         end
       end
 
-      describe '#move_down' do
-      end
-
-      describe 'move_left' do
-      end
-
-      describe 'move_right' do
-      end
     end
   end
 end
