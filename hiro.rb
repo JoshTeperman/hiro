@@ -26,17 +26,40 @@ require 'hiro/items/chest'
 
 if __FILE__ == $PROGRAM_NAME
   if ARGV.any?
-    p 'Command line arguments are not supported... yet'
-    exit(0)
+    if ARGV.include? '--test'
+      ENV['hiro_env'] = 'TEST'
+    else
+      p "'ruby hiro.rb --test' to run in test mode"
+      exit(0)
+    end
   end
 
-  options = {}
-
   begin
+    initialize_test_game if ENV['hiro_env'] == 'TEST'
+    initialize_config
+
     p 'Starting Hiro ...'
-    File.exist?(SAVED_GAME_PATH)
-    Hiro::Game::Engine.new(options)
+    saved_games = Dir .entries(SAVED_GAME_PATH)
+                      .select { |f| f.match(/.yml/) }.map(&:split)
+                      .map { |game| game.gsub('.yml', '') }
+
+    new_game if saved_games.empty?
   rescue => e
     p "Oops, something went wrong: #{e}"
   end
+end
+
+private
+
+def initialize_test_game
+  Game::Engine.new(
+    player: load_test_player
+  )
+end
+
+def new_game
+  Game::Engine.new(map: Locations::HOME)
+end
+
+def load_test_player
 end
