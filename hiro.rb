@@ -25,6 +25,8 @@ require 'hiro/items/chest'
 # Entry Point
 
 if __FILE__ == $PROGRAM_NAME
+  p 'Starting Hiro ...'
+
   if ARGV.any?
     if ARGV.include? '--test'
       ENV['hiro_env'] = 'TEST'
@@ -36,13 +38,7 @@ if __FILE__ == $PROGRAM_NAME
 
   begin
     initialize_test_game if ENV['hiro_env'] == 'TEST'
-    initialize_config
-
-    p 'Starting Hiro ...'
-    saved_games = Dir .entries(SAVED_GAME_PATH)
-                      .select { |f| f.match(/.yml/) }.map(&:split)
-                      .map { |game| game.gsub('.yml', '') }
-
+    saved_games = load_saved_games
     new_game if saved_games.empty?
   rescue => e
     p "Oops, something went wrong: #{e}"
@@ -53,7 +49,8 @@ private
 
 def initialize_test_game
   Game::Engine.new(
-    player: load_test_player
+    player: load_test_player,
+    map: Array.new(10) { Array.new(10) { [' '] } }
   )
 end
 
@@ -61,5 +58,8 @@ def new_game
   Game::Engine.new(map: Locations::HOME)
 end
 
-def load_test_player
+def load_saved_games
+  Dir .entries(SAVED_GAME_PATH)
+      .select { |f| f.match(/.yml/) }.map(&:split)
+      .map { |game| game.gsub('.yml', '') }
 end
