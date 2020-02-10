@@ -6,8 +6,8 @@ module Hiro
       include Dry::Monads[:result]
       include Game::Errors
 
-      attr_reader :attributes, :name, :life, :mana, :character_level, :x, :y
-      attr_accessor :equipped_gear
+      attr_reader :attributes, :name, :life, :mana, :character_level
+      attr_accessor :equipped_gear, :x, :y
 
       def initialize(player_params)
         player_params ||= new_player_params

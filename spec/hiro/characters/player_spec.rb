@@ -3,49 +3,42 @@ require 'hiro/game/errors_spec'
 module Hiro
   module Characters
     RSpec.describe Player do
-      it_behaves_like 'Errors' do
-        let(:player_params) { nil }
-      end
+      it_behaves_like 'Errors'
 
-      subject do
-        described_class.new(player_params)
+      subject { described_class.new(player_params) }
+      let(:player_params) do
+        {
+          name: 'Hiro',
+          life: 921,
+          mana: 1043,
+          character_level: 88,
+          x: 2,
+          y: 8,
+          attributes: {
+            max_life: 1000,
+            max_mana: 1100,
+            strength: 64,
+            dexterity: 50,
+            vitality: 91,
+            intelligence: 45,
+          },
+        }
       end
 
       describe '#initialize' do
-        context 'when given player_params' do
-          let(:player_params) do
-            {
-              name: 'Hiro',
-              life: 921,
-              mana: 1043,
-              character_level: 88,
-              x: 0,
-              y: 0,
-              attributes: {
-                max_life: 1000,
-                max_mana: 1100,
-                strength: 64,
-                dexterity: 50,
-                vitality: 91,
-                intelligence: 45,
-              },
-            }
-          end
+        it 'initializes a new player without error' do
+          expect { subject }.not_to raise_error
+        end
 
-          it 'initializes a new player without error' do
-            expect { subject }.not_to raise_error
-          end
-
-          it 'initializes a player with the given params' do
-            aggregate_failures do
-              expect(subject.name).to eq(player_params[:name])
-              expect(subject.life).to eq(player_params[:life])
-              expect(subject.mana).to eq(player_params[:mana])
-              expect(subject.character_level).to eq(player_params[:character_level])
-              expect(subject.x).to eq(player_params[:x])
-              expect(subject.y).to eq(player_params[:y])
-              expect(subject.attributes).to eq(player_params[:attributes])
-            end
+        it 'initializes a player with the given params' do
+          aggregate_failures do
+            expect(subject.name).to eq(player_params[:name])
+            expect(subject.life).to eq(player_params[:life])
+            expect(subject.mana).to eq(player_params[:mana])
+            expect(subject.character_level).to eq(player_params[:character_level])
+            expect(subject.x).to eq(player_params[:x])
+            expect(subject.y).to eq(player_params[:y])
+            expect(subject.attributes).to eq(player_params[:attributes])
           end
         end
 
@@ -88,7 +81,6 @@ module Hiro
       end
 
       describe '#equip' do
-        let(:player_params) { nil }
         let(:weapon) { instance_double(Items::Sword, min_character_level: 1) }
         before do
           subject.equipped_gear = equipped_gear
@@ -167,7 +159,6 @@ module Hiro
       end
 
       describe '#equipped_gear' do
-        let(:player_params) { nil }
         let(:equipped_gear) { { weapon: weapon} }
         let(:weapon) { instance_double(Items::Sword) }
 
@@ -179,12 +170,18 @@ module Hiro
       end
 
       describe '#move_up' do
-        let(:player_params) { nil }
-        let(:move_up_one) { subject.move_up }
-
         it 'moves up by one' do
-          expect { move_up_one }.to change(subject, :x).by(1)
+          expect { subject.move_up }.to change(subject, :x).by(1)
         end
+      end
+
+      describe '#move_down' do
+      end
+
+      describe 'move_left' do
+      end
+
+      describe 'move_right' do
       end
     end
   end

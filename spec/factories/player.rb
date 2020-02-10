@@ -4,7 +4,8 @@ FactoryBot.define do
           life: 10,
           mana: 10,
           character_level: 1,
-          location: Hiro::Game::Locations::HOME,
+          x: 0,
+          y: 0,
           attributes: {
             max_life: 5,
             max_mana: 5,
