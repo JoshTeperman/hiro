@@ -182,19 +182,24 @@ module Hiro
           end
         end
 
-        describe 'move_right' do
+        describe '#move_right' do
           it 'increments @x coordinate by 1' do
             expect { subject.move_right }.to change(subject, :x).by(1)
           end
         end
 
-        describe 'move_left' do
+        describe '#move_left' do
           it 'increments @x coordinate by negative 1' do
             expect { subject.move_left }.to change(subject, :x).by(-1)
           end
         end
-      end
 
+        describe '#valid_move?' do
+        end
+
+        describe '#adjacent?' do
+        end
+      end
     end
   end
 end
