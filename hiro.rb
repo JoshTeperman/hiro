@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 # Gem dependencies
 require 'rubygems'
 require 'bundler/setup'
 require 'yaml'
 require 'tty-prompt'
 
-# App files
+# Load lib
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
@@ -23,30 +25,52 @@ require 'hiro/items/sword'
 require 'hiro/items/armour'
 require 'hiro/items/chest'
 
+class Initializer
+  attr_reader :prompt
+  attr_writer :options
+
+  def initialize
+    @options = options
+    @prompt = TTY::Prompt.new
+  end
+
+  def options
+    @options ||= {}
+  end
+
+  class << self
+    def test_game
+      options = options.deep_dup
+      test_options = {
+        map: Array.new(10) { Array.new(10) { [' '] } },
+        player: nil,
+        state: nil
+      }
+      options.merge(test_options)
+
+      Hiro::Game::Engine.new(options)
+    end
+
+    def load_saved_games
+      Dir .entries(Hiro::Constants::SAVED_GAMES_PATH)
+          .select { |f| f.match(/.yml/) }
+          .map { |g| g.gsub('.yml', '') }
+    rescue StandardError => e
+      p "Oops, something went wrong loading saved data: #{e}"
+    end
+
+    def resume_game_prompt
+      player = ENV['Player']
+      answer = prompt.yes?("Would you like to resume your game as #{player}?")
+      options[:player] = player if answer == 'y'
+
+      options
+    end
+  end
+end
+
 # Entry Point
-
-
-def initialize_test_game
-  Hiro::Game::Engine.new(
-    map: Array.new(10) { Array.new(10) { [' '] } }
-  )
-end
-
-def initialize_saved_game
-end
-
-def new_game
-  Hiro::Game::Engine.new(map: Hiro::Game::Locations::HOME)
-end
-
-def load_saved_games
-  Dir .entries(Hiro::Constants::SAVED_GAMES_PATH)
-      .select { |f| f.match(/.yml/) }
-      .map { |g| g.gsub('.yml', '') }
-end
-
 if __FILE__ == $PROGRAM_NAME
-  prompt = TTY::Prompt.new
 
   p 'Starting Hiro ...'
 
@@ -59,19 +83,14 @@ if __FILE__ == $PROGRAM_NAME
     end
   end
 
-  begin
-    return initialize_test_game if ENV['hiro_env'] == 'TEST'
+  Initializer.saved_games = load_saved_games
 
-    saved_games = load_saved_games
-    return new_game if saved_games.empty?
+  return test_game if ENV['hiro_env'] == 'TEST'
+  return new_game if saved_games.empty? && !ENV['Player']
 
-    available_game_options = saved_games.push('New Player')
+  prompt = TTY::Prompt.new
 
-    selected_game = prompt.select('Select an option to begin: ', available_game_options)
-    return new_game if selected_game == 'New Player'
-
-    initialize_saved_game(selected_game)
-  rescue => e
-    p "Oops, something went wrong: #{e}"
-  end
+  resume_game_prompt if ENV['Player']
+  options[:player] = select_player_from_menu(saved_games) if !options[:player]
+  Engine.new(game_options)
 end
