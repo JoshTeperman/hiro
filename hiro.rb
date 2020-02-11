@@ -2,6 +2,7 @@
 require 'rubygems'
 require 'bundler/setup'
 require 'yaml'
+require 'tty-prompt'
 
 # App files
 lib = File.expand_path('lib', __dir__)
@@ -24,7 +25,29 @@ require 'hiro/items/chest'
 
 # Entry Point
 
+
+def initialize_test_game
+  Hiro::Game::Engine.new(
+    map: Array.new(10) { Array.new(10) { [' '] } }
+  )
+end
+
+def initialize_saved_game
+end
+
+def new_game
+  Hiro::Game::Engine.new(map: Hiro::Game::Locations::HOME)
+end
+
+def load_saved_games
+  Dir .entries(Hiro::Constants::SAVED_GAMES_PATH)
+      .select { |f| f.match(/.yml/) }
+      .map { |g| g.gsub('.yml', '') }
+end
+
 if __FILE__ == $PROGRAM_NAME
+  prompt = TTY::Prompt.new
+
   p 'Starting Hiro ...'
 
   if ARGV.any?
@@ -37,29 +60,18 @@ if __FILE__ == $PROGRAM_NAME
   end
 
   begin
-    initialize_test_game if ENV['hiro_env'] == 'TEST'
+    return initialize_test_game if ENV['hiro_env'] == 'TEST'
+
     saved_games = load_saved_games
-    new_game if saved_games.empty?
+    return new_game if saved_games.empty?
+
+    available_game_options = saved_games.push('New Player')
+
+    selected_game = prompt.select('Select an option to begin: ', available_game_options)
+    return new_game if selected_game == 'New Player'
+
+    initialize_saved_game(selected_game)
   rescue => e
     p "Oops, something went wrong: #{e}"
   end
-end
-
-private
-
-def initialize_test_game
-  Game::Engine.new(
-    player: load_test_player,
-    map: Array.new(10) { Array.new(10) { [' '] } }
-  )
-end
-
-def new_game
-  Game::Engine.new(map: Locations::HOME)
-end
-
-def load_saved_games
-  Dir .entries(SAVED_GAME_PATH)
-      .select { |f| f.match(/.yml/) }.map(&:split)
-      .map { |game| game.gsub('.yml', '') }
 end
