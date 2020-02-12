@@ -26,52 +26,60 @@ require 'hiro/items/armour'
 require 'hiro/items/chest'
 
 class Initializer
-  attr_reader :prompt
-  attr_writer :options
+  attr_reader :prompt, :config
+  attr_accessor :options
 
   def initialize
-    @options = options
+    @options = default_options
     @prompt = TTY::Prompt.new
+    @config = load_config
   end
 
-  def options
-    @options ||= {}
+  def test_game
+    options = @options.dup
+    Hiro::Game::Engine.new(options)
   end
 
-  class << self
-    def test_game
-      options = options.deep_dup
-      test_options = {
-        map: Array.new(10) { Array.new(10) { [' '] } },
-        player: nil,
-        state: nil
-      }
-      options.merge(test_options)
+  def new_game
+    options = @options.dup
+    Hiro::Game::Engine.new(options)
+  end
 
-      Hiro::Game::Engine.new(options)
-    end
+  def load_saved_games
+    Dir .entries(Hiro::Constants::SAVED_GAMES_PATH)
+        .select { |f| f.match(/.yml/) }
+        .map { |g| g.gsub('.yml', '') }
+  rescue StandardError => e
+    p "Oops, something went wrong loading saved data: #{e}"
+  end
 
-    def load_saved_games
-      Dir .entries(Hiro::Constants::SAVED_GAMES_PATH)
-          .select { |f| f.match(/.yml/) }
-          .map { |g| g.gsub('.yml', '') }
-    rescue StandardError => e
-      p "Oops, something went wrong loading saved data: #{e}"
-    end
+  def resume_game_prompt
+    require 'pry';binding.pry
+    player = ENV['Player']
+    answer = prompt.yes?("Would you like to resume your game as #{player}?")
+    options[:player] = player if answer == 'y'
 
-    def resume_game_prompt
-      player = ENV['Player']
-      answer = prompt.yes?("Would you like to resume your game as #{player}?")
-      options[:player] = player if answer == 'y'
+    options
+  end
 
-      options
-    end
+  private
+
+  def default_options
+    {
+      map: Array.new(10) { Array.new(10) { [' '] } },
+      state: nil,
+    }
+  end
+
+  def load_config
+    path = File.join(Hiro::Constants::ROOT, 'config.yml')
+    YAML.load_file(path)
   end
 end
 
 # Entry Point
 if __FILE__ == $PROGRAM_NAME
-
+  init = Initializer.new
   p 'Starting Hiro ...'
 
   if ARGV.any?
@@ -83,14 +91,13 @@ if __FILE__ == $PROGRAM_NAME
     end
   end
 
-  Initializer.saved_games = load_saved_games
+  saved_games = init.load_saved_games
 
-  return test_game if ENV['hiro_env'] == 'TEST'
-  return new_game if saved_games.empty? && !ENV['Player']
+  return init.test_game if ENV['hiro_env'] == 'TEST'
+  return init.new_game if saved_games.empty? && !ENV['Player']
 
-  prompt = TTY::Prompt.new
+  init.resume_game_prompt if ENV['Player']
+  init.select_player_from_menu(saved_games) unless init.options[:player]
 
-  resume_game_prompt if ENV['Player']
-  options[:player] = select_player_from_menu(saved_games) if !options[:player]
-  Engine.new(game_options)
+  Engine.new(init.options)
 end
