@@ -22,6 +22,7 @@ module Hiro
 
       def fetch_map_data(map_name)
         map_data = load_from_yaml(map_name)
+
         return {} unless valid?
 
         map_data

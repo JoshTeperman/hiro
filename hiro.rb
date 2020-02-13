@@ -26,17 +26,24 @@ require 'hiro/items/armour'
 require 'hiro/items/chest'
 
 class Initializer
-  attr_reader :prompt, :config
+  attr_reader :prompt, :config, :saved_games
   attr_accessor :options
 
   def initialize
-    @options = default_options
+    @options = load_config
+    @saved_games = load_saved_games
     @prompt = TTY::Prompt.new
-    @config = load_config
+  end
+
+  def load_config
+    path = File.join(Hiro::Constants::ROOT, 'config.yml')
+    YAML.load_file(path)
   end
 
   def test_game
-    options = @options.dup
+    options = @options.dup.symbolize_keys
+    options.merge!(mode: 'test', state: 'test_state')
+    require 'pry';binding.pry
     Hiro::Game::Engine.new(options)
   end
 
@@ -53,51 +60,34 @@ class Initializer
     p "Oops, something went wrong loading saved data: #{e}"
   end
 
-  def resume_game_prompt
-    require 'pry';binding.pry
-    player = ENV['Player']
-    answer = prompt.yes?("Would you like to resume your game as #{player}?")
-    options[:player] = player if answer == 'y'
-
-    options
-  end
-
   private
 
   def default_options
     {
       map: Array.new(10) { Array.new(10) { [' '] } },
       state: nil,
+      mode: 'normal'
     }
   end
 
-  def load_config
-    path = File.join(Hiro::Constants::ROOT, 'config.yml')
-    YAML.load_file(path)
-  end
 end
 
 # Entry Point
 if __FILE__ == $PROGRAM_NAME
-  init = Initializer.new
   p 'Starting Hiro ...'
 
+  init = Initializer.new
+
   if ARGV.any?
-    if ARGV.include? '--test'
-      ENV['hiro_env'] = 'TEST'
-    else
-      p "'ruby hiro.rb --test' to run in test mode"
-      exit(0)
-    end
+    return init.test_game if ARGV.include? '--test'
+
+    p "'ruby hiro.rb --test' to run in test mode"
+    exit(0)
   end
 
-  saved_games = init.load_saved_games
+  return init.new_game if init.saved_games.empty?
 
-  return init.test_game if ENV['hiro_env'] == 'TEST'
-  return init.new_game if saved_games.empty? && !ENV['Player']
-
-  init.resume_game_prompt if ENV['Player']
-  init.select_player_from_menu(saved_games) unless init.options[:player]
+  init.select_player_from_menu(init.saved_games) unless init.options['player']
 
   Engine.new(init.options)
 end

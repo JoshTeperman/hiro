@@ -1,5 +1,11 @@
 ---
-PLAYER:
+player:
   Josh
-TEST:
-  false
+map:
+  nil
+state:
+  nil
+save:
+  auto
+mode:
+  normal
