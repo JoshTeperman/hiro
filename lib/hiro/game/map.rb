@@ -29,6 +29,7 @@ module Hiro
       end
 
       def load_from_yaml(map_name)
+      require 'pry';binding.pry
         path = File.join(Hiro::Constants::MAPS_PATH, map_name)
 
         unless File.exist?("#{path}.yml")

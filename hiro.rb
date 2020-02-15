@@ -10,6 +10,7 @@ require 'tty-prompt'
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
+require 'support/hash'
 require 'hiro/constants'
 require 'hiro/game/errors'
 require 'hiro/game/errors/file_not_found'
@@ -43,7 +44,6 @@ class Initializer
   def test_game
     options = @options.dup.symbolize_keys
     options.merge!(mode: 'test', state: 'test_state')
-    require 'pry';binding.pry
     Hiro::Game::Engine.new(options)
   end
 
