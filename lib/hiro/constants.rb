@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Hiro
   module Constants
     ROOT = File.expand_path('../../', __dir__)

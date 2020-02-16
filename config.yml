@@ -1,11 +1,4 @@
 ---
-player:
-  Josh
-map:
-  nil
-state:
-  nil
-save:
-  auto
-mode:
-  normal
+:save: auto
+:mode: test
+:current_player:
