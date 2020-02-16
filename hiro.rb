@@ -31,7 +31,7 @@ class Initializer
   attr_accessor :options
 
   def initialize
-    @options = load_config
+    @options = load_config.deep_symbolize_keys
     @saved_games = load_saved_games
     @prompt = TTY::Prompt.new
   end
@@ -42,7 +42,7 @@ class Initializer
   end
 
   def test_game
-    options = @options.dup.symbolize_keys
+    options = @options.dup
     options.merge!(mode: 'test', state: 'test_state')
     Hiro::Game::Engine.new(options)
   end
@@ -77,7 +77,6 @@ if __FILE__ == $PROGRAM_NAME
   p 'Starting Hiro ...'
 
   init = Initializer.new
-
   if ARGV.any?
     return init.test_game if ARGV.include? '--test'
 
@@ -87,7 +86,7 @@ if __FILE__ == $PROGRAM_NAME
 
   return init.new_game if init.saved_games.empty?
 
-  init.select_player_from_menu(init.saved_games) unless init.options['player']
-
-  Engine.new(init.options)
+  init.select_player_from_menu(init.saved_games) unless init.options[:player]
+  require 'pry';binding.pry
+  Hiro::Game::Engine.new(init.options)
 end

@@ -4,6 +4,7 @@ module Hiro
       attr_reader :window, :player
 
       def initialize(**options)
+        require 'pry';binding.pry
         @window = Game::Window.new(map: options.dig(:map))
         @player = Characters::Player.new(options.dig(:player))
       end
