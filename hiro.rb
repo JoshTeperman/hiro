@@ -33,7 +33,6 @@ class Initializer
   def initialize
     @config = load_config.deep_symbolize_keys
     @options = {}
-    @saved_games = load_saved_games
     @prompt = TTY::Prompt.new
   end
 
@@ -48,11 +47,23 @@ class Initializer
     Hiro::Game::Engine.new(options)
   end
 
+  def load_saved_games
+    Dir .entries(Hiro::Constants::SAVED_GAMES_PATH)
+        .select { |f| f.match(/.yml/) }
+        .map { |g| g.gsub('.yml', '') }
+  rescue StandardError => e
+    p "Oops, something went wrong loading saved data: #{e}"
+  end
+
+  def resume_game?
+    prompt.yes?("Resume game as #{config[:current_player]} ?")
+  end
+
   private
 
   def load_config
-    file = File.join(Hiro::Constants::ROOT, 'config.yml')
-    return YAML.load_file(file) if File.exist?(file)
+    config_file = File.join(Hiro::Constants::ROOT, 'config.yml')
+    return YAML.load_file(config_file) if File.exist?(config_file)
 
     create_config
   end
@@ -66,9 +77,8 @@ class Initializer
   end
 
   def create_config
-    config = default_config
     File.open(File.join(Hiro::Constants::ROOT, 'config.yml'), 'w+') do |f|
-      f.write(config.to_yaml)
+      f.write(default_config.to_yaml)
     end
 
     config
@@ -78,12 +88,7 @@ class Initializer
     { save: 'auto', mode: 'normal', current_player: nil }
   end
 
-  def load_saved_games
-    Dir .entries(Hiro::Constants::SAVED_GAMES_PATH)
-        .select { |f| f.match(/.yml/) }
-        .map { |g| g.gsub('.yml', '') }
-  rescue StandardError => e
-    p "Oops, something went wrong loading saved data: #{e}"
+  def select_player_from_menu
   end
 end
 
@@ -100,9 +105,12 @@ if __FILE__ == $PROGRAM_NAME
     exit(0)
   end
 
-  return init.new_game if init.saved_games.empty?
+  return Hiro::Game::Engine.new(init.options.merge(player: init.config[:current_player])) if init.resume_game?
 
-  init.select_player_from_menu(init.saved_games) unless init.options[:player]
+  saved_games = init.load_saved_games
+  return init.new_game if saved_games.empty?
+
+  init.select_player_from_menu(saved_games) unless init.options[:player]
 
   Hiro::Game::Engine.new(init.options)
 end
