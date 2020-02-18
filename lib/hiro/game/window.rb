@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry-monads'
 
 module Hiro
@@ -8,9 +10,9 @@ module Hiro
 
       attr_reader :map, :entities
 
-      def initialize(map:)
+      def initialize(map:, entities: [])
         @map = map
-        @entities = []
+        @entities = entities
         super(self)
       end
 

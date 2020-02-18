@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry-monads'
 
 module Hiro
@@ -10,8 +12,7 @@ module Hiro
       attr_accessor :equipped_gear, :x, :y
 
       def initialize(player_params)
-        player_params ||= new_player_params
-
+        player_params = default_player.merge!(player_params)
         @name = player_params.fetch(:name)
         @life = player_params.fetch(:life)
         @mana = player_params.fetch(:mana)
@@ -56,7 +57,7 @@ module Hiro
 
       private
 
-      def new_player_params
+      def default_player
         {
           name: 'Hiro',
           life: 10,

@@ -42,8 +42,8 @@ module Hiro
           end
         end
 
-        context 'when no player_params are given' do
-          let(:player_params) { nil }
+        context 'when player_params are empty' do
+          let(:player_params) { {} }
 
           it 'initializes a new Player without error' do
             expect { subject }.not_to raise_error

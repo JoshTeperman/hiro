@@ -1,12 +1,16 @@
 module Hiro
   module Game
     class Engine
-      attr_reader :window, :player
+      include Game::Errors
+      attr_reader :window, :player, :mode, :game_state
 
-      def initialize(**options)
-        require 'pry';binding.pry
-        @window = Game::Window.new(map: options.dig(:game_state, :map))
-        @player = Characters::Player.new(options.dig(:player))
+      def initialize(player:, game_state:, mode: 'normal')
+        @game_state = Game::State.new(game_state)
+        @window = Game::Window.new(map: game_state.dig(:map), entities: game_state.dig(:entities))
+        @player = Characters::Player.new(player)
+        @mode = mode
+
+        super(self)
       end
     end
   end

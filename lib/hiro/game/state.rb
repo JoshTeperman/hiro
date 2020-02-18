@@ -3,7 +3,7 @@ module Hiro
     class State
       include Game::Errors
 
-      def initialize
+      def initialize(options)
         super(self)
       end
     end

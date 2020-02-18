@@ -39,25 +39,25 @@ class Initializer
 
   def test_game
     options = @options.dup
-    options.merge!(mode: 'test', game_state: { map: 'home' })
+    options.merge!(mode: 'test', game_state: { map: 'home', entities: [] })
     Hiro::Game::Engine.new(options)
   end
 
   def new_game
-    options = @options.dup
-    Hiro::Game::Engine.new(options)
+    name = prompt.ask('Welcome to Hiro. \n What would you like to call your player?')
+    Hiro::Game::Engine.new(player: { name: name })
   end
 
   def load_saved_games
     Dir .entries(Hiro::Constants::SAVED_GAMES_PATH)
-        .select { |f| f.match(/.yml/) }
+        .select { |f| f.match(/.yml$/) }
         .map { |g| g.gsub('.yml', '') }
   rescue StandardError => e
     p "Oops, something went wrong loading saved data: #{e}"
   end
 
   def resume_game?
-    prompt.yes?("Resume game as #{config[:current_player]} ?")
+    prompt.yes?("Would you like to resume your game (#{config[:current_player]})?")
   end
 
   private
@@ -102,16 +102,22 @@ if __FILE__ == $PROGRAM_NAME
     return init.test_game if ARGV.include? '--test' unless ARGV.length > 1
 
     puts 'Error: Invalid number of command line arguments.'
-    p "Try 'ruby hiro.rb --test' to run in test mode"
+    puts "Try 'ruby hiro.rb --test' to run in test mode"
     exit(0)
   end
 
-  return Hiro::Game::Engine.new(init.options.merge(player: init.config[:current_player])) if init.resume_game?
-
+  current_player = init.config.dig(:current_player)
   saved_games = init.load_saved_games
-  return init.new_game if saved_games.empty?
 
-  init.select_player_from_menu(saved_games) unless init.options[:player]
+  if current_player && saved_games.include?(current_player)
+    init.options.merge!(player: current_player) if init.resume_game?
+  end
+
+  unless init.options.dig(:player)
+    return init.new_game if saved_games.empty?
+
+    init.select_player_from_menu(saved_games) unless init.options[:player]
+  end
 
   Hiro::Game::Engine.new(init.options)
 end
