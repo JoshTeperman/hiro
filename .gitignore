@@ -12,3 +12,6 @@
 
 # local dependency management
 .tool-versions
+
+# game fiels
+/saved_games/
