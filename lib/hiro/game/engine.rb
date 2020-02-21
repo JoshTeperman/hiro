@@ -12,6 +12,10 @@ module Hiro
 
         super(self)
       end
+
+      def run
+        p "Started Hiro with #{@player.inspect} ..."
+      end
     end
   end
 end

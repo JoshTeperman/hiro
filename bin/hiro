@@ -1,7 +1,11 @@
 #!/usr/bin/env ruby
 
-$:.unshift(File.expand_path('../lib', __dir__))
+require 'rubygems'
+require 'bundler/setup'
 
-require 'hiro/cli/application'
+lib = File.expand_path('../lib', __dir__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-exit Hiro::Cli::Application.new(ARGV).execute
+require 'hiro/cli/initializer'
+
+exit Hiro::Cli::Initializer.new(ARGV).execute

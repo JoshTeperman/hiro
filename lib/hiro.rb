@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Hiro files
 require 'support/hash'
 require 'hiro/constants'
 require 'hiro/game/errors'
