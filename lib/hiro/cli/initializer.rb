@@ -2,10 +2,12 @@
 
 require 'hiro'
 require 'tty-prompt'
+require 'yaml'
 
 module Hiro
   module Cli
     class Initializer
+      attr_reader :prompt
       def initialize(argv)
         @options = Struct::OptionsParser.new(argv).parse
         @config = load_config.deep_symbolize_keys
@@ -27,7 +29,7 @@ module Hiro
 
       def new_game_prompt
         name = prompt.ask('What would you like to call your player?')
-        @options.merge!(name: name)
+        @options.merge!({ player: {name: name}, game_state: {} })
       end
 
       def select_game_prompt
@@ -38,9 +40,10 @@ module Hiro
         when 'New Game'
           new_game_prompt
         when 'exit'
-          exit p 'thanks for playing'
+          p 'thanks for playing'
+          exit(0)
         else
-          require 'pry';binding.pry
+          @options.merge!({ player: { name: answer }, game_state: {} })
         end
       end
 
