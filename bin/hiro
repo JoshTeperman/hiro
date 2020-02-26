@@ -8,4 +8,6 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'hiro/cli/initializer'
 
+at_exit { p 'exiting' }
+
 Hiro::Cli::Initializer.new(ARGV).execute
