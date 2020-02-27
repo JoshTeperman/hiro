@@ -33,6 +33,8 @@ module Hiro
 
         return new_game_prompt if available_saved_games.empty?
 
+        # TODO: figure out how to know if name should be capitalized
+        # TODO: convert '-' to spaces
         menu_options = [*available_saved_games, 'New Game', 'exit']
         answer = prompt.select('Load a saved game or create a new hero:', menu_options)
 
@@ -49,7 +51,7 @@ module Hiro
 
       def new_game_prompt
         prompt.ask('What would you like to call your player?')
-        # TODO: validation
+        # TODO: validation -> no special characters except for _-, whitespace ok
       end
 
       def load_config
