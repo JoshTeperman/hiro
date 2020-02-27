@@ -10,7 +10,7 @@ module Hiro
 
       def initialize(map_name:)
         super(self)
-        @data = fetch_map_data(map_name).deep_symbolize_keys
+        data = fetch_map_data(map_name).deep_symbolize_keys
         @shape = data.dig(:shape)
         @entry_coordinates = data.dig(:entry_coordinates)
         @exit_coordinates = data.dig(:exit_coordinates)

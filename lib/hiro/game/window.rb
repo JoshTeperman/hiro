@@ -11,7 +11,7 @@ module Hiro
       attr_reader :map, :entities
 
       def initialize(map:, entities: [])
-        @map = map
+        @map = Game::Map.new(map_name: map)
         @entities = entities
         super(self)
       end
