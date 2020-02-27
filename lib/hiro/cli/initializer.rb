@@ -33,7 +33,7 @@ module Hiro
 
         return new_game_prompt if available_saved_games.empty?
 
-        menu_options = [*games, 'New Game', 'exit']
+        menu_options = [*available_saved_games, 'New Game', 'exit']
         answer = prompt.select('Load a saved game or create a new hero:', menu_options)
 
         case answer
@@ -61,7 +61,9 @@ module Hiro
 
       def load_player_data(name)
         path = test_mode? ? Hiro::Constants::TEST_PLAYER_PATH : Hiro::Constants::SAVED_GAMES_PATH
-        player_data = YAML.load_file(File.join(path, "#{name}.yml")).deep_symbolize_keys
+        file = File.join(path, "#{name}.yml")
+
+        player_data = File.exist?(file) ? YAML.load_file(file).deep_symbolize_keys : new_player_template(name)
         @options.merge!(player_data)
       end
 
@@ -72,6 +74,28 @@ module Hiro
           .map { |g| g.gsub('.yml', '') }
       rescue StandardError => e
         p "Oops, something went wrong loading saved data: #{e}"
+      end
+
+      def new_player_template(name)
+        {
+          player: {
+            name: name,
+            life: 10,
+            mana: 10,
+            character_level: 1,
+            x: 0,
+            y: 0,
+            attributes: {
+              max_life: 5,
+              max_mana: 5,
+              strength: 5,
+              dexterity: 5,
+              vitality: 5,
+              intelligence: 5
+            }
+          },
+          game_state: {}
+        }
       end
 
       def exit_program_with_message(msg)
