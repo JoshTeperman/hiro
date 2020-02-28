@@ -1,4 +1,5 @@
 require 'dry-monads'
+require 'yaml'
 
 module Hiro
   module Game

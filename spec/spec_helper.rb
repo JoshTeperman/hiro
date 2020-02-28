@@ -1,4 +1,6 @@
-require_relative '../hiro' # hiro.rb entry file
+# frozen_string_literal: true
+
+require 'hiro' # hiro.rb entry file
 require 'factory_bot'
 
 RSpec.configure do |config|
