@@ -20,7 +20,10 @@ module Hiro
       end
 
       def error_messages
-        errors.map { |error| "#{error.base_class_name} #{error.attribute}: #{error.message}" }
+        errors.map do |error|
+          # "Name must be a valid string" Error on Player (:name)"
+          "'#{error.message}' Error on #{error.base_class_name} (:#{error.attribute})"
+        end
       end
 
       Struct.new('Error', :klass, :attribute, :message) do

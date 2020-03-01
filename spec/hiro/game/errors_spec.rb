@@ -55,16 +55,19 @@ module Hiro
 
       describe "#error_messages" do
         before do
-          2.times {|e| subject.add_error("#{e} Error Message") }
-          subject.add_error('Invalid', :name)
+          subject.add_error('Name must be a valid string', :name)
+          subject.add_error('Name must be at least 3 characters long', :name)
+          subject.add_error('Email is invalid', :email)
+          subject.add_error('Something went wrong')
         end
 
         it 'returns an array of messages' do
           subject_name = subject.class.name.split('::').last
           expected_result = [
-            "#{subject_name} base: 0 Error Message",
-            "#{subject_name} base: 1 Error Message",
-            "#{subject_name} name: Invalid"
+            "'Name must be a valid string' Error on #{subject_name} (:name)",
+            "'Name must be at least 3 characters long' Error on #{subject_name} (:name)",
+            "'Email is invalid' Error on #{subject_name} (:email)",
+            "'Something went wrong' Error on #{subject_name} (:base)",
           ]
           expect(subject.error_messages).to eq expected_result
         end
