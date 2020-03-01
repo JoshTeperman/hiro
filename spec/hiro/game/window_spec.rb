@@ -6,9 +6,10 @@ module Hiro
     RSpec.describe Window do
       it_behaves_like 'Errors'
 
-      subject { described_class.new(map: map) }
+      subject { described_class.new(map: map, entities: entities) }
 
-      let(:map) { instance_double(Game::Map) }
+      let(:map) { 'home' }
+      let(:entities) { [] }
 
       describe '#initialize' do
         it 'initializes without error' do
@@ -17,8 +18,9 @@ module Hiro
 
         it 'has expected attributes' do
           aggregate_failures do
-            expect(subject.map).to eq map
-            expect(subject.entities).to eq []
+            expect(subject.map).to be_instance_of Game::Map
+            expect(subject.map.valid?).to eq true
+            expect(subject.entities).to eq entities
           end
         end
       end

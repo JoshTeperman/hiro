@@ -5,29 +5,33 @@ module Hiro
     RSpec.describe Engine do
       it_behaves_like 'Errors'
 
-      subject { described_class.new(player: player_params, game_state: game_state, mode: mode) }
+      subject do
+        described_class.new(
+          player: player_params,
+          game_state: game_state_params,
+          mode: mode
+        )
+      end
 
       let(:player_params) do
         {
-          player: {
-            name: 'Saved Player',
-            life: 20,
-            mana: 30,
-            character_level: 4,
-            x: 0,
-            y: 0,
-            attributes: {
-              max_life: 55,
-              max_mana: 56,
-              strength: 13,
-              dexterity: 99,
-              vitality: 86,
-              intelligence: 11,
-            }
+          name: 'Saved Player',
+          life: 20,
+          mana: 30,
+          character_level: 4,
+          x: 0,
+          y: 0,
+          attributes: {
+            max_life: 55,
+            max_mana: 56,
+            strength: 13,
+            dexterity: 99,
+            vitality: 86,
+            intelligence: 11,
           }
         }
       end
-      let(:game_state) { { map: 'home', entities: [] } }
+      let(:game_state_params) { { window: { map: 'home', entities: [] } } }
       let(:mode) { 'normal' }
 
       describe '#initialize' do
@@ -37,25 +41,33 @@ module Hiro
 
         it 'initializes a Game State', aggregate_failuers: true do
           expect(subject.game_state).to be_instance_of Game::State
-          expect(subject.game_state.map).to eq game_state[:map]
+          expect(subject.game_state.valid?). to eq true
         end
 
         it 'initializes a Window', aggregate_failuers: true do
           window = subject.window
           expect(window).to be_instance_of Game::Window
-          expect(window.map).to_be_instance_of Game::Map
-          expect(window.entities).to eq map[:entities]
+          expect(window.valid?).to eq true
+          expect(window.map).to be_instance_of Game::Map
+          expect(window.entities).to eq []
         end
 
         it 'initializes a new Player', aggregate_failuers: true do
           player = subject.player
-          expect(player).to_be_instance_of Game::Characters::Player
-          expect(player.attributes).to eq player_params[:attributes]
+          expect(player).to be_instance_of Hiro::Characters::Player
+          expect(player.valid?).to eq true
+          expect(player.attributes).to eq player_params.fetch(:attributes)
+        end
+
+        it 'sets the mode' do
+          expect(subject.mode).to eq mode
         end
       end
 
       describe '#draw' do
       end
+
+      describe '#run'
     end
   end
 end

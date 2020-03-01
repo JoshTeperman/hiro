@@ -3,7 +3,9 @@ module Hiro
     class State
       include Game::Errors
 
-      def initialize(options)
+      attr_reader :window
+      def initialize(window:)
+        @window = window
         super(self)
       end
     end

@@ -32,6 +32,7 @@ module Hiro
         end
 
         it 'has expected attributes' do
+          expect(subject.name).to eq map_name
           expect(subject.entry_coordinates).to eq entry_coordinates
           expect(subject.exit_coordinates).to eq exit_coordinates
           expect(subject.shape).to eq shape

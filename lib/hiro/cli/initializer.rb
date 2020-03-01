@@ -96,7 +96,7 @@ module Hiro
               intelligence: 5
             }
           },
-          game_state: { map: 'home' }
+          game_state: { window: { map: 'home', entities: [] } }
         }
       end
 

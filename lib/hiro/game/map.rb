@@ -7,11 +7,12 @@ module Hiro
       include Game::Errors
       include Dry::Monads[:result]
 
-      attr_reader :shape, :entry_coordinates, :exit_coordinates
+      attr_reader :shape, :entry_coordinates, :exit_coordinates, :name
 
       def initialize(map_name:)
         super(self)
         data = fetch_map_data(map_name).deep_symbolize_keys
+        @name = map_name
         @shape = data.dig(:shape)
         @entry_coordinates = data.dig(:entry_coordinates)
         @exit_coordinates = data.dig(:exit_coordinates)
