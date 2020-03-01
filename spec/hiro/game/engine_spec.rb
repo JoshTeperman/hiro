@@ -64,6 +64,33 @@ module Hiro
         end
       end
 
+      describe '#valid_game?' do
+        it 'returns true' do
+          expect(subject.valid_game?).to eq true
+        end
+
+        context 'when if @game_state is invalid' do
+          before { subject.game_state.add_error('game_state error') }
+          it 'returns false' do
+            expect(subject.valid_game?).to eq false
+          end
+        end
+
+        context 'when if @window is invalid' do
+          before { subject.window.add_error('window error') }
+          it 'returns false' do
+            expect(subject.valid_game?).to eq false
+          end
+        end
+
+        context 'when if @player is invalid' do
+          before { subject.player.add_error('player error') }
+          it 'returns false' do
+            expect(subject.valid_game?).to eq false
+          end
+        end
+      end
+
       describe '#draw' do
       end
 
