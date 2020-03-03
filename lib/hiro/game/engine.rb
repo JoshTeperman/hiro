@@ -26,6 +26,7 @@ module Hiro
       end
 
       def draw
+        window.add_entities([player])
         window.draw
       end
     end
