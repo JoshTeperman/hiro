@@ -35,8 +35,17 @@ module Hiro
         before do
           subject.add_entities([player, enemy])
         end
+
         it 'draws a window' do
           expect { subject.draw }.not_to raise_error
+        end
+
+        describe '#prepare_map_string' do
+          let(:expected_map_string) { "*                     \n      O               \n                     \n                     \n                     \n                     \n                     \n                     " }
+
+          it 'returns a map_string' do
+            expect(subject.prepare_map_string).to eq expected_map_string
+          end
         end
       end
 

@@ -31,19 +31,23 @@ module Hiro
       end
 
       def draw
+        map_string = prepare_map_string
+        print TTY::Box.frame map_string
+
+        map_string
+      end
+
+      def prepare_map_string
         entities.map do |e|
-          require 'pry';binding.pry
-          case e.class
-          when instance_of?(Characters::Player)
-            map.shape[e.x][e.y] = 'X'
-          when Characters::Enemy
+          case e.class.to_s
+          when Characters::Player.to_s
+            map.shape[e.x][e.y] = '*'
+          when Characters::Enemy.to_s
             map.shape[e.x][e.y] = 'O'
           end
         end
-        require 'pry';binding.pry
-        frame = TTY::Box.frame map.shape.flatten.join(' ')
-        puts map.shape.flatten
-        print frame
+
+        map.shape.map { |row| row.join("\s" * 3) }.join("\n")
       end
 
       private
