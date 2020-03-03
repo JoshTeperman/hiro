@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'dry-monads'
+require 'tty-box'
 
 module Hiro
   module Game
@@ -27,6 +28,22 @@ module Hiro
         end
 
         Dry::Monads::Success(entities)
+      end
+
+      def draw
+        entities.map do |e|
+          require 'pry';binding.pry
+          case e.class
+          when instance_of?(Characters::Player)
+            map.shape[e.x][e.y] = 'X'
+          when Characters::Enemy
+            map.shape[e.x][e.y] = 'O'
+          end
+        end
+        require 'pry';binding.pry
+        frame = TTY::Box.frame map.shape.flatten.join(' ')
+        puts map.shape.flatten
+        print frame
       end
 
       private

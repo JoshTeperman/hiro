@@ -18,10 +18,15 @@ module Hiro
         return [game_state, window, player].flat_map(&:error_messages).map { |m| puts m } unless valid_game?
 
         p "Started Hiro with #{@player.inspect} ..."
+        draw
       end
 
       def valid_game?
         [game_state, window, player].all?(&:valid?)
+      end
+
+      def draw
+        window.draw
       end
     end
   end

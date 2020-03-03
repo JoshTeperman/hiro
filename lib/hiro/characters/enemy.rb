@@ -3,7 +3,11 @@ module Hiro
     class Enemy
       include Game::Errors
 
-      def initialize
+      attr_reader :x, :y
+
+      def initialize(x: 0, y: 0)
+        @x = x
+        @y = y
         super(self)
       end
     end

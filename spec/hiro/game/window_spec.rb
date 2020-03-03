@@ -10,6 +10,12 @@ module Hiro
 
       let(:map) { 'home' }
       let(:entities) { [] }
+      let(:player) { build(:player) }
+      let(:npc) { Characters::Npc.new }
+      let(:enemy) { Characters::Enemy.new(x: 1, y: 2) }
+      let(:enemy2) { Characters::Enemy.new }
+      let(:sword) { build(:sword) }
+      let(:chest) { build(:chest) }
 
       describe '#initialize' do
         it 'initializes without error' do
@@ -25,15 +31,17 @@ module Hiro
         end
       end
 
+      describe '#draw' do
+        before do
+          subject.add_entities([player, enemy])
+        end
+        it 'draws a window' do
+          expect { subject.draw }.not_to raise_error
+        end
+      end
+
       describe '#add_entities' do
         let(:result) { subject.add_entities(new_entities_array) }
-
-        let(:player) { build(:player) }
-        let(:npc) { Characters::Npc.new }
-        let(:enemy) { Characters::Enemy.new }
-        let(:enemy2) { Characters::Enemy.new }
-        let(:sword) { build(:sword) }
-        let(:chest) { build(:chest) }
 
         context 'when all entities are characters or items' do
           let(:new_entities_array) { [sword, player, npc, chest, enemy] }

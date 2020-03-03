@@ -14,5 +14,6 @@ player:
     vitality: 5,
     intelligence: 5
 game_state:
-  map: home
-  entities: []
+  window:
+    map: home
+    entities: []
