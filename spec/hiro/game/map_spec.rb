@@ -51,7 +51,8 @@ module Hiro
           end
 
           it 'adds an error' do
-            expect(subject.error_messages).to include "Map data: Error loading map data: File 'map_name_that_doesnt_exist.yml' not found at path lib/hiro/game/data/maps/map_name_that_doesnt_exist"
+            expected_error_message = "'Error loading map data: File 'map_name_that_doesnt_exist.yml' not found at path lib/hiro/game/data/maps/map_name_that_doesnt_exist' Error on Map (:data)"
+            expect(subject.error_messages).to include expected_error_message
           end
 
           it 'should initialize a map with nil attributes' do

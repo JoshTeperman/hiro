@@ -92,6 +92,7 @@ module Hiro
 
         context 'when there is an invalid object' do
           let(:invalid_entity) { Struct.new('InvalidObject') { include Game::Errors; def initialize; super(self); end }.new }
+          let(:expected_error_message) { "'Could not add entity to Window' Error on InvalidObject (:base)" }
 
           context 'when not all entities are characters or items' do
             let(:new_entities_array) { [invalid_entity, sword, chest, player, npc] }
@@ -101,7 +102,7 @@ module Hiro
             end
 
             it 'should have an error message' do
-              expect(result.failure.error_messages).to include('InvalidObject base: Could not add entity to Window')
+              expect(result.failure.error_messages).to include(expected_error_message)
             end
           end
 
@@ -113,7 +114,7 @@ module Hiro
             end
 
             it 'should have an error message' do
-              expect(result.failure.error_messages).to include('InvalidObject base: Could not add entity to Window')
+              expect(result.failure.error_messages).to include(expected_error_message)
             end
           end
         end
