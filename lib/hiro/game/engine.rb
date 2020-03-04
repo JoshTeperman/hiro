@@ -1,3 +1,5 @@
+require 'tty-reader'
+
 module Hiro
   module Game
     class Engine
@@ -13,11 +15,24 @@ module Hiro
       end
 
       def run
+        ENV['RUN_GAME'] = 'true'
         # temporary error checking & printing at runtime to make sure there are no silent failures
         # will replace with error propogation inside game loop when I decide where the errors should be handled
         return [game_state, window, player].flat_map(&:error_messages).map { |m| puts m } unless valid_game?
 
-        p "Started Hiro with #{@player.inspect} ..."
+        p "Started Hiro with Player: #{@player.inspect} ..."
+
+        game_loop while ENV['RUN_GAME']
+      end
+
+      def game_loop
+        reader = TTY::Reader.new
+        loop do
+          print '=> '
+          input = reader.read_keypress
+          p input
+        end
+
         draw
       end
 
