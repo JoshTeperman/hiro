@@ -30,10 +30,25 @@ module Hiro
         loop do
           print '=> '
           input = reader.read_keypress
-          p input
+          handle_keypress(input)
         end
 
         draw
+      end
+
+      def handle_keypress(key)
+        case key
+        when "\e[A"
+          p 'key_up'
+        when "\e[B"
+          p 'key_down'
+        when "\e[D"
+          p 'key_left'
+        when "\e[C"
+          p 'key_right'
+        else
+          p key
+        end
       end
 
       def valid_game?
