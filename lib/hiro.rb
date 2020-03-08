@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'support/hash'
+require 'support/deep_dup'
 require 'hiro/constants'
 require 'hiro/game/errors'
 require 'hiro/game/errors/file_not_found'
