@@ -92,7 +92,20 @@ module Hiro
 
         context 'when there is an invalid object' do
           let(:invalid_entity) { Struct.new('InvalidObject') { include Game::Errors; def initialize; super(self); end }.new }
-          let(:expected_error_message) { "'Could not add entity to Window' Error on InvalidObject (:base)" }
+          let(:invalid_class_error_message) { "'Could not add entity (invalid class)' Error on InvalidObject (:base)" }
+          let(:duplicate_error_message) { "'Could not add entity (duplicate' Error on Player (:base)" }
+
+          context 'when there is a duplicate entity' do
+            let(:new_entities_array) { [player, player] }
+
+            it 'is unsuccessful' do
+              expect(result.failure?).to eq true
+            end
+
+            it 'returns an error message' do
+              expect(result.failure.error_messages).to include(duplicate_error_message)
+            end
+          end
 
           context 'when not all entities are characters or items' do
             let(:new_entities_array) { [invalid_entity, sword, chest, player, npc] }
@@ -102,7 +115,7 @@ module Hiro
             end
 
             it 'should have an error message' do
-              expect(result.failure.error_messages).to include(expected_error_message)
+              expect(result.failure.error_messages).to include(invalid_class_error_message)
             end
           end
 
@@ -114,7 +127,7 @@ module Hiro
             end
 
             it 'should have an error message' do
-              expect(result.failure.error_messages).to include(expected_error_message)
+              expect(result.failure.error_messages).to include(invalid_class_error_message)
             end
           end
         end

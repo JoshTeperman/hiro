@@ -19,11 +19,9 @@ module Hiro
 
       def add_entities(new_entities)
         new_entities.each do |entity|
-          unless can_add_entity?(entity)
-            entity.add_error('Could not add entity to Window')
+          validate_entity(entity)
+          return Dry::Monads::Failure(entity) unless entity.valid?
 
-            return Dry::Monads::Failure(entity)
-          end
           entities << entity
         end
 
@@ -53,7 +51,12 @@ module Hiro
 
       private
 
-      def can_add_entity?(entity)
+      def validate_entity(entity)
+        entity.add_error('Could not add entity (invalid class)') unless valid_entity_class?(entity)
+        entity.add_error('Could not add entity (duplicate') if duplicate_entity?(entity)
+      end
+
+      def valid_entity_class?(entity)
         [
           Characters::Player,
           Characters::Npc,
@@ -61,6 +64,10 @@ module Hiro
           Items::Weapon,
           Items::Armour
         ].any? { |klass| [entity.class, entity.class.superclass].include?(klass) }
+      end
+
+      def duplicate_entity?(entity)
+        entities.include?(entity)
       end
     end
   end
