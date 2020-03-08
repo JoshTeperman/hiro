@@ -56,7 +56,7 @@ module Hiro
       end
 
       def draw
-        window.add_entities([player])
+        window.add_entities([player]) unless window.entities.include?(player)
         window.draw
       end
     end
