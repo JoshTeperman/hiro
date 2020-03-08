@@ -38,16 +38,17 @@ module Hiro
       end
 
       def prepare_map_string
+        map_copy = map.shape.deep_dup
         entities.map do |e|
           case e.class.to_s
           when Characters::Player.to_s
-            map.shape[e.x][e.y] = '*'
+            map_copy[e.y][e.x] = '*'
           when Characters::Enemy.to_s
-            map.shape[e.x][e.y] = 'O'
+            map_copy[e.y][e.x] = 'O'
           end
         end
 
-        map.shape.map { |row| row.join("\s" * 3) }.join("\n")
+        map_copy.map { |row| row.join("\s" * 3) }.join("\n")
       end
 
       private

@@ -10,6 +10,7 @@ module Hiro
         @window = Game::Window.new(game_state.fetch(:window))
         @player = Characters::Player.new(player)
         @mode = mode
+        @reader = TTY::Reader.new
 
         super(self)
       end
@@ -22,30 +23,33 @@ module Hiro
 
         p "Started Hiro with Player: #{@player.inspect} ..."
 
-        game_loop while ENV['RUN_GAME']
+        game_loop
       end
 
       def game_loop
-        reader = TTY::Reader.new
-        loop do
-          print '=> '
-          input = reader.read_keypress
-          handle_keypress(input)
-        end
-
+        parse_input
         draw
+
+        game_loop
       end
 
-      def handle_keypress(key)
+      def parse_input
+        input = @reader.read_keypress
+        parse_keypress(input)
+      end
+
+      def parse_keypress(key)
         case key
         when "\e[A"
-          p 'key_up'
+          player.move_up
         when "\e[B"
-          p 'key_down'
+          player.move_down
         when "\e[D"
-          p 'key_left'
+          player.move_left
         when "\e[C"
-          p 'key_right'
+          player.move_right
+        when 'q'
+          exit(0)
         else
           p key
         end
