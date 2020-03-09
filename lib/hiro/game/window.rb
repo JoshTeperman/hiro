@@ -49,6 +49,10 @@ module Hiro
         map_copy.map { |row| row.join("\s" * 3) }.join("\n")
       end
 
+      def invalid_move?(x:, y:)
+        [x, y].any?(&:negative?) || map.shape[y]&.[](x).nil?
+      end
+
       private
 
       def validate_entity(entity)

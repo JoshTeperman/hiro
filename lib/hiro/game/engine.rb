@@ -4,11 +4,12 @@ module Hiro
   module Game
     class Engine
       include Game::Errors
-      attr_reader :window, :player, :mode, :game_state
+      attr_reader :window, :player, :mode, :game_state, :enemies, :reader
       def initialize(player:, game_state:, mode: 'normal')
         @game_state = Game::State.new(game_state)
         @window = Game::Window.new(game_state.fetch(:window))
         @player = Characters::Player.new(player)
+        @enemies = []
         @mode = mode
         @reader = TTY::Reader.new
 
@@ -40,13 +41,13 @@ module Hiro
       def parse_keypress(key)
         case key
         when "\e[A"
-          player.move_up
+          try_move(:up)
         when "\e[B"
-          player.move_down
+          try_move(:down)
         when "\e[D"
-          player.move_left
+          try_move(:left)
         when "\e[C"
-          player.move_right
+          try_move(:right)
         when 'q'
           exit(0)
         else
@@ -59,8 +60,15 @@ module Hiro
       end
 
       def draw
-        window.add_entities([player]) unless window.entities.include?(player)
+        window.add_entities([player, *enemies])
         window.draw
+      end
+
+      def try_move(direction)
+        new_coordinates = player.public_send(direction)
+        return if window.invalid_move?(new_coordinates)
+
+        player.move(new_coordinates)
       end
     end
   end

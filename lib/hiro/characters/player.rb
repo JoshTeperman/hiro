@@ -39,20 +39,25 @@ module Hiro
         Dry::Monads::Success(equipped_gear)
       end
 
-      def move_up
-        @y -= 1
+      def up
+        { x: @x, y: @y - 1 }
       end
 
-      def move_down
-        @y += 1
+      def down
+        { x: @x, y: @y + 1 }
       end
 
-      def move_right
-        @x += 1
+      def right
+        { x: @x + 1, y: @y }
       end
 
-      def move_left
-        @x -= 1
+      def left
+        { x: @x - 1, y: @y }
+      end
+
+      def move(x:, y:)
+        @x = x
+        @y = y
       end
 
       private
