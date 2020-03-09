@@ -27,8 +27,8 @@ module Hiro
       end
 
       def game_loop
-        parse_input
         draw
+        parse_input
 
         game_loop
       end
