@@ -40,19 +40,19 @@ module Hiro
       end
 
       def up
-        { x: @x, y: @y - 1 }
+        { y: @y - 1 }
       end
 
       def down
-        { x: @x, y: @y + 1 }
+        { y: @y + 1 }
       end
 
       def right
-        { x: @x + 1, y: @y }
+        { x: @x + 1 }
       end
 
       def left
-        { x: @x - 1, y: @y }
+        { x: @x - 1 }
       end
 
       def move(x:, y:)

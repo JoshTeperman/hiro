@@ -50,6 +50,8 @@ module Hiro
           try_move(:right)
         when 'q'
           exit(0)
+        when "\e"
+          exit(0)
         else
           p key
         end
@@ -65,10 +67,11 @@ module Hiro
       end
 
       def try_move(direction)
-        new_coordinates = player.public_send(direction)
-        return if window.invalid_move?(new_coordinates)
+        updated_coordinate = player.public_send(direction)
+        coordinates = { x: player.x, y: player.y }.merge(updated_coordinate)
+        return if window.invalid_move?(coordinates)
 
-        player.move(new_coordinates)
+        player.move(coordinates)
       end
     end
   end
