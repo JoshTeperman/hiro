@@ -39,6 +39,7 @@ module Hiro
         Dry::Monads::Success(equipped_gear)
       end
 
+      # TODO: This should be extracted to a movement module when introducing movement for Enemy / Npc
       def up
         { y: @y - 1 }
       end

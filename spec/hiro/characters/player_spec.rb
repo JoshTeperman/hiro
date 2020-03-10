@@ -168,6 +168,16 @@ module Hiro
           expect(subject.equipped_gear).to eq(equipped_gear)
         end
       end
+
+      describe '#move' do
+        let(:coordinates) { { x: 2, y: 3 } }
+        before { subject.move(coordinates) }
+
+        it 'updates the player x and y coordinates', aggregate_failures: true do
+          expect(subject.x).to eq 2
+          expect(subject.y).to eq 3
+        end
+      end
     end
   end
 end
