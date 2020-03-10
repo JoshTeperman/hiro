@@ -19,8 +19,8 @@ module Hiro
           life: 20,
           mana: 30,
           character_level: 4,
-          x: 0,
-          y: 0,
+          x: 3,
+          y: 3,
           attributes: {
             max_life: 55,
             max_mana: 56,
@@ -98,31 +98,33 @@ module Hiro
       end
 
       describe '#try_move' do
-        let(:engine) { subject }
-        let(:move) { engine.try_move(direction) }
+        let(:move) { subject.try_move(direction) }
 
         context 'when direction is up' do
           let(:direction) { :up }
           it 'increments @y coordinate by -1' do
-            expect { move }.to change(engine.player, :y).by(-1)
+            expect { move }.to change(subject.player, :y).by(-1)
           end
         end
 
-        describe '#move_down' do
+        context 'when direction is down' do
+          let(:direction) { :down }
           it 'increments @y coordinate by 1' do
-            expect { subject.move_down }.to change(subject, :y).by(1)
+            expect { move }.to change(subject.player, :y).by(1)
           end
         end
 
-        describe '#move_right' do
+        context 'when direction is left' do
+          let(:direction) { :left }
+          it 'increments @x coordinate by -1' do
+            expect { move }.to change(subject.player, :x).by(-1)
+          end
+        end
+
+        context 'when direction is right' do
+          let(:direction) { :right }
           it 'increments @x coordinate by 1' do
-            expect { subject.move_right }.to change(subject, :x).by(1)
-          end
-        end
-
-        describe '#move_left' do
-          it 'increments @x coordinate by negative 1' do
-            expect { subject.move_left }.to change(subject, :x).by(-1)
+            expect { move }.to change(subject.player, :x).by(1)
           end
         end
 
