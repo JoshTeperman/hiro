@@ -128,10 +128,13 @@ module Hiro
           end
         end
 
-        describe '#valid_move?' do
-        end
+        context 'when the move is invalid' do
+          let(:direction) { :right }
+          before { allow(subject.window).to receive(:invalid_move?).and_return(true) }
 
-        describe '#adjacent?' do
+          it 'does nothing' do
+            expect { move }.not_to change(subject.player, :x)
+          end
         end
       end
     end

@@ -50,7 +50,7 @@ module Hiro
       end
 
       def invalid_move?(x:, y:)
-        [x, y].any?(&:negative?) || map.shape[y]&.[](x).nil?
+        [x, y].any?(&:negative?) || map.shape.dig(y, x).nil?
       end
 
       private

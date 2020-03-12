@@ -12,7 +12,7 @@ module Hiro
       let(:entities) { [] }
       let(:player) { build(:player) }
       let(:npc) { Characters::Npc.new }
-      let(:enemy) { Characters::Enemy.new(x: 1, y: 2) }
+      let(:enemy) { Characters::Enemy.new(x: 2, y: 1) }
       let(:enemy2) { Characters::Enemy.new }
       let(:sword) { build(:sword) }
       let(:chest) { build(:chest) }
@@ -131,6 +131,35 @@ module Hiro
             end
           end
         end
+      end
+
+      describe '#invalid_move?' do
+        context 'when the coordinates are valid' do
+          let(:coordinates) { { x: 1, y: 1 } }
+
+          it 'returns false' do
+            expect(subject.invalid_move?(coordinates)).to eq false
+          end
+        end
+
+        context 'when the coordinates include a negative' do
+          let(:coordinates) { { x: -1, y: 1 } }
+
+          it 'returns true' do
+            expect(subject.invalid_move?(coordinates)).to eq true
+          end
+        end
+
+        context 'when the coordinates don\'t exist' do
+          let(:coordinates) { { x: 100, y: 0 } }
+
+          it 'returns true' do
+            expect(subject.invalid_move?(coordinates)).to eq true
+          end
+        end
+      end
+
+      describe '#adjacent?' do
       end
     end
   end
