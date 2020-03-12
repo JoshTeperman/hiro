@@ -158,9 +158,6 @@ module Hiro
           end
         end
       end
-
-      describe '#adjacent?' do
-      end
     end
   end
 end

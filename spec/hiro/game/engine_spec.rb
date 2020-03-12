@@ -92,9 +92,17 @@ module Hiro
       end
 
       describe '#draw' do
-      end
+        it 'add_entities to window' do
+          subject.draw
+          expected_entities = [subject.player, *subject.enemies]
+          expect(subject.window.entities).to match_array(expected_entities)
+        end
 
-      describe '#run' do
+        it 'calls window#draw' do
+          engine = instance_spy('Engine')
+          engine.draw
+          expect(engine.window).to have_received(:draw).with(no_args)
+        end
       end
 
       describe '#try_move' do
