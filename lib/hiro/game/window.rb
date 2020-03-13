@@ -38,6 +38,7 @@ module Hiro
       def prepare_map_string
         map_copy = map.shape.deep_dup
         entities.map do |e|
+          # TODO: if entity already as same coordinates, draw the one with higher z-index
           case e.class.to_s
           when Characters::Player.to_s
             map_copy[e.y][e.x] = '*'

@@ -158,6 +158,21 @@ module Hiro
           end
         end
       end
+
+      describe '#overlapping?' do
+        context 'when two entities have the same coordinates' do
+          before do
+            player.x = 0
+            player.y = 0
+            enemy.x = 0
+            enemy.y = 0
+          end
+
+          it 'returns true' do
+            expect(subject.overlapping?(player, [enemy])).to eq true
+          end
+        end
+      end
     end
   end
 end
