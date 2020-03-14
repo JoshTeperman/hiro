@@ -28,14 +28,39 @@ module Hiro
 
       def game_loop
         draw
-        parse_input
-
+        input
         game_loop
       end
 
-      def parse_input
-        input = reader.read_keypress
-        parse_keypress(input)
+      def input
+        key_input = reader.read_keypress
+        parse_keypress(key_input)
+        overlapping = find_overlapping(player)
+        combat(overlapping) unless overlapping.empty?
+      end
+
+      def combat(enemies)
+        @game_state.is_in_combat = true
+        while in_combat?
+          player_combat_turn(enemies)
+          enemies.each { |enemy| enemy_combat_turn(enemy) if enemy.alive? }
+        end
+      end
+
+      def player_combat_turn(enemies)
+        action = combat_menu(enemies)
+        parse_combat_action(action)
+      end
+
+      def enemy_combat_turn(enemy)
+        return unless enemy.can_attack?
+
+        action = { type: 'attack', attacker: enemy, defenders: [player], method: enemy.weapon }
+        parse_combat_action(action)
+      end
+
+      def parse_combat_action(type:, attacker:, defenders:, method:)
+        "#{type} by #{attacker} against #{defenders.join(' & ')} using #{method}!!!"
       end
 
       def parse_keypress(key)
@@ -72,6 +97,10 @@ module Hiro
         return if window.invalid_move?(coordinates)
 
         player.move(coordinates)
+      end
+
+      def in_combat?
+        @game_state.is_in_combat
       end
     end
   end

@@ -145,6 +145,9 @@ module Hiro
           end
         end
       end
+
+      describe '#combat' do
+      end
     end
   end
 end
