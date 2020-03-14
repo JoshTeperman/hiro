@@ -9,6 +9,12 @@ module Hiro
       def initialize(x:, y:, life:, level:, strength:, dexterity:, defense:)
         @x = x
         @y = y
+        @life = life
+        @level = level
+        @strength = strength
+        @dexterity = dexterity
+        @defense = defense
+
         super(self)
       end
     end
