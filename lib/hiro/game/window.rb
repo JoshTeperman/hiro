@@ -54,7 +54,15 @@ module Hiro
         [x, y].any?(&:negative?) || map.shape.dig(y, x).nil?
       end
 
+      def find_overlapping(entity)
+        entities.select { |e| e != entity && overlapping?(entity, e) }
+      end
+
       private
+
+      def overlapping?(entity, other)
+        entity.x == other.x && entity.y == other.y
+      end
 
       def validate_entity(entity)
         entity.add_error('Could not add entity (invalid class)') unless valid_entity_class?(entity)

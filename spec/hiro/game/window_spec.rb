@@ -159,17 +159,15 @@ module Hiro
         end
       end
 
-      describe '#overlapping?' do
+      describe '#find_overlapping' do
         context 'when two entities have the same coordinates' do
-          before do
-            player.x = 0
-            player.y = 0
-            enemy.x = 0
-            enemy.y = 0
-          end
+          let(:overlapping_enemy_1) { enemy2 }
+          let(:overlapping_enemy_2) { Characters::Enemy.new }
 
-          it 'returns true' do
-            expect(subject.overlapping?(player, [enemy])).to eq true
+          before { subject.add_entities([player, enemy, overlapping_enemy_1, overlapping_enemy_2]) }
+
+          it 'returns the overlapping entities' do
+            expect(subject.find_overlapping(player)).to match_array([overlapping_enemy_1, overlapping_enemy_2])
           end
         end
       end
