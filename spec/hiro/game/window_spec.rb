@@ -12,8 +12,8 @@ module Hiro
       let(:entities) { [] }
       let(:player) { build(:player) }
       let(:npc) { Characters::Npc.new }
-      let(:enemy) { Characters::Enemy.new(x: 2, y: 1) }
-      let(:enemy2) { Characters::Enemy.new }
+      let(:enemy) { build(:enemy, x: 2, y: 1) }
+      let(:enemy2) { build(:enemy) }
       let(:sword) { build(:sword) }
       let(:chest) { build(:chest) }
 
@@ -162,7 +162,7 @@ module Hiro
       describe '#find_overlapping' do
         context 'when two entities have the same coordinates' do
           let(:overlapping_enemy_1) { enemy2 }
-          let(:overlapping_enemy_2) { Characters::Enemy.new }
+          let(:overlapping_enemy_2) { build(:enemy) }
 
           before { subject.add_entities([player, enemy, overlapping_enemy_1, overlapping_enemy_2]) }
 
