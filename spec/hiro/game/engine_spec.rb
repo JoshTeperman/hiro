@@ -31,7 +31,8 @@ module Hiro
           }
         }
       end
-      let(:game_state_params) { { window: { map: 'home', entities: [] } } }
+      let(:game_state_params) { { window: { map: 'home', entities: entities } } }
+      let(:entities) { [] }
       let(:mode) { 'normal' }
 
       describe '#initialize' do
