@@ -13,7 +13,7 @@ player:
     dexterity: 10
     vitality: 10
     intelligenc: 10
-game_state:
+state:
   window:
     map: home
     entities: []

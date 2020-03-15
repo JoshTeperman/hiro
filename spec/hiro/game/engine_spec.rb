@@ -8,7 +8,7 @@ module Hiro
       subject do
         described_class.new(
           player: player_params,
-          game_state: game_state_params,
+          state: state_params,
           mode: mode
         )
       end
@@ -31,7 +31,7 @@ module Hiro
           }
         }
       end
-      let(:game_state_params) { { window: { map: 'home', entities: entities } } }
+      let(:state_params) { { window: { map: 'home', entities: entities } } }
       let(:entities) { [] }
       let(:mode) { 'normal' }
 
@@ -41,8 +41,8 @@ module Hiro
         end
 
         it 'initializes a Game State', aggregate_failuers: true do
-          expect(subject.game_state).to be_instance_of Game::State
-          expect(subject.game_state.valid?). to eq true
+          expect(subject.state).to be_instance_of Game::State
+          expect(subject.state.valid?). to eq true
         end
 
         it 'initializes a Window', aggregate_failuers: true do
@@ -70,8 +70,8 @@ module Hiro
           expect(subject.valid_game?).to eq true
         end
 
-        context 'when if @game_state is invalid' do
-          before { subject.game_state.add_error('game_state error') }
+        context 'when if @state is invalid' do
+          before { subject.state.add_error('state error') }
           it 'returns false' do
             expect(subject.valid_game?).to eq false
           end

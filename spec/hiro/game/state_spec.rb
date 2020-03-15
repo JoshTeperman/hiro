@@ -5,9 +5,9 @@ module Hiro
     RSpec.describe State do
       it_behaves_like 'Errors'
 
-      subject { described_class.new(game_state) }
+      subject { described_class.new(state) }
 
-      let(:game_state) { { window: { map: map, entities: entities } } }
+      let(:state) { { window: { map: map, entities: entities } } }
       let(:map) { 'home' }
       let(:entities) { [] }
 
@@ -17,7 +17,7 @@ module Hiro
         end
 
         it 'has expected attributes' do
-          expect(subject.window).to eq game_state.fetch(:window)
+          expect(subject.window).to eq state.fetch(:window)
         end
       end
     end

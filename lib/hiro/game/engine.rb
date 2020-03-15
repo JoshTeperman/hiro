@@ -4,10 +4,10 @@ module Hiro
   module Game
     class Engine
       include Game::Errors
-      attr_reader :window, :player, :mode, :game_state, :enemies, :reader
-      def initialize(player:, game_state:, mode: 'normal')
-        @game_state = Game::State.new(game_state)
-        @window = Game::Window.new(game_state.fetch(:window))
+      attr_reader :window, :player, :mode, :state, :enemies, :reader
+      def initialize(player:, state:, mode: 'normal')
+        @state = Game::State.new(state)
+        @window = Game::Window.new(state.fetch(:window))
         @player = Characters::Player.new(player)
         @enemies = []
         @mode = mode
@@ -19,7 +19,7 @@ module Hiro
       def run
         # temporary error checking & printing at runtime to make sure there are no silent failures
         # will replace with error propogation inside game loop when I decide where the errors should be handled
-        return [game_state, window, player].flat_map(&:error_messages).map { |m| puts m } unless valid_game?
+        return [state, window, player].flat_map(&:error_messages).map { |m| puts m } unless valid_game?
 
         p "Started Hiro with Player: #{player.inspect} ..."
 
@@ -40,7 +40,7 @@ module Hiro
       end
 
       def combat(enemies)
-        @game_state.is_in_combat = true
+        @state.is_in_combat = true
         while in_combat?
           player_combat_turn(enemies)
           enemies.each { |enemy| enemy_combat_turn(enemy) if enemy.alive? }
@@ -83,7 +83,7 @@ module Hiro
       end
 
       def valid_game?
-        [game_state, window, player].all?(&:valid?)
+        [state, window, player].all?(&:valid?)
       end
 
       def draw
@@ -100,7 +100,7 @@ module Hiro
       end
 
       def in_combat?
-        @game_state.is_in_combat
+        @state.is_in_combat
       end
     end
   end
