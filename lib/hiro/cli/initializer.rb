@@ -11,14 +11,15 @@ module Hiro
 
       def initialize(argv)
         @options = Struct::OptionsParser.new(argv).parse
+        @state = {}
         @prompt = TTY::Prompt.new
       end
 
       def execute
         player_name = test_mode? ? 'test_player' : select_player_menu
-        load_player_data(player_name)
+        load_saved_game_data(player_name)
         # TODO: load game state and add to options
-        Hiro::Game::Engine.new(@options).run
+        Hiro::Game::Engine.new(**@options, **@state).run
       end
 
       private
@@ -61,12 +62,12 @@ module Hiro
         create_config
       end
 
-      def load_player_data(name)
+      def load_saved_game_data(name)
         path = test_mode? ? Hiro::Constants::TEST_PLAYER_PATH : Hiro::Constants::SAVED_GAMES_PATH
         file = File.join(path, "#{name}.yml")
 
-        player_data = File.exist?(file) ? YAML.load_file(file).deep_symbolize_keys : new_player_template(name)
-        @options.merge!(player_data)
+        saved_game_data = File.exist?(file) ? YAML.load_file(file).deep_symbolize_keys : new_player_template(name)
+        @state.merge!(saved_game_data)
       end
 
       def load_available_saved_games

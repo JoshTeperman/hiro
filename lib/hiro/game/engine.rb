@@ -4,12 +4,12 @@ module Hiro
   module Game
     class Engine
       include Game::Errors
-      attr_reader :window, :player, :mode, :state, :enemies, :reader
-      def initialize(player:, state:, mode: 'normal')
-        @state = Game::State.new(state)
-        @window = Game::Window.new(state.fetch(:window))
+      attr_reader :player, :mode, :enemies, :reader
+      def initialize(player:, current_map:, enemies:, mode: 'normal')
+        require 'pry';binding.pry
+        @state = Game::State.new(current_map: current_map, enemies: enemies)
         @player = Characters::Player.new(player)
-        @enemies = []
+        @window = Game::Window.new(map_name: current_map)
         @mode = mode
         @reader = TTY::Reader.new
 
@@ -35,7 +35,7 @@ module Hiro
       def input
         key_input = reader.read_keypress
         parse_keypress(key_input)
-        overlapping = find_overlapping(player)
+        overlapping = find_overlapping(state.player)
         combat(overlapping) unless overlapping.empty?
       end
 
@@ -83,12 +83,13 @@ module Hiro
       end
 
       def valid_game?
-        [state, window, player].all?(&:valid?)
+        [@state, @window, @player].all?(&:valid?)
       end
 
       def draw
-        window.add_entities([player, *enemies])
-        window.draw
+        require 'pry';binding.pry
+        @window.add_entities([@player, *@state.enemies])
+        @window.draw
       end
 
       def try_move(direction)
