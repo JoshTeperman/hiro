@@ -66,7 +66,8 @@ module Hiro
 
       def validate_entity(entity)
         entity.add_error('Could not add entity (invalid class)') unless valid_entity_class?(entity)
-        entity.add_error('Could not add entity (duplicate') if duplicate_entity?(entity)
+        entity.add_error('Could not add entity (duplicate)') if duplicate_entity?(entity)
+        require 'pry';binding.pry
       end
 
       def valid_entity_class?(entity)

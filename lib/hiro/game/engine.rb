@@ -4,14 +4,14 @@ module Hiro
   module Game
     class Engine
       include Game::Errors
-      attr_reader :player, :mode, :enemies, :reader
+      attr_reader :player, :mode, :reader, :state, :window, :key_events
       def initialize(player:, current_map:, enemies:, mode: 'normal')
-        require 'pry';binding.pry
         @state = Game::State.new(current_map: current_map, enemies: enemies)
         @player = Characters::Player.new(player)
         @window = Game::Window.new(map_name: current_map)
         @mode = mode
         @reader = TTY::Reader.new
+        @key_events = []
 
         super(self)
       end
@@ -23,24 +23,31 @@ module Hiro
 
         p "Started Hiro with Player: #{player.inspect} ..."
 
+        draw_window
         game_loop
       end
 
       def game_loop
-        draw
-        input
+        input_events
+        process_activity
+        draw_window
+
         game_loop
       end
 
-      def input
-        key_input = reader.read_keypress
-        parse_keypress(key_input)
-        overlapping = find_overlapping(state.player)
+      def input_events
+        receive_key_event(reader.read_keypress)
+      end
+
+      def process_activity
+        require 'pry';binding.pry
+        parse_keypress(key_events)
+        overlapping = window.find_overlapping(player)
         combat(overlapping) unless overlapping.empty?
       end
 
       def combat(enemies)
-        @state.is_in_combat = true
+        state.is_in_combat = true
         while in_combat?
           player_combat_turn(enemies)
           enemies.each { |enemy| enemy_combat_turn(enemy) if enemy.alive? }
@@ -63,7 +70,16 @@ module Hiro
         "#{type} by #{attacker} against #{defenders.join(' & ')} using #{method}!!!"
       end
 
-      def parse_keypress(key)
+      def receive_key_event(key_event)
+        key_events.push(key_event)
+      end
+
+      def parse_keypress(key_inputs)
+        return if key_inputs.empty?
+
+        add_error('More than one keypress detected') if key_inputs.length > 1
+
+        key = key_inputs.last
         case key
         when "\e[A"
           try_move(:up)
@@ -83,13 +99,12 @@ module Hiro
       end
 
       def valid_game?
-        [@state, @window, @player].all?(&:valid?)
+        [state, window, player].all?(&:valid?)
       end
 
-      def draw
-        require 'pry';binding.pry
-        @window.add_entities([@player, *@state.enemies])
-        @window.draw
+      def draw_window
+        window.add_entities([player, *state.enemies])
+        window.draw
       end
 
       def try_move(direction)
@@ -101,7 +116,7 @@ module Hiro
       end
 
       def in_combat?
-        @state.is_in_combat
+        state.is_in_combat
       end
     end
   end

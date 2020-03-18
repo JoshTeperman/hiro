@@ -3,7 +3,15 @@ module Hiro
     class Enemy
       include Game::Errors
 
-      attr_reader :name, :enemy_class, :max_life, :level, :strength, :dexterity, :defense, :min_damage, :max_damage
+      attr_reader :name,
+                  :enemy_class,
+                  :max_life,
+                  :level,
+                  :strength,
+                  :dexterity,
+                  :defense,
+                  :min_damage,
+                  :max_damage
       attr_accessor :x, :y, :life
 
       def initialize(x:, y:, enemy_class_attributes:, level:, name: nil)
@@ -23,17 +31,17 @@ module Hiro
       end
 
       def roll_max_life
-        min_possible_vitality = @enemy_class.min_vitality * @level
-        max_possible_vitality = @enemy_class.max_vitality * @level
+        min_possible_vitality = enemy_class.min_vitality * level
+        max_possible_vitality = enemy_class.max_vitality * level
         rand(min_possible_vitality..max_possible_vitality)
       end
 
       def roll_defense
-        rand(@enemy_class.min_defense..@enemy_class.max_defense)
+        rand(enemy_class.min_defense..enemy_class.max_defense)
       end
 
       def roll_dexterity
-        rand(@enemy_class.min_dexterity..@enemy_class.max_dexterity)
+        rand(enemy_class.min_dexterity..enemy_class.max_dexterity)
       end
 
       Struct.new(
