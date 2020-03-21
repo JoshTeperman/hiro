@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-require 'dry-monads'
 require 'tty-box'
 
 module Hiro
   module Game
     class Window
-      include Dry::Monads[:result]
       include Game::Errors
 
       attr_reader :map, :entities
@@ -20,12 +18,14 @@ module Hiro
       def add_entities(new_entities)
         new_entities.each do |entity|
           validate_entity(entity)
-          return Dry::Monads::Failure(entity) unless entity.valid?
-
-          entities << entity
+          # TODO: log error if invalid
+          entities << entity if entity.valid?
         end
+        entities
+      end
 
-        Dry::Monads::Success(entities)
+      def clear
+        @entities = []
       end
 
       def draw
@@ -65,9 +65,9 @@ module Hiro
       end
 
       def validate_entity(entity)
+        # Validating to catch bugs. Invalid entity should not break the game.
         entity.add_error('Could not add entity (invalid class)') unless valid_entity_class?(entity)
         entity.add_error('Could not add entity (duplicate)') if duplicate_entity?(entity)
-        require 'pry';binding.pry
       end
 
       def valid_entity_class?(entity)

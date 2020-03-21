@@ -6,9 +6,9 @@ module Hiro
     RSpec.describe Window do
       it_behaves_like 'Errors'
 
-      subject { described_class.new(map: map, entities: entities) }
+      subject { described_class.new(map_name: map_name, entities: entities) }
 
-      let(:map) { 'home' }
+      let(:map_name) { 'home' }
       let(:entities) { [] }
       let(:player) { build(:player) }
       let(:npc) { Characters::Npc.new }
@@ -49,41 +49,38 @@ module Hiro
         end
       end
 
+      describe '#clear' do
+        before { subject.add_entities([player, enemy]) }
+
+        it 'clears all entities from the window' do
+          expect { subject.clear }.to change(subject, :entities).from([player, enemy]).to([])
+        end
+      end
+
       describe '#add_entities' do
         let(:result) { subject.add_entities(new_entities_array) }
 
         context 'when all entities are characters or items' do
           let(:new_entities_array) { [sword, player, npc, chest, enemy] }
 
-          it 'is successful' do
-            expect(result.success?).to eq true
-          end
-
           it 'adds all entities to the entities array' do
-            expect(result.value!).to eq new_entities_array
+            expect(result).to eq new_entities_array
           end
 
           context 'and there are already entities' do
             before { subject.entities << enemy2 }
-            let(:new_entities_array) { [player, npc, enemy, sword, chest] }
 
-            it 'is successful' do
-              expect(result.success?).to eq true
-            end
+            let(:new_entities_array) { [player, npc, enemy, sword, chest] }
 
             it 'adds the new entities' do
               expected_result = new_entities_array + [enemy2]
-              expect(result.value!).to match_array(expected_result)
+              expect(result).to match_array(expected_result)
             end
           end
         end
 
         context 'when new_entities is empty' do
           let(:new_entities_array) { [] }
-
-          it 'is successful' do
-            expect(result.success?).to eq true
-          end
 
           it 'window entities should not change' do
             expect { result }.not_to change(subject.entities, :length)
@@ -93,29 +90,25 @@ module Hiro
         context 'when there is an invalid object' do
           let(:invalid_entity) { Struct.new('InvalidObject') { include Game::Errors; def initialize; super(self); end }.new }
           let(:invalid_class_error_message) { "'Could not add entity (invalid class)' Error on InvalidObject (:base)" }
-          let(:duplicate_error_message) { "'Could not add entity (duplicate' Error on Player (:base)" }
+          let(:duplicate_error_message) { "'Could not add entity (duplicate)' Error on Player (:base)" }
 
           context 'when there is a duplicate entity' do
             let(:new_entities_array) { [player, player] }
 
-            it 'is unsuccessful' do
-              expect(result.failure?).to eq true
+            it 'does not add the duplicate' do
+              expect(result).to eq [player]
             end
 
-            it 'returns an error message' do
-              expect(result.failure.error_messages).to include(duplicate_error_message)
+            it 'adds an error message to the entity' do
+              expect(result.first.error_messages).to include(duplicate_error_message)
             end
           end
 
           context 'when not all entities are characters or items' do
             let(:new_entities_array) { [invalid_entity, sword, chest, player, npc] }
 
-            it 'is unsuccessful' do
-              expect(result.failure?).to eq true
-            end
-
-            it 'should have an error message' do
-              expect(result.failure.error_messages).to include(invalid_class_error_message)
+            it 'only adds valid entities' do
+              expect(result).to match_array([sword, chest, player, npc])
             end
           end
 
@@ -123,11 +116,7 @@ module Hiro
             let(:new_entities_array) { [invalid_entity] }
 
             it 'is unsuccessful' do
-              expect(result.failure?).to eq true
-            end
-
-            it 'should have an error message' do
-              expect(result.failure.error_messages).to include(invalid_class_error_message)
+              expect(result).to eq []
             end
           end
         end

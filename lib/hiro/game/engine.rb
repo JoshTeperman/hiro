@@ -40,7 +40,6 @@ module Hiro
       end
 
       def process_activity
-        require 'pry';binding.pry
         parse_keypress(key_events)
         overlapping = window.find_overlapping(player)
         combat(overlapping) unless overlapping.empty?
@@ -103,6 +102,7 @@ module Hiro
       end
 
       def draw_window
+        window.clear
         window.add_entities([player, *state.enemies])
         window.draw
       end
