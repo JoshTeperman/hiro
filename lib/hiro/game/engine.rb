@@ -37,6 +37,7 @@ module Hiro
       end
 
       def input_events
+        clear_inputs
         receive_key_event(reader.read_keypress)
       end
 
@@ -76,8 +77,7 @@ module Hiro
 
       def parse_keypress(key_inputs)
         return if key_inputs.empty?
-
-        add_error('More than one keypress detected') if key_inputs.length > 1
+        return add_error('Multiple key_events detected', :key_events) if key_inputs.length > 1
 
         key = key_inputs.last
         case key
@@ -122,6 +122,12 @@ module Hiro
 
       def enemies
         state.enemies
+      end
+
+      private
+
+      def clear_inputs
+        @key_events = []
       end
     end
   end

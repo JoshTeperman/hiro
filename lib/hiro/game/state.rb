@@ -10,6 +10,7 @@ module Hiro
         @current_map = current_map
         @enemies = map_enemies(enemy_data)
         @is_in_combat = false
+
         super(self)
       end
 
