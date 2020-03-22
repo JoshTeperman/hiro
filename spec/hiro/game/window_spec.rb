@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'ostruct'
 require 'hiro/game/errors_spec'
 
@@ -6,9 +8,9 @@ module Hiro
     RSpec.describe Window do
       it_behaves_like 'Errors'
 
-      subject { described_class.new(map_name: map_name, entities: entities) }
+      subject { described_class.new(map: map, entities: entities) }
 
-      let(:map_name) { 'home' }
+      let(:map) { 'home' }
       let(:entities) { [] }
       let(:player) { build(:player) }
       let(:npc) { Characters::Npc.new }

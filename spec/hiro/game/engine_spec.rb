@@ -8,8 +8,9 @@ module Hiro
       subject do
         described_class.new(
           player: player_params,
-          state: state_params,
-          mode: mode
+          current_map: current_map,
+          mode: mode,
+          enemy_data: enemy_data
         )
       end
 
@@ -31,9 +32,28 @@ module Hiro
           }
         }
       end
-      let(:state_params) { { window: { map: 'home', entities: entities } } }
-      let(:entities) { [] }
+      let(:current_map) { 'home' }
       let(:mode) { 'normal' }
+      let(:enemy_data) do
+        [
+          {
+            x: 1,
+            y: 0,
+            level: 1,
+            enemy_class_attributes: {
+              type: 'test enemy',
+              min_vitality: 1,
+              max_vitality: 3,
+              min_damage: 1,
+              max_damage: 2,
+              min_dexterity: 1,
+              max_dexterity: 5,
+              min_defense: 1,
+              max_defense: 5,
+            }
+          },
+        ]
+      end
 
       describe '#initialize' do
         it 'initializes without error' do
@@ -92,17 +112,20 @@ module Hiro
         end
       end
 
-      describe '#draw' do
+      describe '#draw_window' do
         it 'add_entities to window' do
-          subject.draw
+          subject.draw_window
           expected_entities = [subject.player, *subject.enemies]
           expect(subject.window.entities).to match_array(expected_entities)
         end
 
         it 'calls window#draw' do
-          engine = instance_spy('Engine')
-          engine.draw
-          expect(engine.window).to have_received(:draw).with(no_args)
+          window = instance_double(Game::Window, add_entities: nil, draw: nil, clear: nil, )
+          allow(subject).to receive(:window).and_return(window)
+
+          subject.draw_window
+
+          expect(window).to have_received(:draw).with(no_args)
         end
       end
 

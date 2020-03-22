@@ -5,10 +5,11 @@ module Hiro
     class Engine
       include Game::Errors
       attr_reader :player, :mode, :reader, :state, :window, :key_events
-      def initialize(player:, current_map:, enemies:, mode: 'normal')
-        @state = Game::State.new(current_map: current_map, enemies: enemies)
+
+      def initialize(player:, current_map:, enemy_data:, mode: 'normal')
+        @state = Game::State.new(current_map: current_map, enemy_data: enemy_data)
         @player = Characters::Player.new(player)
-        @window = Game::Window.new(map_name: current_map)
+        @window = Game::Window.new(map: current_map)
         @mode = mode
         @reader = TTY::Reader.new
         @key_events = []
@@ -117,6 +118,10 @@ module Hiro
 
       def in_combat?
         state.is_in_combat
+      end
+
+      def enemies
+        state.enemies
       end
     end
   end

@@ -14,7 +14,7 @@ player:
     vitality: 5,
     intelligence: 5
 current_map: home
-enemies:
+enemy_data:
   - x: 1
     y: 0
     level: 1

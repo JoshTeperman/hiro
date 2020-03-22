@@ -6,19 +6,15 @@ module Hiro
       attr_reader :current_map, :enemies
       attr_accessor :is_in_combat
 
-      def initialize(current_map:, enemies:)
+      def initialize(current_map:, enemy_data:)
         @current_map = current_map
-        @enemies = map_enemies(enemies)
+        @enemies = map_enemies(enemy_data)
         @is_in_combat = false
         super(self)
       end
 
-      def map_enemies(enemies)
-        enemies.map do |enemy|
-          return enemy if enemy.is_a?(Characters::Enemy)
-
-          Characters::Enemy.new(enemy)
-        end
+      def map_enemies(enemy_data)
+        enemy_data.map { |enemy| Characters::Enemy.new(enemy) }
       end
     end
   end
