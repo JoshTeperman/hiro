@@ -61,6 +61,10 @@ module Hiro
         @y = y
       end
 
+      def weapon
+        equipped_gear.fetch(:weapon, 'barehands')
+      end
+
       private
 
       def default_player

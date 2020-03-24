@@ -1,10 +1,11 @@
 require 'tty-reader'
+require 'tty-prompt'
 
 module Hiro
   module Game
     class Engine
       include Game::Errors
-      attr_reader :player, :mode, :reader, :state, :window, :key_events
+      attr_reader :player, :mode, :reader, :state, :window, :key_events, :prompt
 
       def initialize(player:, current_map:, enemy_data:, mode: 'normal')
         @state = Game::State.new(current_map: current_map, enemy_data: enemy_data)
@@ -13,6 +14,7 @@ module Hiro
         @mode = mode
         @reader = TTY::Reader.new
         @key_events = []
+        @prompt = TTY::Prompt.new
 
         super(self)
       end
@@ -60,6 +62,27 @@ module Hiro
         parse_combat_action(action)
       end
 
+      def combat_menu(enemies)
+        message = "Battle against #{enemies.count} #{enemies.one? ? 'enemy' : 'enemies'}"
+        options = ['Attack', 'Run away']
+        enemy = enemies.last
+        p message
+
+        action = prompt.select('Choose an option', options)
+        { action: action, attacker: player, defender: enemy, method: player.weapon }
+      end
+
+      def parse_combat_action(action:, attacker:, defender:, method:)
+        require 'pry';binding.pry
+        case action
+        when 'Attack'
+          p "#{type} by #{attacker} against #{defenders.join(' & ')} using #{method}!!!"
+
+        when 'Run away'
+          { type: 'attack', attacker: enemy, defenders: [player], method: enemy.weapon }
+        end
+      end
+
       def enemy_combat_turn(enemy)
         return unless enemy.can_attack?
 
@@ -67,9 +90,6 @@ module Hiro
         parse_combat_action(action)
       end
 
-      def parse_combat_action(type:, attacker:, defenders:, method:)
-        "#{type} by #{attacker} against #{defenders.join(' & ')} using #{method}!!!"
-      end
 
       def receive_key_event(key_event)
         key_events.push(key_event)
