@@ -3,8 +3,7 @@ module Hiro
     class Enemy
       include Game::Errors
 
-      attr_reader :name,
-                  :enemy_class,
+      attr_reader :enemy_class,
                   :max_life,
                   :level,
                   :strength,
@@ -28,6 +27,18 @@ module Hiro
         @defense = roll_defense
 
         super(self)
+      end
+
+      def name
+        @name || type
+      end
+
+      def type
+        enemy_class.type
+      end
+
+      def alive?
+        life.positive?
       end
 
       def roll_max_life

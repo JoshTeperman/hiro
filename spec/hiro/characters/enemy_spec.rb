@@ -30,7 +30,7 @@ module Hiro
         }
       end
 
-      let(:type) { 'virus' }
+      let(:type) { 'Monster' }
       let(:min_vitality) { 1 }
       let(:max_vitality) { 5 }
       let(:min_damage) { 1 }
@@ -63,8 +63,8 @@ module Hiro
         context 'when there is no name' do
           let(:name) { nil }
 
-          it 'is an enemy without a name' do
-            expect(subject.name).to eq nil
+          it 'returns the enemy class type' do
+            expect(subject.name).to eq type
           end
         end
 

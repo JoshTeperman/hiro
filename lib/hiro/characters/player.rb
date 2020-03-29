@@ -62,7 +62,7 @@ module Hiro
       end
 
       def weapon
-        equipped_gear.fetch(:weapon, 'barehands')
+        equipped_gear.fetch(:weapon, 'bare hands')
       end
 
       private

@@ -18,8 +18,9 @@ enemy_data:
   - x: 1
     y: 0
     level: 1
+    name: 'Monster With Name'
     enemy_class_attributes:
-      type: 'test enemy'
+      type: 'Monster'
       min_vitality: 1
       max_vitality: 3
       min_damage: 1
@@ -32,7 +33,7 @@ enemy_data:
     y: 0
     level: 1
     enemy_class_attributes:
-      type: 'test enemy'
+      type: 'Monster'
       min_vitality: 1
       max_vitality: 3
       min_damage: 1
@@ -45,7 +46,7 @@ enemy_data:
     y: 0
     level: 1
     enemy_class_attributes:
-      type: 'test enemy'
+      type: 'Monster'
       min_vitality: 1
       max_vitality: 3
       min_damage: 1

@@ -24,6 +24,10 @@ module Hiro
         rand(@weapon_class.min_maximum_damage..@weapon_class.max_maximum_damage)
       end
 
+      def roll_attack_damage
+        rand(min_damage..max_damage)
+      end
+
       Struct.new(
         'WeaponClass',
         :type,

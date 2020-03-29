@@ -52,44 +52,47 @@ module Hiro
       def combat(enemies)
         state.is_in_combat = true
         while in_combat?
-          player_combat_turn(enemies)
+          # not handling multiple enemies for now
+          player_combat_turn(enemies.first)
+          return unless in_combat?
+
           enemies.each { |enemy| enemy_combat_turn(enemy) if enemy.alive? }
         end
       end
 
-      def player_combat_turn(enemies)
-        action = combat_menu(enemies)
-        parse_combat_action(action)
+      def player_combat_menu(enemy)
+        options = ['attack', 'run away']
+        prompt.select('Choose a combat action:', options)
       end
 
-      def combat_menu(enemies)
-        message = "Battle against #{enemies.count} #{enemies.one? ? 'enemy' : 'enemies'}"
-        options = ['Attack', 'Run away']
-        enemy = enemies.last
-        p message
-
-        action = prompt.select('Choose an option', options)
-        { action: action, attacker: player, defender: enemy, method: player.weapon }
+      def player_combat_turn(enemy)
+        p "Battle against #{enemy.name}"
+        combat_action = player_combat_menu(enemy)
+        parse_combat_action(action: combat_action, attacker: player, defender: enemy)
       end
 
-      def parse_combat_action(action:, attacker:, defender:, method:)
-        require 'pry';binding.pry
+      def parse_combat_action(action:, attacker:, defender:)
         case action
-        when 'Attack'
-          p "#{type} by #{attacker} against #{defenders.join(' & ')} using #{method}!!!"
-
-        when 'Run away'
-          { type: 'attack', attacker: enemy, defenders: [player], method: enemy.weapon }
+        when 'attack'
+          p "#{attacker.name} attacked #{defender.name} with #{attacker.weapon}"
+          result = calculate_attack(attacker: attacker, defender: defender)
+        when 'run away'
+          p 'you ran away'
+          state.is_in_combat = false
         end
       end
 
-      def enemy_combat_turn(enemy)
-        return unless enemy.can_attack?
-
-        action = { type: 'attack', attacker: enemy, defenders: [player], method: enemy.weapon }
-        parse_combat_action(action)
+      def calculate_attack(defender:, attacker:)
+        attack_damage = attacker.weapon.roll_attack_damage
+        defender.life -= attack_damage
+        p "#{defender.name} lost #{attack_damage} life"
+        p "#{defender.life} life remaining"
       end
 
+      def enemy_combat_turn(enemy)
+        action = {}
+        parse_combat_action(action)
+      end
 
       def receive_key_event(key_event)
         key_events.push(key_event)
