@@ -3,7 +3,8 @@ module Hiro
     class Enemy
       include Game::Errors
 
-      attr_reader :enemy_class,
+      attr_reader :name,
+                  :enemy_class,
                   :max_life,
                   :level,
                   :strength,
@@ -29,8 +30,8 @@ module Hiro
         super(self)
       end
 
-      def name
-        @name || type
+      def name_or_type
+        name || type
       end
 
       def type

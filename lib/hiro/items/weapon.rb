@@ -16,6 +16,14 @@ module Hiro
         super(self)
       end
 
+      def name_or_type
+        name || type
+      end
+
+      def type
+        weapon_class.type
+      end
+
       def roll_min_damage
         rand(@weapon_class.min_minimum_damage..@weapon_class.max_minimum_damage)
       end

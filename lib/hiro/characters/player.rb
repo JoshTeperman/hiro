@@ -20,8 +20,7 @@ module Hiro
         @x = player_params.fetch(:x)
         @y = player_params.fetch(:y)
         @attributes = player_params.fetch(:attributes)
-        @equipped_gear = {}
-
+        @equipped_gear = map_equipped_gear(player_params.fetch(:equipped_gear))
         super(self)
       end
 
@@ -66,6 +65,12 @@ module Hiro
       end
 
       private
+
+      def map_equipped_gear(weapon: nil)
+        weapon = Items::Weapon.new(weapon) if weapon
+        { weapon: weapon }
+      end
+
 
       def default_player
         {

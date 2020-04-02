@@ -14,6 +14,8 @@ module Hiro
         super(self)
       end
 
+      private
+
       def map_enemies(enemy_data)
         enemy_data.map { |enemy| Characters::Enemy.new(enemy) }
       end

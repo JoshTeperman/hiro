@@ -66,7 +66,7 @@ module Hiro
       end
 
       def player_combat_turn(enemy)
-        p "Battle against #{enemy.name}"
+        p "Battle against #{enemy.name_or_type}"
         combat_action = player_combat_menu(enemy)
         parse_combat_action(action: combat_action, attacker: player, defender: enemy)
       end
@@ -74,7 +74,7 @@ module Hiro
       def parse_combat_action(action:, attacker:, defender:)
         case action
         when 'attack'
-          p "#{attacker.name} attacked #{defender.name} with #{attacker.weapon}"
+          p "#{attacker.name} attacked #{defender.name_or_type} with #{attacker.weapon.name_or_type}"
           result = calculate_attack(attacker: attacker, defender: defender)
         when 'run away'
           p 'you ran away'

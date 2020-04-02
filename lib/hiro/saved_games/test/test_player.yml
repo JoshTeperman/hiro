@@ -13,6 +13,17 @@ player:
     dexterity: 5,
     vitality: 5,
     intelligence: 5
+  equipped_gear:
+    weapon:
+      weapon_class_attributes:
+        type: Long Sword
+        min_minimum_damage: 1,
+        max_minimum_damage: 2,
+        min_maximum_damage: 3,
+        max_maximum_damage: 5,
+      name: Test Sword
+      min_character_level: 1
+      range: 1
 current_map: home
 enemy_data:
   - x: 1
