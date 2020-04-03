@@ -47,6 +47,16 @@ module Hiro
         parse_keypress(key_events)
         overlapping = window.find_overlapping(player)
         combat(overlapping) unless overlapping.empty?
+        process_kills
+      end
+
+      def process_kills
+        kills = state.kills
+        p "killed #{kills.map(&:name_or_type).join(', ')}"
+        p state.enemies.length
+        p 'deleting'
+        state.clear_killed_enemies
+        p state.enemies.length
       end
 
       def combat(enemies)

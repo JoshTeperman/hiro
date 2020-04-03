@@ -14,6 +14,14 @@ module Hiro
         super(self)
       end
 
+      def kills
+        enemies.select(&:dead?)
+      end
+
+      def clear_killed_enemies
+        enemies.reject!(&:dead?)
+      end
+
       private
 
       def map_enemies(enemy_data)

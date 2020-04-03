@@ -42,6 +42,10 @@ module Hiro
         life.positive?
       end
 
+      def dead?
+        !alive?
+      end
+
       def roll_max_life
         min_possible_vitality = enemy_class.min_vitality * level
         max_possible_vitality = enemy_class.max_vitality * level
