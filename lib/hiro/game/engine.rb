@@ -93,6 +93,7 @@ module Hiro
         when 'run away'
           p 'you ran away'
           state.is_in_combat = false
+          player.move(state.last_player_coordinates)
         end
       end
 
