@@ -56,11 +56,10 @@ module Hiro
 
       def process_kills
         kills = state.kills
+        return if kills.empty?
+
         p "killed #{kills.map(&:name_or_type).join(', ')}"
-        p state.enemies.length
-        p 'deleting'
         state.clear_killed_enemies
-        p state.enemies.length
       end
 
       def combat(enemies)
@@ -70,18 +69,22 @@ module Hiro
           player_combat_turn(enemies.first)
           return unless in_combat?
 
-          enemies.each { |enemy| enemy_combat_turn(enemy) if enemy.alive? }
+          if enemies.all?(&:dead?)
+            state.is_in_combat = false
+          else
+            enemies.each { |enemy| enemy_combat_turn(enemy) }
+          end
         end
       end
 
-      def player_combat_menu(enemy)
+      def player_combat_menu
         options = ['attack', 'run away']
         prompt.select('Choose a combat action:', options)
       end
 
       def player_combat_turn(enemy)
         p "Battle against #{enemy.name_or_type}"
-        combat_action = player_combat_menu(enemy)
+        combat_action = player_combat_menu
         parse_combat_action(action: combat_action, attacker: player, defender: enemy)
       end
 
@@ -89,7 +92,7 @@ module Hiro
         case action
         when 'attack'
           p "#{attacker.name} attacked #{defender.name_or_type} with #{attacker.weapon.name_or_type}"
-          result = calculate_attack(attacker: attacker, defender: defender)
+          calculate_attack(attacker: attacker, defender: defender)
         when 'run away'
           p 'you ran away'
           state.is_in_combat = false

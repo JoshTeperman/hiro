@@ -32,8 +32,8 @@ enemy_data:
     name: 'Monster With Name'
     enemy_class_attributes:
       type: 'Monster'
-      min_vitality: 1
-      max_vitality: 3
+      min_vitality: 20
+      max_vitality: 20
       min_damage: 1
       max_damage: 2
       min_dexterity: 1
