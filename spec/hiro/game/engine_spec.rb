@@ -29,7 +29,8 @@ module Hiro
             dexterity: 99,
             vitality: 86,
             intelligence: 11,
-          }
+          },
+          equipped_gear: {}
         }
       end
       let(:current_map) { 'home' }
@@ -124,39 +125,57 @@ module Hiro
           allow(subject).to receive(:window).and_return(window)
 
           subject.draw_window
-
           expect(window).to have_received(:draw).with(no_args)
         end
       end
 
       describe '#try_move' do
-        let(:move) { subject.try_move(direction) }
+        let(:try_move) { subject.try_move(direction) }
+        let(:direction) { :up }
+
+        it 'calls player#move' do
+          player = instance_double(Characters::Player, x: 2, y: 2, move: nil, up: { y: 1 })
+          allow(subject).to receive(:player).and_return(player)
+
+          try_move
+          expect(player).to have_received(:move)
+        end
+
+        it 'sets state#last_player_coordinates to player coordinates BEFORE the move' do
+          expected_coordinates = {
+            x: player_params[:x],
+            y: player_params[:y]
+          }
+
+          try_move
+          expect(subject.state.last_player_coordinates).to eq expected_coordinates
+        end
 
         context 'when direction is up' do
           let(:direction) { :up }
           it 'increments @y coordinate by -1' do
-            expect { move }.to change(subject.player, :y).by(-1)
+            expect { try_move }.to change(subject.player, :y).by(-1)
           end
         end
 
         context 'when direction is down' do
           let(:direction) { :down }
           it 'increments @y coordinate by 1' do
-            expect { move }.to change(subject.player, :y).by(1)
+            expect { try_move }.to change(subject.player, :y).by(1)
           end
         end
 
         context 'when direction is left' do
           let(:direction) { :left }
           it 'increments @x coordinate by -1' do
-            expect { move }.to change(subject.player, :x).by(-1)
+            expect { try_move }.to change(subject.player, :x).by(-1)
           end
         end
 
         context 'when direction is right' do
           let(:direction) { :right }
           it 'increments @x coordinate by 1' do
-            expect { move }.to change(subject.player, :x).by(1)
+            expect { try_move }.to change(subject.player, :x).by(1)
           end
         end
 
@@ -165,7 +184,7 @@ module Hiro
           before { allow(subject.window).to receive(:invalid_move?).and_return(true) }
 
           it 'does nothing' do
-            expect { move }.not_to change(subject.player, :x)
+            expect { try_move }.not_to change(subject.player, :x)
           end
         end
       end

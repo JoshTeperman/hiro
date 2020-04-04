@@ -8,7 +8,11 @@ module Hiro
       attr_reader :player, :mode, :reader, :state, :window, :key_events, :prompt
 
       def initialize(player:, current_map:, enemy_data:, mode: 'normal')
-        @state = Game::State.new(current_map: current_map, enemy_data: enemy_data)
+        @state = Game::State.new(
+          current_map: current_map,
+          enemy_data: enemy_data,
+          last_player_coordinates: { x: player[:x], y: player[:y] }
+        )
         @player = Characters::Player.new(player)
         @window = Game::Window.new(map: current_map)
         @mode = mode
@@ -146,6 +150,7 @@ module Hiro
         coordinates = { x: player.x, y: player.y }.merge(updated_coordinate)
         return if window.invalid_move?(coordinates)
 
+        state.last_player_coordinates = { x: player.x, y: player.y }
         player.move(coordinates)
       end
 
