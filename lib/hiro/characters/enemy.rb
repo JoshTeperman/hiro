@@ -11,7 +11,8 @@ module Hiro
                   :defense,
                   :min_damage,
                   :max_damage,
-                  :weapon
+                  :weapon,
+                  :hit_chance
       attr_accessor :x, :y, :life
 
       def initialize(x:, y:, enemy_class_attributes:, weapon_attributes:, level:, name: nil)
@@ -27,6 +28,7 @@ module Hiro
         @max_damage = weapon.max_damage
         @dexterity = roll_dexterity
         @defense = roll_defense
+        @hit_chance = calculate_enemy_hit_chance
 
         super(self)
       end
@@ -49,6 +51,12 @@ module Hiro
 
       def lose_life(amount)
         @life -= amount
+      end
+
+      private
+
+      def calculate_enemy_hit_chance
+        level * 25 + dexterity
       end
 
       def roll_max_life

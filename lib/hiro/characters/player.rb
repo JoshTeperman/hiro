@@ -8,19 +8,34 @@ module Hiro
       include Dry::Monads[:result]
       include Game::Errors
 
-      attr_reader :attributes, :name, :life, :mana, :character_level, :hit_chance
-      attr_accessor :equipped_gear, :x, :y
+      attr_reader :name,
+                  :character_level,
+                  :life,
+                  :mana,
+                  :hit_chance,
+                  :max_life,
+                  :max_mana,
+                  :strength,
+                  :dexterity,
+                  :vitality,
+                  :defense
+      attr_accessor :equipped_items, :x, :y
 
       def initialize(player_params)
         @name = player_params.fetch(:name)
+        @character_level = player_params.fetch(:character_level)
         @life = player_params.fetch(:life)
         @mana = player_params.fetch(:mana)
-        @character_level = player_params.fetch(:character_level)
+        @max_life = player_params.fetch(:max_life)
+        @max_mana = player_params.fetch(:max_mana)
+        @strength = player_params.fetch(:strength)
+        @dexterity = player_params.fetch(:dexterity)
+        @vitality = player_params.fetch(:vitality)
         @x = player_params.fetch(:x)
         @y = player_params.fetch(:y)
-        @attributes = player_params.fetch(:attributes)
-        @equipped_gear = map_equipped_gear(player_params.fetch(:equipped_gear))
-        @hit_chance = calculate_player_hit_chance
+        @equipped_items = map_equipped_items(player_params.fetch(:equipped_items))
+        @hit_chance = calculate_hit_chance
+        @defense = calculate_defense
 
         super(self)
       end
@@ -29,14 +44,14 @@ module Hiro
         if item.values.last.min_character_level > character_level
           item[:errors] = ["#{item.keys.last.capitalize}: You do not meet the level requirements for this item"]
           return Dry::Monads::Failure(item)
-        elsif item[:weapon] == equipped_gear[:weapon]
+        elsif item[:weapon] == equipped_items[:weapon]
           item[:errors] = ["#{item.keys.last.capitalize}: Item is already equipped"]
           return Dry::Monads::Failure(item)
         end
 
-        equipped_gear[item.keys.last] = item.values.last
+        equipped_items[item.keys.last] = item.values.last
 
-        Dry::Monads::Success(equipped_gear)
+        Dry::Monads::Success(equipped_items)
       end
 
       def alive?
@@ -74,18 +89,31 @@ module Hiro
       end
 
       def weapon
-        equipped_gear.fetch(:weapon, 'bare hands')
+        equipped_items.fetch(:weapon, 'bare hands')
+      end
+
+      def chest
+        equipped_items.dig(:chest)
       end
 
       private
 
-      def map_equipped_gear(weapon: nil)
+      def map_equipped_items(weapon: nil)
         weapon = Items::Weapon.new(weapon) if weapon
         { weapon: weapon }
       end
 
-      def calculate_player_hit_chance
-        100 + attributes[:dexterity]
+      def calculate_hit_chance
+        100 + dexterity
+      end
+
+      def calculate_defense
+        total_item_defense = equipped_items.reduce(0) do |total, item|
+          total += item.defense if item.respond_to?(:defense)
+          total
+        end
+
+        strength + total_item_defense
       end
     end
   end

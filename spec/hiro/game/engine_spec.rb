@@ -17,19 +17,17 @@ module Hiro
       let(:player_params) do
         {
           name: 'Saved Player',
+          character_level: 4,
           life: 20,
           mana: 30,
-          character_level: 4,
+          max_life: 55,
+          max_mana: 56,
+          strength: 13,
+          dexterity: 99,
+          vitality: 86,
           x: 3,
           y: 3,
-          attributes: {
-            max_life: 55,
-            max_mana: 56,
-            strength: 13,
-            dexterity: 99,
-            vitality: 86,
-          },
-          equipped_gear: {}
+          equipped_items: {}
         }
       end
       let(:current_map) { 'home' }
@@ -47,12 +45,12 @@ module Hiro
               min_dexterity: 1,
               max_dexterity: 5,
               min_defense: 1,
-              max_defense: 5,
+              max_defense: 5
             },
             weapon_attributes: {
               min_damage: 1,
               max_damage: 2,
-              name: 'Enemy Sword',
+              name: 'Enemy Sword'
             }
           },
         ]
@@ -79,8 +77,8 @@ module Hiro
         it 'initializes a new Player', aggregate_failuers: true do
           player = subject.player
           expect(player).to be_instance_of Hiro::Characters::Player
+          expect(player.name).to eq player_params[:name]
           expect(player.valid?).to eq true
-          expect(player.attributes).to eq player_params.fetch(:attributes)
         end
 
         it 'sets the mode' do

@@ -9,19 +9,17 @@ module Hiro
       let(:player_params) do
         {
           name: 'Hiro',
+          character_level: 88,
           life: 921,
           mana: 1043,
-          character_level: 88,
+          max_life: 1000,
+          max_mana: 1100,
+          strength: 64,
+          dexterity: 50,
+          vitality: 91,
           x: 2,
           y: 8,
-          attributes: {
-            max_life: 1000,
-            max_mana: 1100,
-            strength: 64,
-            dexterity: 50,
-            vitality: 91,
-          },
-          equipped_gear: { weapon: nil }
+          equipped_items: { weapon: nil }
         }
       end
 
@@ -32,14 +30,18 @@ module Hiro
 
         it 'initializes a player with the given params' do
           aggregate_failures do
+            expect(subject.character_level).to eq(player_params[:character_level])
             expect(subject.name).to eq(player_params[:name])
             expect(subject.life).to eq(player_params[:life])
             expect(subject.mana).to eq(player_params[:mana])
-            expect(subject.character_level).to eq(player_params[:character_level])
+            expect(subject.max_life).to eq(player_params[:max_life])
+            expect(subject.max_mana).to eq(player_params[:max_mana])
+            expect(subject.strength).to eq(player_params[:strength])
+            expect(subject.dexterity).to eq(player_params[:dexterity])
+            expect(subject.vitality).to eq(player_params[:vitality])
             expect(subject.x).to eq(player_params[:x])
             expect(subject.y).to eq(player_params[:y])
-            expect(subject.attributes).to eq(player_params[:attributes])
-            expect(subject.equipped_gear).to eq(player_params[:equipped_gear])
+            expect(subject.equipped_items).to eq(player_params[:equipped_items])
           end
         end
       end
@@ -47,34 +49,34 @@ module Hiro
       describe '#equip' do
         let(:weapon) { instance_double(Items::Sword, min_character_level: 1) }
         before do
-          subject.equipped_gear = equipped_gear
+          subject.equipped_items = equipped_items
         end
 
         describe 'success' do
-          context 'when equipped_gear is empty' do
-            let(:equipped_gear) { {} }
+          context 'when equipped_items is empty' do
+            let(:equipped_items) { {} }
 
             it 'is successful' do
               expect(subject.equip(weapon: weapon).success?).to eq true
             end
 
             it 'equips the item' do
-              expect { subject.equip(weapon: weapon) }.to change { subject.equipped_gear[:weapon] }.from(nil).to(weapon)
+              expect { subject.equip(weapon: weapon) }.to change { subject.equipped_items[:weapon] }.from(nil).to(weapon)
             end
 
-            it 'returns the updated equipped_gear object' do
+            it 'returns the updated equipped_items object' do
               expect(subject.equip(weapon: weapon).value!).to eq(weapon: weapon)
             end
           end
 
-          context 'when equipped_gear is not empty' do
-            let(:equipped_gear) { { weapon: weapon } }
+          context 'when equipped_items is not empty' do
+            let(:equipped_items) { { weapon: weapon } }
 
             context 'when there is an item already equipped of the same type' do
               let(:weapon_2) { instance_double(Items::Sword, min_character_level: 1) }
 
               it 'replaces the item' do
-                expect { subject.equip(weapon: weapon_2) }.to change { subject.equipped_gear[:weapon] }.from(weapon).to(weapon_2)
+                expect { subject.equip(weapon: weapon_2) }.to change { subject.equipped_items[:weapon] }.from(weapon).to(weapon_2)
               end
             end
 
@@ -82,10 +84,10 @@ module Hiro
               let(:chest) { instance_double(Items::Chest, min_character_level: 1) }
 
               it 'equips the new item' do
-                expect { subject.equip(chest: chest) }.to change { subject.equipped_gear.count }.by(1)
+                expect { subject.equip(chest: chest) }.to change { subject.equipped_items.count }.by(1)
               end
 
-              it 'returns the updated equipped_gear object' do
+              it 'returns the updated equipped_items object' do
                 expect(subject.equip(chest: chest).value!).to eq(chest: chest, weapon: weapon)
               end
             end
@@ -94,7 +96,7 @@ module Hiro
 
         describe 'failure' do
           context 'when the item is already equipped' do
-            let(:equipped_gear) { { weapon: weapon } }
+            let(:equipped_items) { { weapon: weapon } }
             let(:result) { subject.equip(weapon: weapon) }
 
             it 'adds an error' do
@@ -102,13 +104,13 @@ module Hiro
             end
 
             it 'fails to equip the item' do
-              expect { result }.not_to(change { subject.equipped_gear })
+              expect { result }.not_to(change { subject.equipped_items })
             end
           end
 
           context 'when the the item level requirements are above the character level' do
             let(:weapon) { instance_double(Items::Sword, min_character_level: 100 ) }
-            let(:equipped_gear) { { weapon: weapon } }
+            let(:equipped_items) { { weapon: weapon } }
             let(:result) { subject.equip(weapon: weapon) }
 
             it 'adds an error' do
@@ -116,20 +118,20 @@ module Hiro
             end
 
             it 'fails to equip the item' do
-              expect { result }.not_to(change { subject.equipped_gear })
+              expect { result }.not_to(change { subject.equipped_items })
             end
           end
         end
       end
 
-      describe '#equipped_gear' do
-        let(:equipped_gear) { { weapon: weapon} }
+      describe '#equipped_items' do
+        let(:equipped_items) { { weapon: weapon} }
         let(:weapon) { instance_double(Items::Sword) }
 
-        before { subject.equipped_gear = equipped_gear }
+        before { subject.equipped_items = equipped_items }
 
-        it 'returns all the player\'s equipped_gear' do
-          expect(subject.equipped_gear).to eq(equipped_gear)
+        it 'returns all the player\'s equipped_items' do
+          expect(subject.equipped_items).to eq(equipped_items)
         end
       end
 

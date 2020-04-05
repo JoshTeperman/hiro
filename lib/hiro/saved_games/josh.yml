@@ -12,7 +12,7 @@ player:
     strength: 5,
     dexterity: 5,
     vitality: 5,
-  equipped_gear:
+  equipped_items:
     weapon:
       weapon_class_attributes:
         type: Long Sword

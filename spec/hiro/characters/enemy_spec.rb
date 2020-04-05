@@ -71,6 +71,14 @@ module Hiro
           end
         end
 
+        describe '#roll_max_life' do
+          it 'returns max life' do
+            expected_min_result = min_vitality * enemy_params[:level]
+            expected_max_result = max_vitality * enemy_params[:level]
+            expect(subject.max_life).to be_between(expected_min_result, expected_max_result)
+          end
+        end
+
         describe 'Weapon Struct' do
           let(:weapon) { subject.weapon }
           it 'instantiates an instance of Struct::Weapon', aggregate_failures: true do
@@ -89,14 +97,6 @@ module Hiro
             expect(enemy_class.max_dexterity).to eq max_dexterity
             expect(enemy_class.min_defense).to eq min_defense
             expect(enemy_class.max_defense).to eq max_defense
-          end
-
-          describe '#roll_max_life' do
-            it 'returns max life' do
-              expected_min_result = min_vitality * enemy_params[:level]
-              expected_max_result = max_vitality * enemy_params[:level]
-              expect(subject.roll_max_life).to be_between(expected_min_result, expected_max_result)
-            end
           end
         end
       end

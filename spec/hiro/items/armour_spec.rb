@@ -38,7 +38,7 @@ module Hiro
           aggregate_failures do
             expect(subject.name).to eq name
             expect(subject.min_character_level).to eq min_character_level
-            expect(subject.base_defense).to be_between(min_defense, max_defense)
+            expect(subject.defense).to be_between(min_defense, max_defense)
           end
         end
 
