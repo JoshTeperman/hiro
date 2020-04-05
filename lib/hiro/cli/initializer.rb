@@ -94,7 +94,6 @@ module Hiro
               strength: 5,
               dexterity: 5,
               vitality: 5,
-              intelligence: 5
             }
           },
           state: { window: { map: 'home', entities: [] } }

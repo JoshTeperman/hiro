@@ -20,7 +20,6 @@ module Hiro
             strength: 64,
             dexterity: 50,
             vitality: 91,
-            intelligence: 45,
           },
           equipped_gear: { weapon: nil }
         }

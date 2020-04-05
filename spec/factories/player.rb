@@ -12,7 +12,6 @@ FactoryBot.define do
       strength: 5,
       dexterity: 5,
       vitality: 5,
-      intelligence: 5,
     },
     equipped_gear: {}
   }
