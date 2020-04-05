@@ -28,7 +28,12 @@ module Hiro
         # will replace with error propogation inside game loop when I decide where the errors should be handled
         return [state, window, player].flat_map(&:error_messages).map { |m| puts m } unless valid_game?
 
-        p "Started Hiro with Player: #{player.inspect} ..."
+        p 'Started Hiro...'
+        if test_mode?
+          p 'Loading game in test mode ...'
+        else
+          p "Loading Character '#{player.name}'..."
+        end
 
         draw_window
         game_loop
@@ -38,7 +43,6 @@ module Hiro
         input_events
         process_activity
         draw_window
-
         game_loop
       end
 
@@ -58,40 +62,48 @@ module Hiro
         kills = state.kills
         return if kills.empty?
 
-        p "killed #{kills.map(&:name_or_type).join(', ')}"
+        p "You killed #{kills.map(&:name).join(', ')}"
+        p 'your reward is <REWARD>'
         state.clear_killed_enemies
       end
 
       def combat(enemies)
         state.is_in_combat = true
         while in_combat?
-          # not handling multiple enemies for now
-          player_combat_turn(enemies.first)
-          return unless in_combat?
+          if enemies.any?(&:alive?)
+            player_combat_turn(enemies.first)
+            return unless in_combat?
 
-          if enemies.all?(&:dead?)
-            state.is_in_combat = false
+            enemies.filter(&:alive?).each do |enemy|
+              enemy_combat_turn(enemy)
+              handle_player_death(enemy: enemy) if player.dead?
+            end
           else
-            enemies.each { |enemy| enemy_combat_turn(enemy) }
+            state.is_in_combat = false
           end
         end
       end
 
-      def player_combat_menu
+      def handle_player_death(enemy:)
+        p "You were killed by #{enemy.name}."
+        exit(0)
+      end
+
+      def player_combat_action_selection_menu
         options = ['attack', 'run away']
         prompt.select('Choose a combat action:', options)
       end
 
       def player_combat_turn(enemy)
-        p "Battle against #{enemy.name_or_type}"
-        combat_action = player_combat_menu
+        p "Battle against #{enemy.name} (#{enemy.life} life)"
+        combat_action = player_combat_action_selection_menu
         parse_combat_action(action: combat_action, attacker: player, defender: enemy)
       end
 
       def parse_combat_action(action:, attacker:, defender:)
         case action
         when 'attack'
-          p "#{attacker.name} attacked #{defender.name_or_type} with #{attacker.weapon.name_or_type}"
+          p "#{attacker.name} attacked #{defender.name} with #{attacker.weapon.name}"
           calculate_attack(attacker: attacker, defender: defender)
         when 'run away'
           p 'you ran away'
@@ -102,14 +114,17 @@ module Hiro
 
       def calculate_attack(defender:, attacker:)
         attack_damage = attacker.weapon.roll_attack_damage
-        defender.life -= attack_damage
-        p "#{defender.name} lost #{attack_damage} life"
-        p "#{defender.life} life remaining"
+        defender.lose_life(attack_damage)
+        p "⚔️  Attack dealt #{attack_damage} damage to #{defender.name}"
+        p "❤️  #{defender.life} life remaining" if defender.alive?
       end
 
       def enemy_combat_turn(enemy)
-        action = {}
-        parse_combat_action(action)
+        p 'enemy combat turn'
+        parse_combat_action(action: 'attack', attacker: enemy, defender: player)
+        if !player.alive?
+          state.is_in_combat = false
+        end
       end
 
       def receive_key_event(key_event)
@@ -131,6 +146,8 @@ module Hiro
         when "\e[C"
           try_move(:right)
         when 'q'
+          exit(0)
+        when 'Q'
           exit(0)
         when "\e"
           exit(0)
@@ -170,6 +187,10 @@ module Hiro
 
       def clear_inputs
         @key_events = []
+      end
+
+      def test_mode?
+        mode == 'test'
       end
     end
   end

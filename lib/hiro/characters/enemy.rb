@@ -47,6 +47,10 @@ module Hiro
         !alive?
       end
 
+      def lose_life(amount)
+        @life -= amount
+      end
+
       def roll_max_life
         min_possible_vitality = enemy_class.min_vitality * level
         max_possible_vitality = enemy_class.max_vitality * level
@@ -74,6 +78,10 @@ module Hiro
       )
     end
 
-    Struct.new('Weapon', :type, :min_damage, :max_damage, :range, keyword_init: true)
+    Struct.new('Weapon', :name, :min_damage, :max_damage, :range, keyword_init: true) do
+      def roll_attack_damage
+        rand(min_damage..max_damage)
+      end
+    end
   end
 end

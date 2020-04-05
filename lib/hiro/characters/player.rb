@@ -38,6 +38,18 @@ module Hiro
         Dry::Monads::Success(equipped_gear)
       end
 
+      def alive?
+        life.positive?
+      end
+
+      def dead?
+        !alive?
+      end
+
+      def lose_life(amount)
+        @life -= amount
+      end
+
       # TODO: This should be extracted to a movement module when introducing movement for Enemy / Npc
       def up
         { y: @y - 1 }

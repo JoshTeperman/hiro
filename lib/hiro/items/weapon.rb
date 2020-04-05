@@ -16,8 +16,8 @@ module Hiro
         super(self)
       end
 
-      def name_or_type
-        name || type
+      def name
+        @name || type
       end
 
       def type

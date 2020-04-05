@@ -39,7 +39,7 @@ enemy_data:
       min_defense: 1
       max_defense: 5
     weapon_attributes:
-      type: Monster Sword
+      name: Monster Sword
       min_damage: 1
       max_damage: 2
       range: 1
@@ -55,7 +55,7 @@ enemy_data:
       min_defense: 1
       max_defense: 5
     weapon_attributes:
-      type: Monster Sword
+      name: Monster Sword
       min_damage: 1
       max_damage: 2
       range: 1
@@ -71,7 +71,7 @@ enemy_data:
       min_defense: 1
       max_defense: 5
     weapon_attributes:
-      type: Monster Sword
+      name: Monster Sword
       min_damage: 1
       max_damage: 2
       range: 1
