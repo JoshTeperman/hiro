@@ -93,10 +93,25 @@ module Hiro
               max_mana: 5,
               strength: 5,
               dexterity: 5,
-              vitality: 5,
+              vitality: 5
+            },
+            equipped_gear: {
+              weapon: {
+                weapon_class_attributes: {
+                  type: 'Long Sword',
+                  min_minimum_damage: 1,
+                  max_minimum_damage: 1,
+                  min_maximum_damage: 3,
+                  max_maximum_damage: 3,
+                },
+                name: nil,
+                min_character_level: 1,
+                range: 1
+              }
             }
           },
-          state: { window: { map: 'home', entities: [] } }
+          current_map: 'home',
+          enemy_data: []
         }
       end
 

@@ -16,9 +16,9 @@ player:
     weapon:
       weapon_class_attributes:
         type: Long Sword
-        min_minimum_damage: 1,
+        min_minimum_damage: 2,
         max_minimum_damage: 2,
-        min_maximum_damage: 3,
+        min_maximum_damage: 5,
         max_maximum_damage: 5,
       name: Test Sword
       min_character_level: 1

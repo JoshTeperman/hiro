@@ -1,19 +1,79 @@
 ---
 player:
-  name: Josh
-  life: 20
-  mana: 20
-  character_level: 5
-  x: 1
-  y: 2
+  name: Test Player
+  life: 10
+  mana: 10
+  character_level: 1
+  x: 0
+  y: 0
   attributes:
-    max_life: 50
-    max_mana: 50
-    strength: 10
-    dexterity: 10
-    vitality: 10
-    intelligenc: 10
-state:
-  window:
-    map: home
-    entities: []
+    max_life: 5,
+    max_mana: 5,
+    strength: 5,
+    dexterity: 5,
+    vitality: 5,
+  equipped_gear:
+    weapon:
+      weapon_class_attributes:
+        type: Long Sword
+        min_minimum_damage: 2,
+        max_minimum_damage: 2,
+        min_maximum_damage: 5,
+        max_maximum_damage: 5,
+      name: Test Sword
+      min_character_level: 1
+      range: 1
+current_map: home
+enemy_data:
+  - x: 1
+    y: 0
+    level: 1
+    name: Monster With Name
+    enemy_class_attributes:
+      type: Monster
+      min_vitality: 20
+      max_vitality: 20
+      min_dexterity: 1
+      max_dexterity: 5
+      min_defense: 1
+      max_defense: 5
+    weapon_attributes:
+      name: Monster Sword
+      min_damage: 1
+      max_damage: 2
+      range: 1
+  - x: 2
+    y: 0
+    level: 1
+    enemy_class_attributes:
+      type: Monster
+      min_vitality: 1
+      max_vitality: 3
+      min_dexterity: 1
+      max_dexterity: 5
+      min_defense: 1
+      max_defense: 5
+    weapon_attributes:
+      name: Monster Sword
+      min_damage: 1
+      max_damage: 2
+      range: 1
+  - x: 3
+    y: 0
+    level: 1
+    enemy_class_attributes:
+      type: Monster
+      min_vitality: 1
+      max_vitality: 3
+      min_dexterity: 1
+      max_dexterity: 5
+      min_defense: 1
+      max_defense: 5
+    weapon_attributes:
+      name: Monster Sword
+      min_damage: 1
+      max_damage: 2
+      range: 1
+
+
+

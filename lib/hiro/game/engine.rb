@@ -86,6 +86,8 @@ module Hiro
 
       def handle_player_death(enemy:)
         p "You were killed by #{enemy.name}."
+        p 'load last saved game (y/n)' if prompt.ask('Load last saved game?') == 'y'
+        p 'Thanks for playing, goodbye 👋'
         exit(0)
       end
 
