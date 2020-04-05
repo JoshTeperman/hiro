@@ -70,6 +70,21 @@ enemy_data:
       name: Monster Sword
       min_damage: 1
       max_damage: 2
+  - x: 1
+    y: 1
+    level: 5
+    enemy_class_attributes:
+      type: Monster
+      min_vitality: 5
+      max_vitality: 5
+      min_dexterity: 1
+      max_dexterity: 5
+      min_defense: 1
+      max_defense: 5
+    weapon_attributes:
+      name: Monster Sword
+      min_damage: 5
+      max_damage: 10
 
 
 

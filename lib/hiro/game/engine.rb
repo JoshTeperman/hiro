@@ -16,18 +16,14 @@ module Hiro
         @player = Characters::Player.new(player)
         @window = Game::Window.new(map: current_map)
         @mode = mode
-        @reader = TTY::Reader.new
         @key_events = []
+        @reader = TTY::Reader.new
         @prompt = TTY::Prompt.new
 
         super(self)
       end
 
       def run
-        # temporary error checking & printing at runtime to make sure there are no silent failures
-        # will replace with error propogation inside game loop when I decide where the errors should be handled
-        return [state, window, player].flat_map(&:error_messages).map { |m| puts m } unless valid_game?
-
         p 'Started Hiro...'
         if test_mode?
           p 'Loading game in test mode ...'
@@ -53,8 +49,8 @@ module Hiro
 
       def process_activity
         parse_keypress(key_events)
-        overlapping = window.find_overlapping(player)
-        combat(overlapping) unless overlapping.empty?
+        encountered_enemies = window.find_overlapping(player)
+        combat(encountered_enemies) unless encountered_enemies.empty?
         process_kills
       end
 
@@ -70,25 +66,31 @@ module Hiro
       def combat(enemies)
         state.is_in_combat = true
         while in_combat?
-          if enemies.any?(&:alive?)
-            player_combat_turn(enemies.first)
-            return unless in_combat?
+          return state.is_in_combat = false if enemies.all?(&:dead?)
 
-            enemies.filter(&:alive?).each do |enemy|
-              enemy_combat_turn(enemy)
-              handle_player_death(enemy: enemy) if player.dead?
-            end
-          else
-            state.is_in_combat = false
-          end
+          player_combat_turn(enemies.first)
+          return unless in_combat?
+
+          alive_enemies = enemies.filter(&:alive?)
+          alive_enemies.each { |enemy| enemy_combat_turn(enemy) } if in_combat?
         end
       end
 
       def handle_player_death(enemy:)
+        state.is_in_combat = false
         p "You were killed by #{enemy.name}."
-        p 'load last saved game (y/n)' if prompt.ask('Load last saved game?') == 'y'
-        p 'Thanks for playing, goodbye 👋'
-        exit(0)
+
+        options = ['Load last saved game', 'exit']
+        answer = prompt.select('What would you like to do?', options)
+
+        case answer
+        when 'exit'
+          p 'Thanks for playing, goodbye 👋'
+          exit(0)
+        when 'Load last saved game'
+          p 'Saved games not yet available'
+          exit(0)
+        end
       end
 
       def player_combat_action_selection_menu
@@ -124,9 +126,9 @@ module Hiro
       def enemy_combat_turn(enemy)
         p 'enemy combat turn'
         parse_combat_action(action: 'attack', attacker: enemy, defender: player)
-        if !player.alive?
-          state.is_in_combat = false
-        end
+        return if player.alive?
+
+        handle_player_death(enemy: enemy)
       end
 
       def receive_key_event(key_event)
