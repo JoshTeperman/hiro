@@ -3,35 +3,36 @@ module Hiro
     class Enemy
       include Game::Errors
 
-      attr_reader :name,
-                  :enemy_class,
+      attr_reader :enemy_class,
                   :max_life,
                   :level,
                   :strength,
                   :dexterity,
                   :defense,
                   :min_damage,
-                  :max_damage
+                  :max_damage,
+                  :weapon
       attr_accessor :x, :y, :life
 
-      def initialize(x:, y:, enemy_class_attributes:, level:, name: nil)
+      def initialize(x:, y:, enemy_class_attributes:, weapon_attributes:, level:, name: nil)
         @x = x
         @y = y
         @name = name
         @enemy_class = Struct::EnemyClass.new(enemy_class_attributes)
+        @weapon = Struct::Weapon.new(weapon_attributes)
         @level = level
         @max_life = roll_max_life
         @life = @max_life
-        @min_damage = enemy_class.min_damage
-        @max_damage = enemy_class.max_damage
+        @min_damage = weapon.min_damage
+        @max_damage = weapon.max_damage
         @dexterity = roll_dexterity
         @defense = roll_defense
 
         super(self)
       end
 
-      def name_or_type
-        name || type
+      def name
+        @name || type
       end
 
       def type
@@ -65,8 +66,6 @@ module Hiro
         :type,
         :min_vitality,
         :max_vitality,
-        :min_damage,
-        :max_damage,
         :min_dexterity,
         :max_dexterity,
         :min_defense,
@@ -74,5 +73,7 @@ module Hiro
         keyword_init: true
       )
     end
+
+    Struct.new('Weapon', :type, :min_damage, :max_damage, :range, keyword_init: true)
   end
 end

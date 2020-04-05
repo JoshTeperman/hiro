@@ -11,6 +11,7 @@ module Hiro
           y: 0,
           name: name,
           enemy_class_attributes: enemy_class_attributes,
+          weapon_attributes: enemy_weapon_attributes,
           level: 1
         }
       end
@@ -21,8 +22,6 @@ module Hiro
           type: type,
           min_vitality: min_vitality,
           max_vitality: max_vitality,
-          min_damage: min_damage,
-          max_damage: max_damage,
           min_dexterity: min_dexterity,
           max_dexterity: max_dexterity,
           min_defense: min_defense,
@@ -33,12 +32,18 @@ module Hiro
       let(:type) { 'Monster' }
       let(:min_vitality) { 1 }
       let(:max_vitality) { 5 }
-      let(:min_damage) { 1 }
-      let(:max_damage) { 5 }
       let(:min_dexterity) { 1 }
       let(:max_dexterity) { 5 }
       let(:min_defense) { 1 }
       let(:max_defense) { 10 }
+      let(:enemy_weapon_attributes) do
+        {
+          type: 'Enemy Sword',
+          min_damage: 1,
+          max_damage: 5,
+          range: 1
+        }
+      end
 
       describe '#initialize' do
         it_behaves_like 'Errors'
@@ -54,8 +59,6 @@ module Hiro
           expect(subject.enemy_class).to be_instance_of Struct::EnemyClass
           expect(subject.level).to eq enemy_params[:level]
           expect(subject.life).to eq subject.max_life
-          expect(subject.min_damage).to eq min_damage
-          expect(subject.max_damage).to eq max_damage
           expect(subject.dexterity).to be_between(min_dexterity, max_dexterity)
           expect(subject.defense).to be_between(min_defense, max_defense)
         end
@@ -68,13 +71,21 @@ module Hiro
           end
         end
 
-        describe 'EnemyClass' do
+        describe 'Weapon Struct' do
+          let(:weapon) { subject.weapon }
+          it 'instantiates an instance of Struct::Weapon', aggregate_failures: true do
+            expect(weapon.type).to eq enemy_weapon_attributes[:type]
+            expect(weapon.range).to eq enemy_weapon_attributes[:range]
+            expect(weapon.min_damage).to eq enemy_weapon_attributes[:min_damage]
+            expect(weapon.max_damage).to eq enemy_weapon_attributes[:max_damage]
+          end
+        end
+
+        describe 'EnemyClass Struct' do
           let(:enemy_class) { subject.enemy_class }
-          it 'instantiates an intance of Struct::EnemyClass', aggregate_failures: true do
+          it 'instantiates an instance of Struct::EnemyClass', aggregate_failures: true do
             expect(enemy_class.min_vitality).to eq min_vitality
             expect(enemy_class.max_vitality).to eq max_vitality
-            expect(enemy_class.min_damage).to eq min_damage
-            expect(enemy_class.max_damage).to eq max_damage
             expect(enemy_class.min_dexterity).to eq min_dexterity
             expect(enemy_class.max_dexterity).to eq max_dexterity
             expect(enemy_class.min_defense).to eq min_defense

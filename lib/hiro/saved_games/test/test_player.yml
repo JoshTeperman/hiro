@@ -29,43 +29,52 @@ enemy_data:
   - x: 1
     y: 0
     level: 1
-    name: 'Monster With Name'
+    name: Monster With Name
     enemy_class_attributes:
-      type: 'Monster'
+      type: Monster
       min_vitality: 20
       max_vitality: 20
-      min_damage: 1
-      max_damage: 2
       min_dexterity: 1
       max_dexterity: 5
       min_defense: 1
       max_defense: 5
+    weapon_attributes:
+      type: Monster Sword
+      min_damage: 1
+      max_damage: 2
+      range: 1
   - x: 2
     y: 0
     level: 1
     enemy_class_attributes:
-      type: 'Monster'
+      type: Monster
       min_vitality: 1
       max_vitality: 3
-      min_damage: 1
-      max_damage: 2
       min_dexterity: 1
       max_dexterity: 5
       min_defense: 1
       max_defense: 5
+    weapon_attributes:
+      type: Monster Sword
+      min_damage: 1
+      max_damage: 2
+      range: 1
   - x: 3
     y: 0
     level: 1
     enemy_class_attributes:
-      type: 'Monster'
+      type: Monster
       min_vitality: 1
       max_vitality: 3
-      min_damage: 1
-      max_damage: 2
       min_dexterity: 1
       max_dexterity: 5
       min_defense: 1
       max_defense: 5
+    weapon_attributes:
+      type: Monster Sword
+      min_damage: 1
+      max_damage: 2
+      range: 1
 
 
 
