@@ -22,6 +22,7 @@ module Hiro
             vitality: 91,
             intelligence: 45,
           },
+          equipped_gear: { weapon: nil }
         }
       end
 
@@ -39,43 +40,7 @@ module Hiro
             expect(subject.x).to eq(player_params[:x])
             expect(subject.y).to eq(player_params[:y])
             expect(subject.attributes).to eq(player_params[:attributes])
-          end
-        end
-
-        context 'when player_params are empty' do
-          let(:player_params) { {} }
-
-          it 'initializes a new Player without error' do
-            expect { subject }.not_to raise_error
-          end
-
-          it 'initializes a new player with default attributes' do
-            defaults = {
-              name: 'Hiro',
-              life: 10,
-              mana: 10,
-              character_level: 1,
-              x: 0,
-              y: 0,
-              attributes: {
-                max_life: 5,
-                max_mana: 5,
-                strength: 5,
-                dexterity: 5,
-                vitality: 5,
-                intelligence: 5,
-              },
-            }
-
-            aggregate_failures do
-              expect(subject.name).to eq(defaults[:name])
-              expect(subject.life).to eq(defaults[:life])
-              expect(subject.mana).to eq(defaults[:mana])
-              expect(subject.character_level).to eq(defaults[:character_level])
-              expect(subject.x).to eq(defaults[:x])
-              expect(subject.y).to eq(defaults[:y])
-              expect(subject.attributes).to eq(defaults[:attributes])
-            end
+            expect(subject.equipped_gear).to eq(player_params[:equipped_gear])
           end
         end
       end

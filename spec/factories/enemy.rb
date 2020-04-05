@@ -8,13 +8,17 @@ FactoryBot.define do
       type: 'test',
       min_vitality: 1,
       max_vitality: 5,
-      min_damage: 1,
-      max_damage: 5,
       min_dexterity: 1,
       max_dexterity: 5,
       min_defense: 1,
       max_defense: 10,
     },
+    weapon_attributes: {
+      name: 'Enemy Sword',
+      range: 1,
+      min_damage: 1,
+      max_damage: 5
+    }
   }
 
   factory :enemy, class: Hiro::Characters::Enemy do

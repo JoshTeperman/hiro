@@ -52,8 +52,8 @@ module Hiro
         context 'when it has no name' do
           let(:name) { nil }
 
-          it 'it is a weapon without a name' do
-            expect(subject.name).to be_nil
+          it 'it returns the weapon class type' do
+            expect(subject.name).to eq weapon_class_attributes[:type]
           end
         end
 

@@ -57,6 +57,7 @@ module Hiro
           expect(subject.y).to eq enemy_params[:y]
           expect(subject.name).to eq enemy_params[:name]
           expect(subject.enemy_class).to be_instance_of Struct::EnemyClass
+          expect(subject.weapon).to be_instance_of Struct::Weapon
           expect(subject.level).to eq enemy_params[:level]
           expect(subject.life).to eq subject.max_life
           expect(subject.dexterity).to be_between(min_dexterity, max_dexterity)

@@ -45,12 +45,16 @@ module Hiro
               type: 'test enemy',
               min_vitality: 1,
               max_vitality: 3,
-              min_damage: 1,
-              max_damage: 2,
               min_dexterity: 1,
               max_dexterity: 5,
               min_defense: 1,
               max_defense: 5,
+            },
+            weapon_attributes: {
+              min_damage: 1,
+              max_damage: 2,
+              name: 'Enemy Sword',
+              range: 1
             }
           },
         ]
