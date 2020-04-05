@@ -12,7 +12,6 @@ module Hiro
       attr_accessor :equipped_gear, :x, :y
 
       def initialize(player_params)
-        player_params = default_player.merge!(player_params)
         @name = player_params.fetch(:name)
         @life = player_params.fetch(:life)
         @mana = player_params.fetch(:mana)
@@ -81,25 +80,6 @@ module Hiro
       def map_equipped_gear(weapon: nil)
         weapon = Items::Weapon.new(weapon) if weapon
         { weapon: weapon }
-      end
-
-
-      def default_player
-        {
-          name: 'Hiro',
-          life: 10,
-          mana: 10,
-          character_level: 1,
-          x: 0,
-          y: 0,
-          attributes: {
-            max_life: 5,
-            max_mana: 5,
-            strength: 5,
-            dexterity: 5,
-            vitality: 5,
-          }
-        }
       end
     end
   end
