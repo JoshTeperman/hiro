@@ -15,7 +15,6 @@ FactoryBot.define do
     },
     weapon_attributes: {
       name: 'Enemy Sword',
-      range: 1,
       min_damage: 1,
       max_damage: 5
     }

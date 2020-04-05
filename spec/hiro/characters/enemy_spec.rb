@@ -41,7 +41,6 @@ module Hiro
           name: 'Enemy Sword',
           min_damage: 1,
           max_damage: 5,
-          range: 1
         }
       end
 
@@ -76,7 +75,6 @@ module Hiro
           let(:weapon) { subject.weapon }
           it 'instantiates an instance of Struct::Weapon', aggregate_failures: true do
             expect(weapon.name).to eq enemy_weapon_attributes[:name]
-            expect(weapon.range).to eq enemy_weapon_attributes[:range]
             expect(weapon.min_damage).to eq enemy_weapon_attributes[:min_damage]
             expect(weapon.max_damage).to eq enemy_weapon_attributes[:max_damage]
           end

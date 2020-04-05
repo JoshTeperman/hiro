@@ -102,11 +102,10 @@ module Hiro
                   min_minimum_damage: 1,
                   max_minimum_damage: 1,
                   min_maximum_damage: 3,
-                  max_maximum_damage: 3,
+                  max_maximum_damage: 3
                 },
                 name: nil,
-                min_character_level: 1,
-                range: 1
+                min_character_level: 1
               }
             }
           },

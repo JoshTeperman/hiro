@@ -10,7 +10,6 @@ module Hiro
           weapon_class_attributes: weapon_class_attributes,
           name: name,
           min_character_level: min_character_level,
-          range: range
         }
       end
 
@@ -34,7 +33,6 @@ module Hiro
 
         let(:name) { 'Grandfather' }
         let(:min_character_level) { 1 }
-        let(:range) { 2 }
 
         it 'initializes without error' do
           expect { subject }.not_to raise_error
@@ -46,21 +44,6 @@ module Hiro
             expect(subject.min_character_level).to eq min_character_level
             expect(subject.min_damage).to be_between(min_minimum_damage, max_minimum_damage)
             expect(subject.max_damage).to be_between(min_maximum_damage, max_maximum_damage)
-            expect(subject.range).to eq range
-          end
-        end
-
-        context 'when no range is given' do
-          let(:params) do
-            {
-              weapon_class_attributes: weapon_class_attributes,
-              name: name,
-              min_character_level: min_character_level,
-            }
-          end
-
-          it 'has a default range of 1' do
-            expect(subject.range).to eq 1
           end
         end
 

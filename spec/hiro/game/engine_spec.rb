@@ -53,7 +53,6 @@ module Hiro
               min_damage: 1,
               max_damage: 2,
               name: 'Enemy Sword',
-              range: 1
             }
           },
         ]

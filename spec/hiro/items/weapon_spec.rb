@@ -8,7 +8,6 @@ module Hiro
           weapon_class_attributes: weapon_class_attributes,
           name: name,
           min_character_level: min_character_level,
-          range: range,
         )
       end
 
@@ -29,7 +28,6 @@ module Hiro
       let(:max_minimum_damage) { 2 }
       let(:min_maximum_damage) { 3 }
       let(:max_maximum_damage) { 10 }
-      let(:range) { 2 }
 
       describe '#initialize' do
         it_behaves_like 'Errors'
@@ -45,7 +43,6 @@ module Hiro
             expect(subject.min_character_level).to eq min_character_level
             expect(subject.min_damage).to be_between(min_minimum_damage, max_minimum_damage)
             expect(subject.max_damage).to be_between(min_maximum_damage, max_maximum_damage)
-            expect(subject.range).to eq range
           end
         end
 

@@ -3,15 +3,14 @@ module Hiro
     class Weapon
       include Game::Errors
 
-      attr_reader :weapon_class, :min_character_level, :min_damage, :max_damage, :range
+      attr_reader :weapon_class, :min_character_level, :min_damage, :max_damage
 
-      def initialize(weapon_class_attributes:, name:, min_character_level:, range:)
+      def initialize(weapon_class_attributes:, name:, min_character_level:)
         @weapon_class = Struct::WeaponClass.new(weapon_class_attributes)
         @name = name
         @min_character_level = min_character_level
         @min_damage = roll_min_damage
         @max_damage = roll_max_damage
-        @range = range
 
         super(self)
       end

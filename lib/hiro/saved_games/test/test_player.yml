@@ -22,7 +22,6 @@ player:
         max_maximum_damage: 5,
       name: Test Sword
       min_character_level: 1
-      range: 1
 current_map: home
 enemy_data:
   - x: 1
@@ -41,7 +40,6 @@ enemy_data:
       name: Monster Sword
       min_damage: 1
       max_damage: 2
-      range: 1
   - x: 2
     y: 0
     level: 1
@@ -57,7 +55,6 @@ enemy_data:
       name: Monster Sword
       min_damage: 1
       max_damage: 2
-      range: 1
   - x: 3
     y: 0
     level: 1
@@ -73,7 +70,6 @@ enemy_data:
       name: Monster Sword
       min_damage: 1
       max_damage: 2
-      range: 1
 
 
 

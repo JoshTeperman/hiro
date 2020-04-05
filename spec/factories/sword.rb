@@ -9,7 +9,6 @@ FactoryBot.define do
     },
     name: 'Grandfather',
     min_character_level: 1,
-    range: 1
   }
 
   factory :sword, class: Hiro::Items::Sword do

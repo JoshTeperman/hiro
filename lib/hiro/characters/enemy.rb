@@ -78,7 +78,7 @@ module Hiro
       )
     end
 
-    Struct.new('Weapon', :name, :min_damage, :max_damage, :range, keyword_init: true) do
+    Struct.new('Weapon', :name, :min_damage, :max_damage, keyword_init: true) do
       def roll_attack_damage
         rand(min_damage..max_damage)
       end
