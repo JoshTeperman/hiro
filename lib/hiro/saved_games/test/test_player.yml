@@ -79,8 +79,8 @@ enemy_data:
       max_vitality: 5
       min_dexterity: 1
       max_dexterity: 5
-      min_defense: 1
-      max_defense: 5
+      min_defense: 50
+      max_defense: 50
     weapon_attributes:
       name: Monster Sword
       min_damage: 5

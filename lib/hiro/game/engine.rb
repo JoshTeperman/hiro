@@ -108,7 +108,7 @@ module Hiro
         case action
         when 'attack'
           p "#{attacker.name} attacked #{defender.name} with #{attacker.weapon.name}"
-          calculate_attack(attacker: attacker, defender: defender)
+          handle_attack(attacker: attacker, defender: defender)
         when 'run away'
           p 'you ran away'
           state.is_in_combat = false
@@ -116,11 +116,20 @@ module Hiro
         end
       end
 
-      def calculate_attack(defender:, attacker:)
-        attack_damage = attacker.weapon.roll_attack_damage
-        defender.lose_life(attack_damage)
-        p "⚔️  Attack dealt #{attack_damage} damage to #{defender.name}"
-        p "❤️  #{defender.life} life remaining" if defender.alive?
+      def handle_attack(defender:, attacker:)
+        if attack_hit?(defender: defender, attacker: attacker)
+          attack_damage = attacker.weapon.roll_attack_damage
+          defender.lose_life(attack_damage)
+          p "⚔️  Attack dealt #{attack_damage} damage to #{defender.name}"
+          p "❤️  #{defender.life} life remaining" if defender.alive?
+        else
+          p 'Attack missed'
+        end
+      end
+
+      def attack_hit?(defender:, attacker:)
+        weighted_score = attacker.hit_chance - defender.defense
+        weighted_score >= rand(1..100)
       end
 
       def enemy_combat_turn(enemy)

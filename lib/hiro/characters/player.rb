@@ -8,7 +8,7 @@ module Hiro
       include Dry::Monads[:result]
       include Game::Errors
 
-      attr_reader :attributes, :name, :life, :mana, :character_level
+      attr_reader :attributes, :name, :life, :mana, :character_level, :hit_chance
       attr_accessor :equipped_gear, :x, :y
 
       def initialize(player_params)
@@ -20,6 +20,8 @@ module Hiro
         @y = player_params.fetch(:y)
         @attributes = player_params.fetch(:attributes)
         @equipped_gear = map_equipped_gear(player_params.fetch(:equipped_gear))
+        @hit_chance = calculate_player_hit_chance
+
         super(self)
       end
 
@@ -80,6 +82,10 @@ module Hiro
       def map_equipped_gear(weapon: nil)
         weapon = Items::Weapon.new(weapon) if weapon
         { weapon: weapon }
+      end
+
+      def calculate_player_hit_chance
+        100 + attributes[:dexterity]
       end
     end
   end
