@@ -8,32 +8,22 @@ module Hiro
       include Dry::Monads[:result]
       include Game::Errors
 
-      attr_reader :name,
-                  :character_level,
-                  :life,
-                  :mana,
-                  :hit_chance,
-                  :max_life,
-                  :max_mana,
-                  :strength,
-                  :dexterity,
-                  :vitality,
-                  :defense
+      attr_reader :name, :character_level, :life, :mana, :hit_chance, :max_life, :max_mana, :strength, :dexterity, :vitality, :defense
       attr_accessor :equipped_items, :x, :y
 
-      def initialize(player_params)
-        @name = player_params.fetch(:name)
-        @character_level = player_params.fetch(:character_level)
-        @life = player_params.fetch(:life)
-        @mana = player_params.fetch(:mana)
-        @max_life = player_params.fetch(:max_life)
-        @max_mana = player_params.fetch(:max_mana)
-        @strength = player_params.fetch(:strength)
-        @dexterity = player_params.fetch(:dexterity)
-        @vitality = player_params.fetch(:vitality)
-        @x = player_params.fetch(:x)
-        @y = player_params.fetch(:y)
-        @equipped_items = map_equipped_items(player_params.fetch(:equipped_items))
+      def initialize(name:, character_level:, life:, mana:, max_life:, max_mana:, strength:, dexterity:, vitality:, x:, y:, equipped_items:)
+        @name = name
+        @character_level = character_level
+        @life = life
+        @mana = mana
+        @max_life = max_life
+        @max_mana = max_mana
+        @strength = strength
+        @dexterity = dexterity
+        @vitality = vitality
+        @x = x
+        @y = y
+        @equipped_items = map_equipped_items(equipped_items)
         @hit_chance = calculate_hit_chance
         @defense = calculate_defense
 

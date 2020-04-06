@@ -93,7 +93,6 @@ module Hiro
             vitality: 5,
             x: 0,
             y: 0,
-            },
             equipped_items: {
               weapon: {
                 weapon_class_attributes: {
