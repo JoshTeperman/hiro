@@ -11,13 +11,13 @@ module Hiro
       attr_reader :name, :character_level, :life, :mana, :hit_chance, :max_life, :max_mana, :strength, :dexterity, :vitality, :defense
       attr_accessor :equipped_items, :x, :y
 
-      def initialize(name:, character_level:, life:, mana:, max_life:, max_mana:, strength:, dexterity:, vitality:, x:, y:, equipped_items:)
+      def initialize(name:, character_level:, life: nil, mana:, max_life:, max_mana:, strength:, dexterity:, vitality:, x:, y:, equipped_items:)
         @name = name
         @character_level = character_level
-        @life = life
         @mana = mana
         @max_life = max_life
         @max_mana = max_mana
+        @life = life || @max_life
         @strength = strength
         @dexterity = dexterity
         @vitality = vitality

@@ -5,23 +5,34 @@ module Hiro
     RSpec.describe Player do
       it_behaves_like 'Errors'
 
-      subject { described_class.new(player_params) }
-      let(:player_params) do
-        {
-          name: 'Hiro',
-          character_level: 88,
-          life: 921,
-          mana: 1043,
-          max_life: 1000,
-          max_mana: 1100,
-          strength: 64,
-          dexterity: 50,
-          vitality: 91,
-          x: 2,
-          y: 8,
-          equipped_items: { weapon: nil }
-        }
+      subject do described_class.new(
+        name: name,
+        character_level: character_level,
+        life: life,
+        mana: mana,
+        max_life: max_life,
+        max_mana: max_mana,
+        strength: strength,
+        dexterity: dexterity,
+        vitality: vitality,
+        x: x,
+        y: y,
+        equipped_items: equipped_items
+      )
       end
+
+      let(:name) { 'Hiro' }
+      let(:character_level) { 88 }
+      let(:life) { 921 }
+      let(:mana) { 1043 }
+      let(:max_life) { 1000 }
+      let(:max_mana) { 1100 }
+      let(:strength) { 64 }
+      let(:dexterity) { 50 }
+      let(:vitality) { 91 }
+      let(:x) { 2 }
+      let(:y) { 8 }
+      let(:equipped_items) { { weapon: nil } }
 
       describe '#initialize' do
         it 'initializes a new player without error' do
@@ -30,18 +41,26 @@ module Hiro
 
         it 'initializes a player with the given params' do
           aggregate_failures do
-            expect(subject.character_level).to eq(player_params[:character_level])
-            expect(subject.name).to eq(player_params[:name])
-            expect(subject.life).to eq(player_params[:life])
-            expect(subject.mana).to eq(player_params[:mana])
-            expect(subject.max_life).to eq(player_params[:max_life])
-            expect(subject.max_mana).to eq(player_params[:max_mana])
-            expect(subject.strength).to eq(player_params[:strength])
-            expect(subject.dexterity).to eq(player_params[:dexterity])
-            expect(subject.vitality).to eq(player_params[:vitality])
-            expect(subject.x).to eq(player_params[:x])
-            expect(subject.y).to eq(player_params[:y])
-            expect(subject.equipped_items).to eq(player_params[:equipped_items])
+            expect(subject.character_level).to eq(character_level)
+            expect(subject.name).to eq(name)
+            expect(subject.life).to eq(life)
+            expect(subject.mana).to eq(mana)
+            expect(subject.max_life).to eq(max_life)
+            expect(subject.max_mana).to eq(max_mana)
+            expect(subject.strength).to eq(strength)
+            expect(subject.dexterity).to eq(dexterity)
+            expect(subject.vitality).to eq(vitality)
+            expect(subject.x).to eq(x)
+            expect(subject.y).to eq(y)
+            expect(subject.equipped_items).to eq(equipped_items)
+          end
+        end
+
+        context 'when life is not given' do
+          let(:life) { nil }
+
+          it 'sets life to max_life' do
+            expect(subject.life).to eq max_life
           end
         end
       end
