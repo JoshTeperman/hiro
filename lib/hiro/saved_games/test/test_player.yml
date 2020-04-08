@@ -4,11 +4,11 @@ player:
   character_level: 1
   life: 10
   mana: 10
-  max_life: 5
-  max_mana: 5
-  strength: 5
-  dexterity: 5
-  vitality: 5
+  max_life: 0
+  max_mana: 0
+  strength: 0
+  dexterity: 0
+  vitality: 0
   x: 0
   y: 0
   equipped_items:
@@ -71,7 +71,7 @@ enemy_data:
       max_damage: 2
   - x: 1
     y: 1
-    level: 5
+    level: 3
     enemy_class_attributes:
       type: Monster
       min_vitality: 5

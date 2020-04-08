@@ -47,7 +47,10 @@ module Hiro
           end
         end
 
-        map_copy.map { |row| row.join("\s" * 3) }.join("\n")
+        map_copy.map do |row|
+
+          row.join("\s" * 2)
+        end.join("\n")
       end
 
       def invalid_move?(x:, y:)
