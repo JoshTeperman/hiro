@@ -5,11 +5,11 @@ module Hiro
 
       attr_reader :armour_class, :name, :min_character_level, :defense
 
-      def initialize(armour_class_attributes:, name:, min_character_level:)
+      def initialize(armour_class_attributes:, name: nil, min_character_level:, defense: nil)
         @armour_class = Struct::ArmourClass.new(armour_class_attributes)
         @name = name
         @min_character_level = min_character_level
-        @defense = armour_class.calculate_defense
+        @defense = defense || armour_class.calculate_defense
 
         super(self)
       end

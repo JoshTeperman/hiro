@@ -66,7 +66,7 @@ module Hiro
       end
 
       describe '#equip' do
-        let(:weapon) { instance_double(Items::Sword, min_character_level: 1) }
+        let(:weapon) { create(:sword) }
         before do
           subject.equipped_items = equipped_items
         end
@@ -92,7 +92,7 @@ module Hiro
             let(:equipped_items) { { weapon: weapon } }
 
             context 'when there is an item already equipped of the same type' do
-              let(:weapon_2) { instance_double(Items::Sword, min_character_level: 1) }
+              let(:weapon_2) { create(:sword) }
 
               it 'replaces the item' do
                 expect { subject.equip(weapon: weapon_2) }.to change { subject.equipped_items[:weapon] }.from(weapon).to(weapon_2)
@@ -128,7 +128,7 @@ module Hiro
           end
 
           context 'when the the item level requirements are above the character level' do
-            let(:weapon) { instance_double(Items::Sword, min_character_level: 100 ) }
+            let(:weapon) { create(:sword, min_character_level: 100) }
             let(:equipped_items) { { weapon: weapon } }
             let(:result) { subject.equip(weapon: weapon) }
 
@@ -145,7 +145,7 @@ module Hiro
 
       describe '#equipped_items' do
         let(:equipped_items) { { weapon: weapon} }
-        let(:weapon) { instance_double(Items::Sword) }
+        let(:weapon) { create(:sword) }
 
         before { subject.equipped_items = equipped_items }
 

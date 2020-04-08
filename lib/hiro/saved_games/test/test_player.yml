@@ -6,19 +6,27 @@ player:
   mana: 10
   max_life: 0
   max_mana: 0
-  strength: 0
+  strength: 10
   dexterity: 0
   vitality: 0
   x: 0
   y: 0
   equipped_items:
     weapon:
+      item_class: Sword
       weapon_class_attributes:
         type: Long Sword
         min_minimum_damage: 2
         max_minimum_damage: 2
         min_maximum_damage: 5
         max_maximum_damage: 5
+      name: Test Sword
+      min_character_level: 1
+    chest:
+      item_class: Chest
+      defense: 7
+      armour_class_attributes:
+        type: Dragon Knit
       name: Test Sword
       min_character_level: 1
 current_map: home

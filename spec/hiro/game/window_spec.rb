@@ -43,7 +43,7 @@ module Hiro
         end
 
         describe '#prepare_map_string' do
-          let(:expected_map_string) { "*                     \n      O               \n                     \n                     \n                     \n                     \n                     \n                     " }
+          let(:expected_map_string) { "*                     \n      O               \n                      \n                      \n                      \n                      \n                      \n                      " }
 
           it 'returns a map_string' do
             expect(subject.prepare_map_string).to eq expected_map_string

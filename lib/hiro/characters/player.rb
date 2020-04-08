@@ -88,9 +88,11 @@ module Hiro
 
       private
 
-      def map_equipped_items(weapon: nil)
-        weapon = Items::Weapon.new(weapon) if weapon
-        { weapon: weapon }
+      def map_equipped_items(equipped_items)
+        equipped_items.each_with_object({}) do |(key, value), result|
+          item_class = value.delete(:item_class)
+          result[key] = eval("Items::#{item_class}.new(#{value})")
+        end
       end
 
       def calculate_hit_chance
@@ -98,7 +100,7 @@ module Hiro
       end
 
       def calculate_defense
-        total_item_defense = equipped_items.reduce(0) do |total, item|
+        total_item_defense = equipped_items.reduce(0) do |total, (_, item)|
           total += item.defense if item.respond_to?(:defense)
           total
         end
