@@ -1,17 +1,20 @@
 # frozen_string_literal: true
 
 require 'tty-box'
+require "tty-cursor"
 
 module Hiro
   module Game
     class Window
       include Game::Errors
 
-      attr_reader :map, :entities
+      attr_reader :map, :entities, :player, :cursor
 
-      def initialize(map:, entities: [])
+      def initialize(map:, player:, entities: [])
         @map = Game::Map.new(map_name: map)
         @entities = entities
+        @player = player
+        @cursor = TTY::Cursor
         super(self)
       end
 
@@ -28,17 +31,34 @@ module Hiro
         @entities = []
       end
 
-      def draw
-        map_string = prepare_map_string
-        print TTY::Box.frame map_string
-
-        map_string
+      def draw(actions: [])
+        map = prepare_map_string
+        stats = " life: #{player.life} "
+        map_box = TTY::Box.frame(
+          map,
+          top: 2,
+          left: 0,
+          padding: [0, 1],
+          title: { bottom_left: stats },
+          border: :thick,
+        )
+        content2 = TTY::Box.frame(
+          actions.join("\n"),
+          top: 2,
+          width: 50,
+          height: 10,
+          left: 51,
+          padding: [0, 1],
+          title: { bottom_left: " character level: #{player.character_level} " }
+        )
+        print map_box
+        print content2
+        puts
       end
 
       def prepare_map_string
         map_copy = map.shape.deep_dup
         entities.map do |e|
-          # TODO: if entity already as same coordinates, draw the one with higher z-index
           case e.class.to_s
           when Characters::Player.to_s
             map_copy[e.y][e.x] = '*'
@@ -47,10 +67,9 @@ module Hiro
           end
         end
 
-        map_copy.map do |row|
-
-          row.join("\s" * 2)
-        end.join("\n")
+        map_copy
+          .map { |row| row.join("\s" * 2) }
+          .join("\n")
       end
 
       def invalid_move?(x:, y:)

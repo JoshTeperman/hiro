@@ -99,6 +99,7 @@ DEPENDENCIES
   rspec (~> 3.0)
   rubocop
   tty-box (~> 0.3)
+  tty-cursor (~> 0.7.0)
   tty-prompt (~> 0.20.0)
   tty-reader (~> 0.7.0)
 

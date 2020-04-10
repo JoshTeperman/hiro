@@ -14,7 +14,7 @@ module Hiro
           last_player_coordinates: { x: player[:x], y: player[:y] }
         )
         @player = Characters::Player.new(player)
-        @window = Game::Window.new(map: current_map)
+        @window = Game::Window.new(map: current_map, player: @player)
         @mode = mode
         @key_events = []
         @reader = TTY::Reader.new
@@ -24,6 +24,8 @@ module Hiro
       end
 
       def run
+        system('clear')
+
         p 'Started Hiro...'
         if test_mode?
           p 'Loading game in test mode ...'
@@ -176,7 +178,7 @@ module Hiro
       def draw_window
         window.clear
         window.add_entities([player, *state.enemies])
-        window.draw
+        window.draw(actions: [])
       end
 
       def try_move(direction)
