@@ -4,7 +4,7 @@ gem 'dry-monads', '~> 1.3', '>= 1.3.3'
 gem 'tty-prompt', '~> 0.20.0'
 gem 'tty-box', '~> 0.3'
 gem 'tty-reader', '~> 0.7.0'
-gem 'tty-cursor', '~> 0.7.0'
+gem 'tty-screen', '~> 0.7.1'
 
 group :development do
   gem 'bundler', '~> 2.0'

@@ -1,20 +1,22 @@
 # frozen_string_literal: true
 
 require 'tty-box'
-require "tty-cursor"
+require 'tty-screen'
 
 module Hiro
   module Game
     class Window
       include Game::Errors
 
-      attr_reader :map, :entities, :player, :cursor
+      attr_reader :map, :entities, :player, :screen, :box
 
       def initialize(map:, player:, entities: [])
         @map = Game::Map.new(map_name: map)
         @entities = entities
         @player = player
-        @cursor = TTY::Cursor
+        @screen = TTY::Screen
+        @box = TTY::Box
+
         super(self)
       end
 
@@ -32,28 +34,92 @@ module Hiro
       end
 
       def draw(actions: [])
-        map = prepare_map_string
-        stats = " life: #{player.life} "
-        map_box = TTY::Box.frame(
-          map,
-          top: 2,
-          left: 0,
-          padding: [0, 1],
-          title: { bottom_left: stats },
-          border: :thick,
+        system('clear')
+
+        screen_height = screen.height
+        screen_width = screen.width
+
+        main_height = screen_height - 1
+        main_width = screen_width
+        main_left = 0
+        main_top = 0
+
+        map_container_height = main_height
+        map_container_width = main_width / 2
+        map_container_top = 0
+        map_container_left = 0
+
+        action_container_height = main_height / 3
+        action_container_width = main_width / 2
+        action_container_left = main_width / 2 - 1
+        action_container_top = main_top
+
+        action_container_2_height = main_height / 3
+        action_container_2_width = main_width / 2
+        action_container_2_left = main_width / 2 - 1
+        action_container_2_top = main_top + action_container_height
+
+        action_container_3_height = main_height - (action_container_height + action_container_2_height)
+        action_container_3_width = main_width / 2
+        action_container_3_left = main_width / 2 - 1
+        action_container_3_top = action_container_2_top + action_container_height
+
+        stats_container_height = main_height / 4
+        stats_container_width = main_width / 2
+        stats_container_top = main_height - stats_container_height
+        stats_container_left = main_left
+
+        map_container = box.frame(
+          top: map_container_top,
+          left: map_container_left,
+          height: map_container_height,
+          width: map_container_width,
+          padding: [1, 2],
+          title: { top_left: ' MAP: HOME '}
+        ) do
+          prepare_map_string
+        end
+
+        stats_container = box.frame(
+          top: stats_container_top,
+          left: stats_container_left,
+          height: stats_container_height,
+          width: stats_container_width,
+          title: {
+            top_left: ' PLAYER STATS ',
+            top_right: " #{player.name.upcase} "
+          }
         )
-        content2 = TTY::Box.frame(
-          actions.join("\n"),
-          top: 2,
-          width: 50,
-          height: 10,
-          left: 51,
-          padding: [0, 1],
-          title: { bottom_left: " character level: #{player.character_level} " }
+
+        action_container = box.frame(
+          top: action_container_top,
+          left: action_container_left,
+          height: action_container_height,
+          width: action_container_width,
+          title: { top_left: ' ACTION CONTAINER ' }
         )
-        print map_box
-        print content2
-        puts
+
+        action_container_2 = box.frame(
+          top: action_container_2_top,
+          left: action_container_2_left,
+          height: action_container_2_height,
+          width: action_container_2_width,
+          title: { top_left: ' ACTION CONTAINER 2 ' }
+        )
+
+        action_container_3 = box.frame(
+          top: action_container_3_top,
+          left: action_container_3_left,
+          height: action_container_3_height,
+          width: action_container_3_width,
+          title: { top_left: ' ACTION CONTAINER 3 ' }
+        )
+
+        print map_container
+        print stats_container
+        print action_container
+        print action_container_2
+        print action_container_3
       end
 
       def prepare_map_string
